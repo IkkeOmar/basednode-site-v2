@@ -319,31 +319,13 @@ footer{border-top:1px solid var(--border-subtle);padding:36px 0;margin-top:40px;
 /* ── REDUCED MOTION ── */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
 
-/* ═══════════ DEVTOOLS PANEL ═══════════ */
-#devtools-toggle{position:fixed;bottom:20px;right:20px;z-index:99999;width:40px;height:40px;border-radius:10px;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s var(--ease-out);opacity:0.6;font-family:monospace}
-#devtools-toggle:hover{opacity:1;transform:scale(1.1);box-shadow:0 0 20px var(--accent-glow)}
-#devtools-panel{position:fixed;bottom:70px;right:20px;z-index:99998;width:320px;max-height:70vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 20px 60px oklch(0 0 0/0.5);display:none;font-size:13px;color:var(--text);font-family:'Sora',sans-serif;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-#devtools-panel.open{display:block;animation:devSlideIn .3s var(--ease-out)}
-@keyframes devSlideIn{from{opacity:0;transform:translateY(10px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-#devtools-panel h3{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--accent-soft);letter-spacing:-0.3px;display:flex;align-items:center;gap:8px}
-#devtools-panel label{display:block;font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;margin-top:12px}
-#devtools-panel input[type=range]{width:100%;accent-color:var(--accent);margin-bottom:8px}
-#devtools-panel input[type=color]{width:100%;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;padding:2px}
-#devtools-panel .dev-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-#devtools-panel .dev-btn{flex:1;padding:7px 12px;border-radius:6px;background:var(--bg-hover);border:1px solid var(--border-subtle);color:var(--text-muted);cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;transition:all .2s var(--ease-out);text-align:center}
-#devtools-panel .dev-btn:hover{background:var(--badge-bg);color:var(--accent-soft);border-color:var(--accent-dim)}
-#devtools-panel .dev-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent)}
-#devtools-panel .dev-divider{border:none;border-top:1px solid var(--border-subtle);margin:14px 0}
-.dev-fps{position:fixed;top:10px;right:10px;z-index:99999;font-family:monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--border-subtle);color:var(--accent-soft);display:none;pointer-events:none}
-.dev-fps.visible{display:block}
+
 
 /* ═══════════ RIPPLES ═══════════ */
 .ripple{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;animation:rippleOut .6s var(--ease-out) forwards}
 @keyframes rippleOut{0%{width:0;height:0;opacity:0.6;transform:translate(-50%,-50%) scale(0)}100%{width:300px;height:300px;opacity:0;transform:translate(-50%,-50%) scale(1)}}
 
-/* ═══════════ GRID OVERLAY ═══════════ */
-#grid-overlay{position:fixed;inset:0;z-index:99990;pointer-events:none;display:none;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);background-size:32px 32px}
-#grid-overlay.visible{display:block}
+
 
 /* ═══════════ TEXT SCRAMBLE ═══════════ */
 .scramble{display:inline-block}
@@ -555,38 +537,6 @@ footer{border-top:1px solid var(--border-subtle);padding:36px 0;margin-top:40px;
   </div>
 </footer>
 
-<!-- ═══════════ DEVTOOLS TOGGLE ═══════════ -->
-<button id="devtools-toggle" title="DevTools (Ctrl+Shift+D)">⚙</button>
-
-<!-- ═══════════ DEVTOOLS PANEL ═══════════ -->
-<div id="devtools-panel">
-  <h3>⚙ DevTools</h3>
-  <div class="dev-row">
-    <button class="dev-btn" data-action="fps">FPS</button>
-    <button class="dev-btn" data-action="grid">Grid</button>
-    <button class="dev-btn" data-action="outline">Outline</button>
-    <button class="dev-btn" data-action="reset">Reset</button>
-  </div>
-  <hr class="dev-divider">
-  <label>Accent Color</label>
-  <input type="color" id="dev-accent" value="#10b981">
-  <label>Animation Speed: <span id="dev-speed-val">1×</span></label>
-  <input type="range" id="dev-speed" min="0.1" max="3" step="0.1" value="1">
-  <label>Font Size: <span id="dev-font-val">16px</span></label>
-  <input type="range" id="dev-font" min="12" max="22" step="0.5" value="16">
-  <hr class="dev-divider">
-  <div class="dev-row">
-    <button class="dev-btn" data-action="ripple" style="width:100%">Toggle Ripple (R)</button>
-  </div>
-  <div style="font-size:10px;color:var(--text-dim);margin-top:8px;text-align:center">Ctrl+Shift+D — Esc to close</div>
-</div>
-
-<!-- ═══════════ GRID OVERLAY ═══════════ -->
-<div id="grid-overlay"></div>
-
-<!-- ═══════════ FPS COUNTER ═══════════ -->
-<div class="dev-fps" id="dev-fps">60 FPS</div>
-
 <script>
 /* ── I18N DATA ── */
 const TEXT={en:{nav_services:'Services',nav_cases:'Cases',nav_about:'About',nav_pricing:'Pricing',nav_faq:'FAQ',nav_resources:'Resources',nav_contact:'Contact',
@@ -752,70 +702,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 function toggleFaq(el){const item=el.closest('.faq-item');if(!item)return;const was=item.classList.contains('active');document.querySelectorAll('.faq-item.active').forEach(f=>f.classList.remove('active'));if(!was)item.classList.add('active')}
 
-/* ═══════════ DEVTOOLS ENGINE ═══════════ */
-(function(){
-  const panel=document.getElementById('devtools-panel'),toggle=document.getElementById('devtools-toggle'),
-    grid=document.getElementById('grid-overlay'),fpsEl=document.getElementById('dev-fps'),
-    accentInp=document.getElementById('dev-accent'),speedInp=document.getElementById('dev-speed'),
-    fontInp=document.getElementById('dev-font'),speedVal=document.getElementById('dev-speed-val'),
-    fontVal=document.getElementById('dev-font-val');
-  let rippleOn=true,outlineOn=false,gridOn=false,fpsOn=false,fpsFrames=0,fpsLast=0;
 
-  /* PANEL TOGGLE */
-  toggle.addEventListener('click',()=>panel.classList.toggle('open'));
-  document.addEventListener('keydown',e=>{
-    if(e.ctrlKey&&e.shiftKey&&e.key==='D'){e.preventDefault();panel.classList.toggle('open')}
-    if(e.key==='Escape')panel.classList.remove('open');
-    if(e.key==='r'||e.key==='R'){if(!e.target.closest('input,textarea,select')){rippleOn=!rippleOn;toggle.querySelector('[data-action=ripple]')?.classList.toggle('active',rippleOn)}}
-  });
-
-  /* BUTTON ACTIONS */
-  panel.addEventListener('click',e=>{
-    const btn=e.target.closest('.dev-btn');if(!btn)return;
-    const act=btn.dataset.action;
-    if(act==='fps'){fpsOn=!fpsOn;fpsEl.classList.toggle('visible',fpsOn);btn.classList.toggle('active',fpsOn);if(fpsOn){fpsFrames=0;fpsLast=performance.now();requestAnimationFrame(fpsLoop)}}
-    if(act==='grid'){gridOn=!gridOn;grid.classList.toggle('visible',gridOn);btn.classList.toggle('active',gridOn)}
-    if(act==='outline'){outlineOn=!outlineOn;document.body.style.outline=outlineOn?'1px solid rgba(16,185,129,0.3)':'';btn.classList.toggle('active',outlineOn)}
-    if(act==='ripple'){rippleOn=!rippleOn;btn.classList.toggle('active',!rippleOn);rippleOn=!rippleOn}
-    if(act==='reset'){speedInp.value=1;fontInp.value=16;accentInp.value='#10b981';speedVal.textContent='1×';fontVal.textContent='16px';document.documentElement.style.setProperty('--anim-speed','1');document.documentElement.style.fontSize='16px';updateAccent('#10b981')}
-  });
-
-  /* ACCENT COLOR */
-  function updateAccent(hex){
-    const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
-    const max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2,s=max===min?0:(max-min)/(1-Math.abs(2*l-1)),h=max===r?((g-b)/(max-min))*60:max===g?((b-r)/(max-min))*60+120:((r-g)/(max-min))*60+240;
-    if(h<0)h+=360;
-    const cl=(l*100).toFixed(0),cs=(s*100).toFixed(0),ch=h.toFixed(0);
-    document.documentElement.style.setProperty('--accent',`oklch(${(cl/100*0.62).toFixed(2)} ${(cs/100*0.19).toFixed(2)} ${ch})`);
-    document.documentElement.style.setProperty('--accent-strong',`oklch(${(cl/100*0.55).toFixed(2)} ${(cs/100*0.22).toFixed(2)} ${ch})`);
-    document.documentElement.style.setProperty('--accent-soft',`oklch(${(cl/100*0.72).toFixed(2)} ${(cs/100*0.14).toFixed(2)} ${ch})`);
-    document.documentElement.style.setProperty('--accent-dim',`oklch(${(cl/100*0.28).toFixed(2)} ${(cs/100*0.08).toFixed(2)} ${ch})`);
-    document.documentElement.style.setProperty('--accent-glow',`oklch(${(cl/100*0.62).toFixed(2)} ${(cs/100*0.19).toFixed(2)} ${ch}/0.15)`);
-  }
-  accentInp.addEventListener('input',()=>updateAccent(accentInp.value));
-
-  /* ANIMATION SPEED */
-  speedInp.addEventListener('input',()=>{const v=speedInp.value;speedVal.textContent=v+'×';document.documentElement.style.setProperty('--anim-speed',v)});
-
-  /* FONT SIZE */
-  fontInp.addEventListener('input',()=>{const v=fontInp.value;fontVal.textContent=v+'px';document.documentElement.style.fontSize=v+'px'});
-
-  /* FPS LOOP */
-  function fpsLoop(t){
-    fpsFrames++;
-    if(t-fpsLast>=1000){fpsEl.textContent=Math.round(fpsFrames/((t-fpsLast)/1000))+' FPS';fpsFrames=0;fpsLast=t}
-    if(fpsOn)requestAnimationFrame(fpsLoop)
-  }
-
-  /* Toggle DevTools */
-  window.toggleDevTools=()=>panel.classList.toggle('open');
-})();
 
 /* ═══════════ RIPPLE ON CLICK ═══════════ */
 (function(){
   document.addEventListener('click',e=>{
-    const rippleOn=!document.getElementById('devtools-panel').classList.contains('open')||true;
-    try{const btn=document.querySelector('.dev-btn.active');if(btn&&btn.dataset.action==='ripple'&&document.querySelector('.dev-btn[data-action=ripple]')?.classList.contains('active')===false)return}catch(_){}
+    const rippleOn=true;
     const r=document.createElement('div');r.className='ripple';
     r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
     r.style.background='radial-gradient(circle,var(--accent-glow),transparent)';
