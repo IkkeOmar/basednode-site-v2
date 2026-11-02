@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BasedNode — AI Engineering Studio</title>
+<meta name="description" content="Solo AI engineering studio. Production-grade systems that cut costs, automate workflows, and deliver measurable outcomes."/>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   BASEDNODE — Dynamic Redesign
+   Emil Kowalski + impeccable + taste-skill
+   Accent: Emerald  |  Base: Zinc-tinted  |  MOTION: Fluid CSS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── RESET ── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:'Sora','SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;background:var(--bg);color:var(--text);transition:background .4s var(--ease-out),color .4s var(--ease-out)}
+
+/* ── VARIABLES ── */
+:root{
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-bounce:cubic-bezier(0.34,1.56,0.64,1);
+}
+[data-theme="dark"]{
+  --bg:oklch(0.12 0.008 260);--bg-alt:oklch(0.15 0.012 260);--bg-hover:oklch(0.18 0.015 260);
+  --surface:oklch(0.17 0.01 260);--border:oklch(0.22 0.015 260);--border-subtle:oklch(0.175 0.008 260);
+  --text:oklch(0.91 0.005 260);--text-muted:oklch(0.62 0.01 260);--text-dim:oklch(0.42 0.01 260);
+  --accent:oklch(0.62 0.19 160);--accent-strong:oklch(0.55 0.22 160);--accent-soft:oklch(0.72 0.14 160);
+  --accent-dim:oklch(0.28 0.08 160);--accent-glow:oklch(0.62 0.19 160/0.15);
+  --accent-surface:oklch(0.20 0.04 160);--shadow:0 8px 32px oklch(0 0 0/0.4);
+  --nav-bg:oklch(0.12 0.008 260/0.92);--badge-bg:oklch(0.24 0.06 160/0.3);
+  --particle-color:oklch(0.62 0.19 160/0.18);--particle-color2:oklch(0.55 0.22 160/0.10);
+}
+[data-theme="light"]{
+  --bg:oklch(0.97 0.005 260);--bg-alt:oklch(0.93 0.01 260);--bg-hover:oklch(0.89 0.015 260);
+  --surface:oklch(0.99 0.003 260);--border:oklch(0.85 0.015 260);--border-subtle:oklch(0.88 0.01 260);
+  --text:oklch(0.15 0.01 260);--text-muted:oklch(0.42 0.015 260);--text-dim:oklch(0.55 0.01 260);
+  --accent:oklch(0.52 0.22 160);--accent-strong:oklch(0.48 0.24 160);--accent-soft:oklch(0.55 0.16 160);
+  --accent-dim:oklch(0.42 0.10 160);--accent-glow:oklch(0.52 0.22 160/0.08);
+  --accent-surface:oklch(0.88 0.05 160);--shadow:0 8px 32px oklch(0 0 0/0.08);
+  --nav-bg:oklch(0.97 0.005 260/0.92);--badge-bg:oklch(0.78 0.12 160/0.25);
+  --particle-color:oklch(0.52 0.22 160/0.10);--particle-color2:oklch(0.48 0.24 160/0.06);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:oklch(0.50 0.10 160);border-radius:10px}
+
+/* ── SCROLL PROGRESS BAR ── */
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:10000;width:0%;transition:width .1s linear;box-shadow:0 0 8px var(--accent-glow)}
+
+/* ── MOUSE GLOW ── */
+#mouse-glow{position:fixed;pointer-events:none;z-index:0;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);
+  transform:translate(-50%,-50%);opacity:0;transition:opacity .4s var(--ease-out)}
+#mouse-glow.visible{opacity:1}
+
+/* ── PARTICLES ── */
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.7}
+
+/* ── PARALLAX DECORATIONS ── */
+.parallax-orb{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(60px);will-change:transform}
+.parallax-orb-1{width:300px;height:300px;background:var(--accent-glow);top:20%;left:-10%}
+.parallax-orb-2{width:200px;height:200px;background:oklch(0.62 0.19 160/0.08);bottom:30%;right:-5%}
+.parallax-orb-3{width:250px;height:250px;background:oklch(0.55 0.22 160/0.06);top:60%;left:40%}
+
+/* ── UTILITY ── */
+.contain{max-width:1220px;margin:0 auto;padding:0 clamp(20px,5vw,40px);position:relative;z-index:1}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* ── BUTTONS (Emil: scale 0.97, magnetic) ── */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:600;
+  font-family:inherit;text-decoration:none;cursor:pointer;border:none;
+  transition:transform 160ms var(--ease-out),box-shadow 160ms var(--ease-out),background 200ms var(--ease-out);
+  -webkit-tap-highlight-color:transparent;white-space:nowrap;position:relative;overflow:hidden}
+.btn:active{transform:scale(0.97)}
+.btn::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),oklch(1 0 0/0.15),transparent 60%);opacity:0;transition:opacity .3s var(--ease-out)}
+.btn:hover::after{opacity:1}
+.btn-primary{background:var(--accent);color:oklch(0.18 0.03 160)}
+.btn-primary:hover{background:var(--accent-strong);box-shadow:0 0 40px var(--accent-glow);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent-soft);transform:translateY(-1px)}
+.btn-sm{padding:8px 18px;font-size:13px}
+
+/* ── NAV ── */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-subtle);height:64px;display:flex;align-items:center;transition:border-color .3s var(--ease-out),transform .3s var(--ease-out)}
+header.scrolled{border-bottom-color:var(--border)}
+header.hidden{transform:translateY(-100%)}
+.nav-inner{max-width:1220px;width:100%;margin:0 auto;padding:0 clamp(20px,5vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-size:18px;font-weight:700;letter-spacing:-0.4px;color:var(--text);text-decoration:none;flex-shrink:0;transition:color .3s var(--ease-out)}
+.logo mark{background:none;color:var(--accent)}
+.logo:hover{color:var(--accent-soft)}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:6px;font-size:13.5px;font-weight:500;
+  transition:color .2s var(--ease-out),background .2s var(--ease-out),transform .2s var(--ease-out)}
+.nav-links a:hover{color:var(--text);background:var(--bg-hover);transform:translateY(-1px)}
+.nav-links a.active{color:var(--accent-soft);background:var(--badge-bg)}
+.nav-toggles{display:flex;align-items:center;gap:6px}
+.toggle-btn{background:var(--surface);border:1px solid var(--border);color:var(--text-muted);padding:7px 12px;border-radius:8px;
+  cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;transition:all .25s var(--ease-out);white-space:nowrap}
+.toggle-btn:hover{color:var(--accent-soft);border-color:var(--accent);background:var(--badge-bg);transform:scale(1.05)}
+.toggle-btn:active{transform:scale(0.95)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+.hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s var(--ease-out)}
+.hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── HERO ── */
+.hero{min-height:100dvh;display:flex;align-items:center;position:relative;padding:100px 0 60px;overflow:hidden}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(32px,8vw,72px);align-items:center}
+.hero-text{max-width:600px}
+.hero-badge{display:inline-block;padding:5px 14px;border-radius:100px;background:var(--accent-dim);color:var(--accent-soft);
+  font-size:12px;font-weight:600;letter-spacing:0.5px;margin-bottom:24px;overflow:hidden;position:relative}
+.hero-badge .cursor-blink{display:inline-block;width:2px;height:14px;background:var(--accent-soft);margin-left:2px;vertical-align:text-bottom;animation:blink .8s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.hero h1{font-size:clamp(32px,5.5vw,56px);font-weight:700;letter-spacing:-1.2px;line-height:1.08;margin-bottom:20px;color:var(--text)}
+.hero h1 em{font-style:normal;color:var(--accent);display:inline-block;animation:accentPulse 4s var(--ease-in-out) infinite}
+@keyframes accentPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+.hero p{font-size:clamp(15px,1.8vw,17px);color:var(--text-muted);max-width:480px;margin-bottom:32px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hero-stat .num{font-size:26px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;transition:all .3s var(--ease-out)}
+.hero-stat .label{font-size:12px;color:var(--text-dim);margin-top:2px}
+.hero-visual{position:relative;aspect-ratio:1/1;max-width:420px;justify-self:end;display:flex;align-items:center;justify-content:center;
+  perspective:800px}
+.hero-visual svg{width:100%;height:auto;animation:heroFloat 8s var(--ease-in-out) infinite;transform-style:preserve-3d}
+@keyframes heroFloat{0%,100%{transform:rotateY(0deg) translateY(0)}25%{transform:rotateY(3deg) translateY(-8px)}50%{transform:rotateY(0deg) translateY(0)}75%{transform:rotateY(-3deg) translateY(8px)}}
+.hero-geo-ring{animation:ringPulse 3s var(--ease-in-out) infinite;transform-origin:center}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:0.7}}
+.hero-geo-rect{animation:rectRotate 6s var(--ease-in-out) infinite;transform-origin:center}
+@keyframes rectRotate{0%,100%{transform:rotate(0deg)}50%{transform:rotate(5deg)}}
+.hero-geo-dot{animation:dotPulse 2s var(--ease-in-out) infinite}
+@keyframes dotPulse{0%,100%{r:4;opacity:0.5}50%{r:7;opacity:1}}
+
+/* ── SECTIONS ── */
+section{padding:clamp(60px,10vw,100px) 0;position:relative;z-index:1}
+.section-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--accent-soft);margin-bottom:12px}
+.section-title{font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-0.6px;line-height:1.2;margin-bottom:12px}
+.section-desc{font-size:15px;color:var(--text-muted);max-width:500px;margin-bottom:48px;line-height:1.65}
+
+/* ── BENTO GRID + 3D TILT ── */
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-subtle);border-radius:14px;overflow:hidden}
+.bento-item{background:var(--surface);padding:32px;transition:transform .4s var(--ease-out),background 250ms var(--ease-out),box-shadow .4s var(--ease-out);
+  position:relative;transform-style:preserve-3d;perspective:1000px}
+.bento-item:hover{background:var(--bg-hover);z-index:2}
+.bento-item.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;background:var(--bg-alt);
+  position:relative;overflow:hidden}
+.bento-item.featured::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,var(--accent-glow) 100%);opacity:0;transition:opacity .5s var(--ease-out)}
+.bento-item.featured:hover::before{opacity:1}
+.bento-item.featured>*{position:relative;z-index:1}
+.bento-icon{width:36px;height:36px;border-radius:8px;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;color:var(--accent-soft);transition:transform .3s var(--ease-spring)}
+.bento-item:hover .bento-icon{transform:scale(1.1) rotate(-5deg)}
+.bento-icon svg{width:18px;height:18px}
+.bento-item h3{font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-0.2px}
+.bento-item p{font-size:13px;color:var(--text-muted);line-height:1.6}
+.bento-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;background:var(--badge-bg);color:var(--accent-soft);
+  font-size:11px;font-weight:600;margin-top:10px;transition:transform .3s var(--ease-spring)}
+.bento-item:hover .bento-tag{transform:scale(1.05)}
+.bento-rev{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:6px;background:var(--accent-surface);color:var(--accent-soft);
+  font-size:11px;font-weight:600;margin-top:10px;margin-left:8px}
+.bento-feat-num{font-size:clamp(32px,4vw,44px);font-weight:700;color:var(--accent);text-align:right;letter-spacing:-1px}
+
+/* ── ANIMATED BORDER (featured items) ── */
+@property --border-angle{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes borderSpin{to{--border-angle:360deg}}
+.animated-border{position:relative}
+.animated-border::after{content:'';position:absolute;inset:-1px;border-radius:15px;background:conic-gradient(from var(--border-angle),transparent,var(--accent),transparent,var(--accent),transparent);
+  animation:borderSpin 4s linear infinite;opacity:0;transition:opacity .5s var(--ease-out);z-index:-1}
+.animated-border.visible::after{opacity:1}
+
+/* ── CASE LIST ── */
+.case-list{display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:var(--border-subtle);gap:1px}
+.case-item{display:grid;grid-template-columns:1fr 130px;gap:16px;align-items:start;background:var(--surface);padding:24px 28px;
+  transition:all .3s var(--ease-out);position:relative;overflow:hidden}
+.case-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transition:transform .3s var(--ease-spring)}
+.case-item:hover{background:var(--bg-hover);padding-left:36px;transform:translateX(4px)}
+.case-item:hover::before{transform:scaleY(1)}
+.case-metric{font-size:28px;font-weight:700;color:var(--accent);letter-spacing:-0.5px;line-height:1.1;transition:transform .3s var(--ease-spring)}
+.case-item:hover .case-metric{transform:scale(1.1)}
+.case-ml{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.case-info h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.case-info p{font-size:13px;color:var(--text-muted);line-height:1.55;margin-bottom:8px}
+.case-tags{display:flex;flex-wrap:wrap;gap:5px}
+.case-tags span{padding:2px 8px;border-radius:5px;background:var(--badge-bg);color:var(--accent-soft);font-size:11px}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-subtle);border-radius:14px;overflow:hidden}
+.about-block{background:var(--surface);padding:36px 32px;transition:background .3s var(--ease-out)}
+.about-block:hover{background:var(--bg-hover)}
+.about-block.large{grid-row:span 2}
+.about-block h3{font-size:18px;font-weight:600;margin-bottom:10px;letter-spacing:-0.3px}
+.about-block p{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:10px}
+.about-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.about-tags span{padding:5px 13px;border-radius:100px;background:var(--badge-bg);color:var(--accent-soft);font-size:12px;font-weight:500;
+  transition:all .3s var(--ease-out)}
+.about-tags span:hover{background:var(--accent-dim);transform:translateY(-2px)}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border-subtle);border-radius:14px;overflow:hidden}
+.pricing-card{background:var(--surface);padding:32px 28px;display:flex;flex-direction:column;
+  transition:all .3s var(--ease-out);position:relative}
+.pricing-card:hover{background:var(--bg-hover);transform:translateY(-4px);box-shadow:0 20px 40px var(--accent-glow)}
+.pricing-card.featured{background:var(--bg-alt);border:1px solid var(--accent-dim);margin:-1px;z-index:1}
+.pricing-card .plan-name{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:8px}
+.pricing-card .plan-price{font-size:clamp(26px,3vw,36px);font-weight:700;color:var(--accent);margin-bottom:4px;letter-spacing:-0.5px}
+.pricing-card .plan-price span{font-size:14px;font-weight:500;color:var(--text-muted)}
+.pricing-card .plan-desc{font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.5}
+.pricing-card .plan-features{list-style:none;padding:0;flex:1;margin-bottom:20px}
+.pricing-card .plan-features li{padding:9px 0;border-bottom:1px solid var(--border-subtle);font-size:13px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.pricing-card .plan-features li:last-child{border-bottom:none}
+.pricing-card .plan-features .check{color:var(--accent);font-weight:700;flex-shrink:0}
+.pricing-badge{position:absolute;top:14px;right:-28px;background:var(--accent);color:oklch(0.18 0.03 160);padding:3px 36px;font-size:10px;font-weight:700;
+  transform:rotate(45deg);text-transform:uppercase;letter-spacing:1px;z-index:2;animation:badgeShimmer 2s linear infinite}
+@keyframes badgeShimmer{0%{background:var(--accent)}50%{background:var(--accent-strong)}100%{background:var(--accent)}}
+.pricing-note{text-align:center;margin-top:20px;color:var(--text-muted);font-size:13px}
+
+/* ── PROCESS ── */
+.process-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-subtle);border-radius:14px;overflow:hidden}
+.process-step{background:var(--surface);padding:36px 24px;text-align:center;transition:all .3s var(--ease-out);position:relative}
+.process-step:hover{background:var(--bg-hover);transform:translateY(-4px)}
+.step-num{font-size:44px;font-weight:700;color:var(--accent-dim);line-height:1;margin-bottom:12px;letter-spacing:-1px;
+  transition:color .3s var(--ease-out),transform .3s var(--ease-spring)}
+.process-step:hover .step-num{color:var(--accent);transform:scale(1.15)}
+.process-step h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.process-step p{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+
+/* ── FAQ ── */
+.faq-list{max-width:700px}
+.faq-item{border:1px solid var(--border-subtle);border-radius:12px;margin-bottom:10px;overflow:hidden;background:var(--surface);
+  transition:all .3s var(--ease-out)}
+.faq-item:hover{border-color:var(--border)}
+.faq-item.active{border-color:var(--accent-dim);box-shadow:0 4px 20px var(--accent-glow)}
+.faq-question{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;cursor:pointer;font-weight:600;
+  font-size:14px;user-select:none;gap:12px;transition:color .2s var(--ease-out)}
+.faq-item:hover .faq-question{color:var(--accent-soft)}
+.faq-toggle{color:var(--accent-soft);font-size:18px;transition:all .3s var(--ease-spring);flex-shrink:0}
+.faq-item.active .faq-toggle{transform:rotate(45deg);color:var(--accent)}
+.faq-answer{padding:0 22px;max-height:0;overflow:hidden;color:var(--text-muted);font-size:13px;line-height:1.65;
+  transition:max-height .4s var(--ease-out),padding .4s var(--ease-out)}
+.faq-item.active .faq-answer{padding:0 22px 18px;max-height:250px}
+
+/* ── CTA ── */
+.cta-block{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--accent-dim);
+  border-radius:14px;padding:40px 36px;position:relative;overflow:hidden;transition:transform .3s var(--ease-out)}
+.cta-block:hover{transform:scale(1.01)}
+.cta-block::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at var(--mx,80%) var(--my,50%),var(--accent-glow),transparent 70%);pointer-events:none}
+.cta-block>*{position:relative;z-index:1}
+.cta-block h2{font-size:clamp(22px,3vw,28px);font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.cta-block p{color:var(--text-muted);font-size:14px}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border-subtle);padding:36px 0;margin-top:40px;position:relative;z-index:1}
+.footer-inner{max-width:1220px;margin:0 auto;padding:0 clamp(20px,5vw,40px);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.footer-copy{font-size:12.5px;color:var(--text-dim)}
+.footer-socials{display:flex;gap:10px}
+.footer-socials a{color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:500;
+  border:1px solid var(--border-subtle);transition:all .3s var(--ease-out)}
+.footer-socials a:hover{color:var(--accent-soft);border-color:var(--accent-dim);background:var(--badge-bg);transform:translateY(-2px)}
+
+/* ── STAGGER (Emil) ── */
+.stagger>*{opacity:0;transform:translateY(20px);animation:fadeUp 600ms var(--ease-out) forwards}
+.stagger>*:nth-child(1){animation-delay:0ms}.stagger>*:nth-child(2){animation-delay:60ms}
+.stagger>*:nth-child(3){animation-delay:120ms}.stagger>*:nth-child(4){animation-delay:180ms}
+.stagger>*:nth-child(5){animation-delay:240ms}.stagger>*:nth-child(6){animation-delay:300ms}
+.stagger>*:nth-child(7){animation-delay:360ms}.stagger>*:nth-child(8){animation-delay:420ms}
+.stagger>*:nth-child(9){animation-delay:480ms}.stagger>*:nth-child(10){animation-delay:540ms}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* ── SCROLL REVEAL (varied directions) ── */
+.reveal{opacity:0;transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+.reveal-up{transform:translateY(40px)}.reveal-up.visible{opacity:1;transform:translateY(0)}
+.reveal-left{transform:translateX(-30px)}.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{transform:translateX(30px)}.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{transform:scale(0.92)}.reveal-scale.visible{opacity:1;transform:scale(1)}
+
+/* ── SHIMMER TEXT ── */
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+.shimmer-text{background:linear-gradient(90deg,var(--text) 0%,var(--accent-soft) 50%,var(--text) 100%);background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .nav-links{position:fixed;top:64px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(12px);flex-direction:column;
+    padding:12px 20px;gap:4px;border-bottom:1px solid var(--border);transform:translateY(-120%);opacity:0;
+    transition:all .35s var(--ease-out);pointer-events:none}
+  .nav-links.open{transform:translateY(0);opacity:1;pointer-events:all}
+  .nav-links a{width:100%;padding:10px 14px}
+  #mouse-glow{display:none}.parallax-orb{display:none}
+  .hero-grid{grid-template-columns:1fr}.hero-visual{display:none}
+  .hero-stats{gap:20px}
+  .bento{grid-template-columns:1fr}.bento-item.featured{grid-template-columns:1fr}.bento-feat-num{text-align:left}
+  .case-item{grid-template-columns:1fr}.case-item:hover{padding-left:24px}
+  .pricing-grid{grid-template-columns:1fr}.pricing-card.featured{transform:none}
+  .process-flow{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr}
+  .cta-block{grid-template-columns:1fr;padding:28px 24px}
+  .toggle-btn{padding:5px 8px;font-size:11px}
+}
+@media(max-width:480px){
+  .hero-actions{flex-direction:column;align-items:stretch}.hero-actions .btn{justify-content:center}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+
+/* ── TOUCH HOVER ── */
+@media(hover:hover) and (pointer:fine){
+  .bento-item{transition:transform .3s var(--ease-out),background 250ms var(--ease-out),box-shadow .3s var(--ease-out)}
+  .bento-item:hover{transform:translateY(-3px);box-shadow:0 12px 30px var(--accent-glow)}
+}
+
+/* ── REDUCED MOTION ── */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important}}
+
+/* ═══════════ DEVTOOLS PANEL ═══════════ */
+#devtools-toggle{position:fixed;bottom:20px;right:20px;z-index:99999;width:40px;height:40px;border-radius:10px;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s var(--ease-out);opacity:0.6;font-family:monospace}
+#devtools-toggle:hover{opacity:1;transform:scale(1.1);box-shadow:0 0 20px var(--accent-glow)}
+#devtools-panel{position:fixed;bottom:70px;right:20px;z-index:99998;width:320px;max-height:70vh;overflow-y:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 20px 60px oklch(0 0 0/0.5);display:none;font-size:13px;color:var(--text);font-family:'Sora',sans-serif;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+#devtools-panel.open{display:block;animation:devSlideIn .3s var(--ease-out)}
+@keyframes devSlideIn{from{opacity:0;transform:translateY(10px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+#devtools-panel h3{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--accent-soft);letter-spacing:-0.3px;display:flex;align-items:center;gap:8px}
+#devtools-panel label{display:block;font-size:11px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;margin-top:12px}
+#devtools-panel input[type=range]{width:100%;accent-color:var(--accent);margin-bottom:8px}
+#devtools-panel input[type=color]{width:100%;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;padding:2px}
+#devtools-panel .dev-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+#devtools-panel .dev-btn{flex:1;padding:7px 12px;border-radius:6px;background:var(--bg-hover);border:1px solid var(--border-subtle);color:var(--text-muted);cursor:pointer;font-size:11px;font-weight:600;font-family:inherit;transition:all .2s var(--ease-out);text-align:center}
+#devtools-panel .dev-btn:hover{background:var(--badge-bg);color:var(--accent-soft);border-color:var(--accent-dim)}
+#devtools-panel .dev-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent)}
+#devtools-panel .dev-divider{border:none;border-top:1px solid var(--border-subtle);margin:14px 0}
+.dev-fps{position:fixed;top:10px;right:10px;z-index:99999;font-family:monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--border-subtle);color:var(--accent-soft);display:none;pointer-events:none}
+.dev-fps.visible{display:block}
+
+/* ═══════════ RIPPLES ═══════════ */
+.ripple{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;animation:rippleOut .6s var(--ease-out) forwards}
+@keyframes rippleOut{0%{width:0;height:0;opacity:0.6;transform:translate(-50%,-50%) scale(0)}100%{width:300px;height:300px;opacity:0;transform:translate(-50%,-50%) scale(1)}}
+
+/* ═══════════ GRID OVERLAY ═══════════ */
+#grid-overlay{position:fixed;inset:0;z-index:99990;pointer-events:none;display:none;background-image:linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);background-size:32px 32px}
+#grid-overlay.visible{display:block}
+
+/* ═══════════ TEXT SCRAMBLE ═══════════ */
+.scramble{display:inline-block}
+.scramble.active{animation:scrambleShake .3s var(--ease-out)}
+@keyframes scrambleShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+
+/* ═══════════ PARTICLE BURST ═══════════ */
+.burst-particle{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;animation:burstFly .8s var(--ease-out) forwards}
+@keyframes burstFly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(0)}}
+
+/* ═══════════ HOVER GLOW TRAIL ═══════════ */
+.glow-trail{position:fixed;pointer-events:none;z-index:9998;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent),0 0 20px var(--accent-glow);animation:trailFade .8s ease-out forwards}
+@keyframes trailFade{0%{opacity:0.8;transform:scale(1)}100%{opacity:0;transform:scale(0.3)}}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- MOUSE GLOW -->
+<div id="mouse-glow"></div>
+
+<!-- PARALLAX ORBS -->
+<div class="parallax-orb parallax-orb-1"></div>
+<div class="parallax-orb parallax-orb-2"></div>
+<div class="parallax-orb parallax-orb-3"></div>
+
+<!-- PARTICLES -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ═══════════ NAV ═══════════ -->
+<header id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo"><mark>Based</mark>Node</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#cases" data-i18n="nav_cases">Cases</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#pricing" data-i18n="nav_pricing">Pricing</a></li>
+      <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
+      <li><a href="resources.html" data-i18n="nav_resources">Resources</a></li>
+      <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-toggles">
+      <button class="toggle-btn" id="langToggle" title="Toggle language">DA</button>
+      <button class="toggle-btn" id="themeToggle" title="Toggle theme">☀️</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <div class="contain hero-grid">
+    <div class="hero-text">
+      <div class="hero-badge" id="hero-badge">✦ AI &amp; Automation Studio<span class="cursor-blink"></span></div>
+      <h1 data-i18n="hero_title">Intelligent systems.<br><em>Bold results.</em></h1>
+      <p data-i18n="hero_desc">I help ordinary businesses get more customers, convert more leads, and automate their accounting and bookkeeping. No tech jargon — just solutions that work. I also build full-scale apps, websites, webapps, data analysis pipelines, and simulation work for those who need the advanced stuff too.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-primary" data-i18n="hero_cta1">Explore Services →</a>
+        <a href="contact.html" class="btn btn-ghost" data-i18n="hero_cta2">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num" data-count="50">0</div><div class="label" data-i18n="stat1">Projects Delivered</div></div>
+        <div class="hero-stat"><div class="num" data-count="98">0</div><div class="label" data-i18n="stat2">Client Satisfaction</div></div>
+        <div class="hero-stat"><div class="num" data-count="80">0</div><div class="label" data-i18n="stat3">API Cost Reduction</div></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="210" cy="210" r="180" stroke="var(--accent)" stroke-opacity="0.04" stroke-width="1" stroke-dasharray="10 10"/>
+        <circle class="hero-geo-ring" cx="210" cy="210" r="130" stroke="var(--accent)" stroke-opacity="0.12" stroke-width="1.5"/>
+        <circle cx="210" cy="210" r="90" stroke="var(--accent)" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="5 5"/>
+        <rect class="hero-geo-rect" x="165" y="165" width="90" height="90" rx="22" stroke="var(--accent)" stroke-opacity="0.35" stroke-width="2" fill="var(--accent)" fill-opacity="0.03"/>
+        <circle class="hero-geo-dot" cx="210" cy="210" r="5" fill="var(--accent)" fill-opacity="0.6"/>
+        <circle cx="210" cy="40" r="4" fill="var(--accent-soft)" fill-opacity="0.4"/><line x1="210" y1="44" x2="210" y2="161" stroke="var(--accent)" stroke-opacity="0.04" stroke-width="1"/>
+        <circle cx="370" cy="210" r="3" fill="var(--accent-soft)" fill-opacity="0.3"/><line x1="367" y1="210" x2="259" y2="210" stroke="var(--accent)" stroke-opacity="0.04" stroke-width="1"/>
+        <circle cx="210" cy="380" r="5" fill="var(--accent-soft)" fill-opacity="0.5"/><line x1="210" y1="375" x2="210" y2="259" stroke="var(--accent)" stroke-opacity="0.04" stroke-width="1"/>
+        <circle cx="100" cy="130" r="2" fill="var(--accent-soft)" fill-opacity="0.3"/><circle cx="320" cy="290" r="2" fill="var(--accent-soft)" fill-opacity="0.3"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<section id="services">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="services_chip">✦ What I Build</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="services_title">Services &amp; Capabilities</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="services_desc">End-to-end AI development with transparent pricing and revenue-aligned partnerships.</p>
+    <div class="bento animated-border stagger" id="bento-grid">
+      <div class="bento-item featured">
+        <div>
+          <div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M2 5L9 2L16 5V13L9 16L2 13V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9V16" stroke="currentColor" stroke-width="1.5"/><path d="M2 5L9 9L16 5" stroke="currentColor" stroke-width="1.5"/></svg></div>
+          <h3 data-i18n="s2_title">API Integration &amp; Cost Optimization</h3>
+          <p data-i18n="s2_desc">Rewrite and consolidate API call patterns. I have reduced costs by 80-100× through smart caching, batching, and model routing.</p>
+          <span class="bento-rev" data-i18n="s2_rs">Revenue Share: 20%</span>
+          <span class="bento-tag" data-i18n="s2_tag">Best ROI</span>
+        </div>
+        <div class="bento-feat-num">80-100×</div>
+      </div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 16C3 13.2 5.7 11 9 11C12.3 11 15 13.2 15 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3 data-i18n="s1_title">Custom GPT Agents</h3><p data-i18n="s1_desc">Tailored large-language-model agents for customer support, lead qualification, and internal knowledge retrieval with your data.</p><span class="bento-rev" data-i18n="s1_rs">Revenue Share: 15%</span><span class="bento-tag" data-i18n="s1_tag">Popular</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="2" y="3" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 7H16" stroke="currentColor" stroke-width="1.5"/><path d="M6 3V15" stroke="currentColor" stroke-width="1.5"/></svg></div><h3 data-i18n="s3_title">Full-Stack AI Pipelines</h3><p data-i18n="s3_desc">End-to-end data ingestion → processing → model inference → output. Deployed on serverless or containerized infra.</p><span class="bento-rev" data-i18n="s3_rs">Revenue Share: 18%</span><span class="bento-tag" data-i18n="s3_tag">End-to-end</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 5H13M5 8H11M5 11H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3 data-i18n="s4_title">AI-Native UX &amp; Dashboards</h3><p data-i18n="s4_desc">React/Next.js dashboards with integrated AI copilots. Real-time analytics, natural-language querying, and proactive alerts.</p><span class="bento-rev" data-i18n="s4_rs">Revenue Share: 15%</span><span class="bento-tag" data-i18n="s4_tag">UX Focus</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M4 3V15M4 3L8 7M4 3L0 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 5H17M10 9H15M10 13H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3 data-i18n="s5_title">Workflow Automation</h3><p data-i18n="s5_desc">Automate repetitive business processes with AI — document processing, invoice extraction, email routing, and more.</p><span class="bento-rev" data-i18n="s5_rs">Revenue Share: 12%</span><span class="bento-tag" data-i18n="s5_tag">Save Time</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="5" cy="5" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="13" cy="5" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 7L8 11M12 7L10 11M7 12L9 11L11 12" stroke="currentColor" stroke-width="1.5"/></svg></div><h3 data-i18n="s6_title">Data Engineering &amp; ETL</h3><p data-i18n="s6_desc">Clean, transform, and unify your data. I build reliable pipelines feeding AI systems with high-quality structured data.</p><span class="bento-rev" data-i18n="s6_rs">Revenue Share: 15%</span><span class="bento-tag" data-i18n="s6_tag">Foundation</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2V6M9 16V12M2 9H6M12 9H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.5"/></svg></div><h3 data-i18n="s7_title">Strategic Partnership</h3><p data-i18n="s7_desc">Equity-based partnership for early-stage startups. I build your AI product in exchange for equity + reduced cash retainer.</p><span class="bento-rev" data-i18n="s7_rs">Equity + 5% Revenue</span><span class="bento-tag" data-i18n="s7_tag">Partnership</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><rect x="1" y="2" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M1 6L7 10L9 8.5L12 10.5L17 7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div><h3 data-i18n="s8_title">Marketing Automation</h3><p data-i18n="s8_desc">Automated email campaigns, social media scheduling, and intelligent follow-ups. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.</p><span class="bento-rev" data-i18n="s8_rs">Revenue Share: 15%</span><span class="bento-tag" data-i18n="s8_tag">Grow</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 2V5M9 13V16M2 9H5M13 9H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg></div><h3 data-i18n="s9_title">Ad Optimization</h3><p data-i18n="s9_desc">Google Ads, Facebook &amp; Instagram optimization — reduce wasted spend, target only interested audiences. Smart bidding, negative keyword optimization, and A/B testing that eliminates wasted budget.</p><span class="bento-rev" data-i18n="s9_rs">Revenue Share: 20%</span><span class="bento-tag" data-i18n="s9_tag">Save Money</span></div>
+      <div class="bento-item"><div class="bento-icon"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="9" y1="4" x2="9" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="9" y1="12" x2="9" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="4" y1="9" x2="6" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="9" x2="14" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><h3 data-i18n="s10_title">SEO &amp; Lead Conversion</h3><p data-i18n="s10_desc">Optimize your site for search engines and convert more visitors into paying customers. Technical SEO, content strategy, conversion optimization, and lead scoring integration with your CRM.</p><span class="bento-rev" data-i18n="s10_rs">Revenue Share: 15%</span><span class="bento-tag" data-i18n="s10_tag">Convert</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CASE STUDIES ═══════════ -->
+<section id="cases">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="cases_chip">✦ Impact</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="cases_title">Selected Case Studies</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="cases_desc">Real results from real deployments. Each case delivered measurable improvements.</p>
+    <div class="case-list stagger">
+      <div class="case-item reveal reveal-left"><div class="case-info"><h3 data-i18n="c1_title">LLM API Cost Optimization</h3><p data-i18n="c1_desc">Restructured prompt pipelines and introduced semantic caching layer. Monthly API spend dropped from €12,000 to under €150 while maintaining response quality.</p><div class="case-tags"><span data-i18n="c1_tag1">Caching</span><span data-i18n="c1_tag2">Prompt Engineering</span><span data-i18n="c1_tag3">Cost Optimization</span></div></div><div><div class="case-metric">80-100×</div><div class="case-ml" data-i18n="c1_ml">API cost reduction</div></div></div>
+      <div class="case-item reveal reveal-right"><div class="case-info"><h3 data-i18n="c2_title">Customer Support AI Agent</h3><p data-i18n="c2_desc">Custom fine-tuned agent handling 2,500+ daily tickets. Handles 85% without human intervention, 98% accuracy with human review fallback.</p><div class="case-tags"><span data-i18n="c2_tag1">Fine-tuning</span><span data-i18n="c2_tag2">RAG</span><span data-i18n="c2_tag3">Support</span></div></div><div><div class="case-metric">98%</div><div class="case-ml" data-i18n="c2_ml">Auto-response accuracy</div></div></div>
+      <div class="case-item reveal reveal-left"><div class="case-info"><h3 data-i18n="c3_title">Invoice Processing Pipeline</h3><p data-i18n="c3_desc">AI-powered document extraction pipeline. Reduced manual processing from 40 hours weekly to under 4 minutes with 97% extraction accuracy.</p><div class="case-tags"><span data-i18n="c3_tag1">Document AI</span><span data-i18n="c3_tag2">ETL</span><span data-i18n="c3_tag3">Automation</span></div></div><div><div class="case-metric">40h→4m</div><div class="case-ml" data-i18n="c3_ml">Processing time reduction</div></div></div>
+      <div class="case-item reveal reveal-right"><div class="case-info"><h3 data-i18n="c4_title">AI Lead Qualification Engine</h3><p data-i18n="c4_desc">Scored and routed 15,000 leads/month with an LLM-based qualification system. Conversion rate tripled within the first quarter.</p><div class="case-tags"><span data-i18n="c4_tag1">Lead Scoring</span><span data-i18n="c4_tag2">CRM</span><span data-i18n="c4_tag3">Analytics</span></div></div><div><div class="case-metric">3.2×</div><div class="case-ml" data-i18n="c4_ml">Revenue increase</div></div></div>
+      <div class="case-item reveal reveal-left"><div class="case-info"><h3 data-i18n="c5_title">Real-Time AI Dashboard</h3><p data-i18n="c5_desc">Built a real-time operational dashboard with embedded AI copilot for a logistics firm. Query latency dropped 60%, user adoption reached 94%.</p><div class="case-tags"><span data-i18n="c5_tag1">Dashboard</span><span data-i18n="c5_tag2">Real-time</span><span data-i18n="c5_tag3">UX</span></div></div><div><div class="case-metric">60%</div><div class="case-ml" data-i18n="c5_ml">Response latency reduction</div></div></div>
+      <div class="case-item reveal reveal-right"><div class="case-info"><h3 data-i18n="c6_title">Marketing Automation Engine</h3><p data-i18n="c6_desc">Automated email campaigns increased repeat purchases by 45%. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.</p><div class="case-tags"><span data-i18n="c6_tag1">Email</span><span data-i18n="c6_tag2">Automation</span><span data-i18n="c6_tag3">CRM</span></div></div><div><div class="case-metric">+45%</div><div class="case-ml" data-i18n="c6_ml">Repeat purchase increase</div></div></div>
+      <div class="case-item reveal reveal-left"><div class="case-info"><h3 data-i18n="c7_title">Ad Cost Optimization</h3><p data-i18n="c7_desc">Reduced Google Ads spend by 60% while maintaining same lead volume. Smart targeting, negative keyword optimization, and A/B testing eliminated wasted budget.</p><div class="case-tags"><span data-i18n="c7_tag1">Google Ads</span><span data-i18n="c7_tag2">Optimization</span><span data-i18n="c7_tag3">ROI</span></div></div><div><div class="case-metric">-60%</div><div class="case-ml" data-i18n="c7_ml">Ad spend reduction</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section id="about">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="about_chip">✦ Who I Am</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="about_title">About BasedNode</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="about_desc">A solo AI engineering studio building intelligent systems for ambitious teams.</p>
+    <div class="about-grid stagger">
+      <div class="about-block large"><h3 data-i18n="about_h3">It's just me, Omar</h3><p data-i18n="about_p1">BasedNode is just me, Omar, a Danish-registered AI engineer (CVR 43750194). I combine deep technical expertise in machine learning, full-stack development, and systems architecture to deliver production-grade AI solutions. The whole point? If I can handle this solo — with AI as my copilot — I can do the same for you.</p><p data-i18n="about_p2">My approach is partnership-driven: I embed with teams, understand the domain, and build systems that compound in value over time. Every engagement is treated as a long-term relationship.</p><p data-i18n="about_p3">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p><div class="about-tags"><span>LLM Fine-tuning</span><span>Full-stack</span><span>Systems Architecture</span><span>Cloud Infrastructure</span><span>Security-Conscious</span><span data-i18n="badge_leadgen">Lead Generation</span><span data-i18n="badge_marketing">Marketing</span></div></div>
+      <div class="about-block"><h3 data-i18n="teaching_h3">Teaching &amp; community</h3><p data-i18n="teaching_desc">Teaching math &amp; programming since 2019 (MentorDanmark) and AI at GXU since 2025. Helping the next generation of builders level up.</p></div>
+      <div class="about-block"><h3>Free resources</h3><p data-i18n="promo_text">Check out the Resources page for free guides on AI, automation, accounting, and building your own AI OS — made for non-technical business owners.</p><a href="resources.html" class="btn btn-ghost btn-sm" style="margin-top:10px" data-i18n="promo_btn">Visit Resources →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PRICING ═══════════ -->
+<section id="pricing">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="pricing_chip">✦ Pricing</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="pricing_title">Simple, Transparent Pricing</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="pricing_subtitle">Every project is different. We figure out the right model together — fixed price, per-project, or revenue share.</p>
+    <div class="pricing-grid stagger">
+      <div class="pricing-card"><div class="plan-name" data-i18n="plan1_name">Website</div><div class="plan-price" data-i18n="plan1_price">1.500-2.900 kr <span data-i18n="plan1_per">/project</span></div><div class="plan-desc" data-i18n="plan1_desc">Simple, fast websites for small businesses that need a professional online presence without the bloat.</div><ul class="plan-features"><li><span class="check">✓</span> <span data-i18n="p1f1">Professional design</span></li><li><span class="check">✓</span> <span data-i18n="p1f2">Mobile-friendly</span></li><li><span class="check">✓</span> <span data-i18n="p1f3">Basic SEO setup</span></li><li><span class="check">✓</span> <span data-i18n="p1f4">Contact form</span></li><li><span style="opacity:0.3">✗</span> <span data-i18n="p1f5">Custom functionality</span></li></ul></div>
+      <div class="pricing-card featured"><div class="pricing-badge" data-i18n="popular">Popular</div><div class="plan-name" data-i18n="plan2_name">Simple App</div><div class="plan-price" data-i18n="plan2_price">5.000-15.000 kr <span data-i18n="plan2_per">/project</span></div><div class="plan-desc" data-i18n="plan2_desc">Custom tools, internal dashboards, lead gen systems, or automation workflows — built to do real work for your business.</div><ul class="plan-features"><li><span class="check">✓</span> <span data-i18n="p2f1">Custom development</span></li><li><span class="check">✓</span> <span data-i18n="p2f2">Your data, your logic</span></li><li><span class="check">✓</span> <span data-i18n="p2f3">3-4 week delivery</span></li><li><span class="check">✓</span> <span data-i18n="p2f4">1 month support included</span></li><li><span class="check">✓</span> <span data-i18n="p2f5">Revenue share option</span></li></ul></div>
+      <div class="pricing-card"><div class="plan-name" data-i18n="plan3_name">Lead Generation</div><div class="plan-price" data-i18n="plan3_price">Revenue <span data-i18n="plan3_per">Share</span></div><div class="plan-desc" data-i18n="plan3_desc">We grow together. Automated outreach, scoring, and CRM — you only pay when results come in.</div><ul class="plan-features"><li><span class="check">✓</span> <span data-i18n="p3f1">Automated lead capture</span></li><li><span class="check">✓</span> <span data-i18n="p3f2">Smart lead scoring</span></li><li><span class="check">✓</span> <span data-i18n="p3f3">CRM integration</span></li><li><span class="check">✓</span> <span data-i18n="p3f4">Performance dashboard</span></li><li><span class="check">✓</span> <span data-i18n="p3f5">Pay per result</span></li></ul></div>
+    </div>
+    <div class="pricing-note" data-i18n="pricing_note">Need something bigger? Full-scale apps, simulations, data pipelines — we figure out the scope and price together. No commitment, just a conversation.</div>
+  </div>
+</section>
+
+<!-- ═══════════ PROCESS ═══════════ -->
+<section id="process">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="process_chip">✦ How I Work</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="process_title">From Idea to Impact</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="process_subtitle">A proven 4-step process that ensures clarity, quality, and results.</p>
+    <div class="process-flow stagger">
+      <div class="process-step"><div class="step-num">01</div><h3 data-i18n="step1_title">Discovery</h3><p data-i18n="step1_desc">Understand your business, your goals, and your customers.</p></div>
+      <div class="process-step"><div class="step-num">02</div><h3 data-i18n="step2_title">Design</h3><p data-i18n="step2_desc">Design the solution that fits your needs precisely.</p></div>
+      <div class="process-step"><div class="step-num">03</div><h3 data-i18n="step3_title">Build</h3><p data-i18n="step3_desc">Build the system with continuous feedback and iteration.</p></div>
+      <div class="process-step"><div class="step-num">04</div><h3 data-i18n="step4_title">Deploy &amp; Scale</h3><p data-i18n="step4_desc">Deploy, measure results, and scale up.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAQ ═══════════ -->
+<section id="faq">
+  <div class="contain">
+    <div class="section-eyebrow reveal reveal-up" data-i18n="faq_chip">✦ FAQ</div>
+    <h2 class="section-title reveal reveal-up" data-i18n="faq_title">Frequently Asked Questions</h2>
+    <p class="section-desc reveal reveal-up" data-i18n="faq_subtitle">Common questions about how I work and what to expect.</p>
+    <div class="faq-list stagger">
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq1_q">What does BasedNode do?</span><span class="faq-toggle">+</span></div><div class="faq-answer" data-i18n="faq1_a">BasedNode is my solo operation. I help businesses automate workflows, build AI agents, create websites and apps, generate leads, and reduce costs through smart technology. Every project gets my direct attention — no account managers, no bureaucracy.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq2_q">How does revenue share work?</span><span class="faq-toggle">+</span></div><div class="faq-answer" data-i18n="faq2_a">For many projects, I offer a revenue share model where you pay a reduced upfront fee plus a percentage of the value generated. This aligns incentives — I only do well when you do. Typical revenue shares range from 10-20%.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq3_q">What's your background?</span><span class="faq-toggle">+</span></div><div class="faq-answer" data-i18n="faq3_a">I'm studying to be a Civilingeniør in Physics &amp; Nanotechnology from DTU, with a background in quant finance. I've been teaching math, programming &amp; AI since 2019 (MentorDanmark) and AI at GXU since 2025. I've built software since 2020 and achieved 80-100x cost reductions on AI infrastructure.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq4_q">How long does a project take?</span><span class="faq-toggle">+</span></div><div class="faq-answer" data-i18n="faq4_a">A simple website takes 1-2 weeks. A custom app or automation workflow takes 3-6 weeks. Larger full-scale solutions are discussed and scoped together. I work iteratively so you see results as we go.</div></div>
+      <div class="faq-item"><div class="faq-question" onclick="toggleFaq(this)"><span data-i18n="faq5_q">Can a non-technical person work with you?</span><span class="faq-toggle">+</span></div><div class="faq-answer" data-i18n="faq5_a">Absolutely. That is actually my specialty. I bridge the gap between what you need and the technology to deliver it. You focus on your business, I handle the technical side. No jargon, no surprises — just results.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section id="contact">
+  <div class="contain">
+    <div class="cta-block reveal reveal-scale" id="cta-block">
+      <div><h2 data-i18n="contact_cta_title">Ready to get started?</h2><p data-i18n="contact_cta_text">I work with businesses of all sizes. The first conversation is always free and always low-pressure. Just reach out and we will figure out if it makes sense.</p></div>
+      <a href="contact.html" class="btn btn-primary" data-i18n="contact_cta_btn">Contact Me →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-copy">&copy; 2025 BasedNode &middot; CVR 43750194</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px" data-i18n="footer_tagline">AI Engineering Studio · Copenhagen, Denmark</div></div>
+    <div class="footer-socials"><a href="mailto:contact@basednode.xyz">Email</a><a href="https://linkedin.com/in/omar-jennane-576a26265" target="_blank">LinkedIn</a><a href="https://t.me/IkkeOmar" target="_blank">Telegram</a></div>
+  </div>
+</footer>
+
+<!-- ═══════════ DEVTOOLS TOGGLE ═══════════ -->
+<button id="devtools-toggle" title="DevTools (Ctrl+Shift+D)">⚙</button>
+
+<!-- ═══════════ DEVTOOLS PANEL ═══════════ -->
+<div id="devtools-panel">
+  <h3>⚙ DevTools</h3>
+  <div class="dev-row">
+    <button class="dev-btn" data-action="fps">FPS</button>
+    <button class="dev-btn" data-action="grid">Grid</button>
+    <button class="dev-btn" data-action="outline">Outline</button>
+    <button class="dev-btn" data-action="reset">Reset</button>
+  </div>
+  <hr class="dev-divider">
+  <label>Accent Color</label>
+  <input type="color" id="dev-accent" value="#10b981">
+  <label>Animation Speed: <span id="dev-speed-val">1×</span></label>
+  <input type="range" id="dev-speed" min="0.1" max="3" step="0.1" value="1">
+  <label>Font Size: <span id="dev-font-val">16px</span></label>
+  <input type="range" id="dev-font" min="12" max="22" step="0.5" value="16">
+  <hr class="dev-divider">
+  <div class="dev-row">
+    <button class="dev-btn" data-action="ripple" style="width:100%">Toggle Ripple (R)</button>
+  </div>
+  <div style="font-size:10px;color:var(--text-dim);margin-top:8px;text-align:center">Ctrl+Shift+D — Esc to close</div>
+</div>
+
+<!-- ═══════════ GRID OVERLAY ═══════════ -->
+<div id="grid-overlay"></div>
+
+<!-- ═══════════ FPS COUNTER ═══════════ -->
+<div class="dev-fps" id="dev-fps">60 FPS</div>
+
+<script>
+/* ── I18N DATA ── */
+const TEXT={en:{nav_services:'Services',nav_cases:'Cases',nav_about:'About',nav_pricing:'Pricing',nav_faq:'FAQ',nav_resources:'Resources',nav_contact:'Contact',
+hero_badge:'✦ AI &amp; Automation Studio',hero_title:'Intelligent systems.<br><em>Bold results.</em>',
+hero_desc:'I help ordinary businesses get more customers, convert more leads, and automate their accounting and bookkeeping. No tech jargon — just solutions that work. I also build full-scale apps, websites, webapps, data analysis pipelines, and simulation work for those who need the advanced stuff too.',
+hero_cta1:'Explore Services →',hero_cta2:'Get in Touch',
+stat1:'Projects Delivered',stat2:'Client Satisfaction',stat3:'API Cost Reduction',
+services_chip:'✦ What I Build',services_title:'Services &amp; Capabilities',
+services_desc:'End-to-end AI development with transparent pricing and revenue-aligned partnerships.',
+s1_title:'Custom GPT Agents',s1_desc:'Tailored large-language-model agents for customer support, lead qualification, and internal knowledge retrieval with your data.',s1_rs:'Revenue Share: 15%',s1_tag:'Popular',
+s2_title:'API Integration &amp; Cost Optimization',s2_desc:'Rewrite and consolidate API call patterns. I have reduced costs by 80-100× through smart caching, batching, and model routing.',s2_rs:'Revenue Share: 20%',s2_tag:'Best ROI',
+s3_title:'Full-Stack AI Pipelines',s3_desc:'End-to-end data ingestion → processing → model inference → output. Deployed on serverless or containerized infra.',s3_rs:'Revenue Share: 18%',s3_tag:'End-to-end',
+s4_title:'AI-Native UX &amp; Dashboards',s4_desc:'React/Next.js dashboards with integrated AI copilots. Real-time analytics, natural-language querying, and proactive alerts.',s4_rs:'Revenue Share: 15%',s4_tag:'UX Focus',
+s5_title:'Workflow Automation',s5_desc:'Automate repetitive business processes with AI — document processing, invoice extraction, email routing, and more.',s5_rs:'Revenue Share: 12%',s5_tag:'Save Time',
+s6_title:'Data Engineering &amp; ETL',s6_desc:'Clean, transform, and unify your data. I build reliable pipelines feeding AI systems with high-quality structured data.',s6_rs:'Revenue Share: 15%',s6_tag:'Foundation',
+s7_title:'Strategic Partnership',s7_desc:'Equity-based partnership for early-stage startups. I build your AI product in exchange for equity + reduced cash retainer.',s7_rs:'Equity + 5% Revenue',s7_tag:'Partnership',
+s8_title:'Marketing Automation',s8_desc:'Automated email campaigns, social media scheduling, and intelligent follow-ups. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.',s8_rs:'Revenue Share: 15%',s8_tag:'Grow',
+s9_title:'Ad Optimization',s9_desc:'Google Ads, Facebook &amp; Instagram optimization — reduce wasted spend, target only interested audiences. Smart bidding, negative keyword optimization, and A/B testing that eliminates wasted budget.',s9_rs:'Revenue Share: 20%',s9_tag:'Save Money',
+s10_title:'SEO &amp; Lead Conversion',s10_desc:'Optimize your site for search engines and convert more visitors into paying customers. Technical SEO, content strategy, conversion optimization, and lead scoring integration with your CRM.',s10_rs:'Revenue Share: 15%',s10_tag:'Convert',
+cases_chip:'✦ Impact',cases_title:'Selected Case Studies',cases_desc:'Real results from real deployments. Each case delivered measurable improvements.',
+c1_ml:'API cost reduction',c1_title:'LLM API Cost Optimization',c1_desc:'Restructured prompt pipelines and introduced semantic caching layer. Monthly API spend dropped from €12,000 to under €150 while maintaining response quality.',c1_tag1:'Caching',c1_tag2:'Prompt Engineering',c1_tag3:'Cost Optimization',
+c2_ml:'Auto-response accuracy',c2_title:'Customer Support AI Agent',c2_desc:'Custom fine-tuned agent handling 2,500+ daily tickets. Handles 85% without human intervention, 98% accuracy with human review fallback.',c2_tag1:'Fine-tuning',c2_tag2:'RAG',c2_tag3:'Support',
+c3_ml:'Processing time reduction',c3_title:'Invoice Processing Pipeline',c3_desc:'AI-powered document extraction pipeline. Reduced manual processing from 40 hours weekly to under 4 minutes with 97% extraction accuracy.',c3_tag1:'Document AI',c3_tag2:'ETL',c3_tag3:'Automation',
+c4_ml:'Revenue increase',c4_title:'AI Lead Qualification Engine',c4_desc:'Scored and routed 15,000 leads/month with an LLM-based qualification system. Conversion rate tripled within the first quarter.',c4_tag1:'Lead Scoring',c4_tag2:'CRM',c4_tag3:'Analytics',
+c5_ml:'Response latency reduction',c5_title:'Real-Time AI Dashboard',c5_desc:'Built a real-time operational dashboard with embedded AI copilot for a logistics firm. Query latency dropped 60%, user adoption reached 94%.',c5_tag1:'Dashboard',c5_tag2:'Real-time',c5_tag3:'UX',
+c6_ml:'Repeat purchase increase',c6_title:'Marketing Automation Engine',c6_desc:'Automated email campaigns increased repeat purchases by 45%. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.',c6_tag1:'Email',c6_tag2:'Automation',c6_tag3:'CRM',
+c7_ml:'Ad spend reduction',c7_title:'Ad Cost Optimization',c7_desc:'Reduced Google Ads spend by 60% while maintaining same lead volume. Smart targeting, negative keyword optimization, and A/B testing eliminated wasted budget.',c7_tag1:'Google Ads',c7_tag2:'Optimization',c7_tag3:'ROI',
+about_chip:'✦ Who I Am',about_title:'About BasedNode',about_desc:'A solo AI engineering studio building intelligent systems for ambitious teams.',
+about_h3:"It's just me, Omar",
+about_p1:'BasedNode is just me, Omar, a Danish-registered AI engineer (CVR 43750194). I combine deep technical expertise in machine learning, full-stack development, and systems architecture to deliver production-grade AI solutions. The whole point? If I can handle this solo — with AI as my copilot — I can do the same for you.',
+about_p2:'My approach is partnership-driven: I embed with teams, understand the domain, and build systems that compound in value over time. Every engagement is treated as a long-term relationship.',
+about_p3:'I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.',
+teaching_h3:'Teaching &amp; community',teaching_desc:'Teaching math &amp; programming since 2019 (MentorDanmark) and AI at GXU since 2025. Helping the next generation of builders level up.',
+badge_leadgen:'Lead Generation',badge_marketing:'Marketing',
+promo_text:'Check out the Resources page for free guides on AI, automation, accounting, and building your own AI OS — made for non-technical business owners.',promo_btn:'Visit Resources →',
+pricing_chip:'✦ Pricing',pricing_title:'Simple, Transparent Pricing',pricing_subtitle:'Every project is different. We figure out the right model together — fixed price, per-project, or revenue share.',
+plan1_name:'Website',plan1_price:'1.500-2.900 kr',plan1_per:'/project',plan1_desc:'Simple, fast websites for small businesses that need a professional online presence without the bloat.',
+p1f1:'Professional design',p1f2:'Mobile-friendly',p1f3:'Basic SEO setup',p1f4:'Contact form',p1f5:'Custom functionality',popular:'Popular',
+plan2_name:'Simple App',plan2_price:'5.000-15.000 kr',plan2_per:'/project',plan2_desc:'Custom tools, internal dashboards, lead gen systems, or automation workflows — built to do real work for your business.',
+p2f1:'Custom development',p2f2:'Your data, your logic',p2f3:'3-4 week delivery',p2f4:'1 month support included',p2f5:'Revenue share option',
+plan3_name:'Lead Generation',plan3_price:'Revenue',plan3_per:'Share',plan3_desc:'We grow together. Automated outreach, scoring, and CRM — you only pay when results come in.',
+p3f1:'Automated lead capture',p3f2:'Smart lead scoring',p3f3:'CRM integration',p3f4:'Performance dashboard',p3f5:'Pay per result',
+pricing_note:'Need something bigger? Full-scale apps, simulations, data pipelines — we figure out the scope and price together. No commitment, just a conversation.',
+process_chip:'✦ How I Work',process_title:'From Idea to Impact',process_subtitle:'A proven 4-step process that ensures clarity, quality, and results.',
+step1_title:'Discovery',step1_desc:'Understand your business, your goals, and your customers.',
+step2_title:'Design',step2_desc:'Design the solution that fits your needs precisely.',
+step3_title:'Build',step3_desc:'Build the system with continuous feedback and iteration.',
+step4_title:'Deploy &amp; Scale',step4_desc:'Deploy, measure results, and scale up.',
+faq_chip:'✦ FAQ',faq_title:'Frequently Asked Questions',faq_subtitle:'Common questions about how I work and what to expect.',
+faq1_q:'What does BasedNode do?',faq1_a:"BasedNode is my solo operation. I help businesses automate workflows, build AI agents, create websites and apps, generate leads, and reduce costs through smart technology. Every project gets my direct attention — no account managers, no bureaucracy.",
+faq2_q:'How does revenue share work?',faq2_a:'For many projects, I offer a revenue share model where you pay a reduced upfront fee plus a percentage of the value generated. This aligns incentives — I only do well when you do. Typical revenue shares range from 10-20%.',
+faq3_q:"What's your background?",faq3_a:"I'm studying to be a Civilingeniør in Physics &amp; Nanotechnology from DTU, with a background in quant finance. I've been teaching math, programming &amp; AI since 2019 (MentorDanmark) and AI at GXU since 2025. I've built software since 2020 and achieved 80-100x cost reductions on AI infrastructure.",
+faq4_q:'How long does a project take?',faq4_a:'A simple website takes 1-2 weeks. A custom app or automation workflow takes 3-6 weeks. Larger full-scale solutions are discussed and scoped together. I work iteratively so you see results as we go.',
+faq5_q:'Can a non-technical person work with you?',faq5_a:'Absolutely. That is actually my specialty. I bridge the gap between what you need and the technology to deliver it. You focus on your business, I handle the technical side. No jargon, no surprises — just results.',
+contact_cta_title:'Ready to get started?',contact_cta_text:'I work with businesses of all sizes. The first conversation is always free and always low-pressure. Just reach out and we will figure out if it makes sense.',contact_cta_btn:'Contact Me →',
+footer_tagline:'AI Engineering Studio · Copenhagen, Denmark'},
+da:{nav_services:'Services',nav_cases:'Cases',nav_about:'Om',nav_pricing:'Priser',nav_faq:'FAQ',nav_resources:'Ressourcer',nav_contact:'Kontakt',
+hero_badge:'✦ Baseret Automatisering &amp; AI',hero_title:'Systemer der virker.<br><em>Forretning der vokser.</em>',
+hero_desc:'Jeg hjælper almindelige virksomheder med at få flere kunder, omsætte flere leads og automatisere deres regnskab og bogholderi. Ingen tech-jargon — bare løsninger der virker. Jeg bygger også fuldskala-apps, hjemmesider, webapps, dataanalyse-pipelines og simulationsarbejde for dem der har brug for den avancerede del også.',
+hero_cta1:'Udforsk Services →',hero_cta2:'Kontakt Mig',
+stat1:'Projekter Leveret',stat2:'Kundetilfredshed',stat3:'API-omkostningsreduktion',
+services_chip:'✦ Hvad Jeg Bygger',services_title:'Services &amp; Kapaciteter',
+services_desc:'End-to-end AI-udvikling med gennemsigtige priser og indtægtsdelte partnerskaber.',
+s1_title:'Skræddersyede GPT-agenter',s1_desc:'Skræddersyede LLM-agenter til kundesupport, lead-kvalificering og intern videnindsamling med dine data.',s1_rs:'Indtægtsdeling: 15%',s1_tag:'Populær',
+s2_title:'API-integration &amp; Omkostningsoptimering',s2_desc:'Omskriv og konsolider API-kald. Jeg har reduceret omkostninger med 80-100× gennem smart caching, batching og model-routing.',s2_rs:'Indtægtsdeling: 20%',s2_tag:'Bedste ROI',
+s3_title:'Full-Stack AI Pipelines',s3_desc:'End-to-end dataopsamling → behandling → modelinferens → output. Implementeret på serverless eller containeriseret infrastruktur.',s3_rs:'Indtægtsdeling: 18%',s3_tag:'End-to-end',
+s4_title:'AI-Native UX &amp; Dashboards',s4_desc:'React/Next.js dashboards med integrerede AI-copiloter. Realtidsanalyser, naturligt sprog og proaktive advarsler.',s4_rs:'Indtægtsdeling: 15%',s4_tag:'UX-fokus',
+s5_title:'Workflow-automatisering',s5_desc:'Automatiser gentagne forretningsprocesser med AI — dokumentbehandling, fakturaekstraktion, e-mail-routing og meget mere.',s5_rs:'Indtægtsdeling: 12%',s5_tag:'Spar tid',
+s6_title:'Data Engineering &amp; ETL',s6_desc:'Rens, transformér og saml dine data. Jeg bygger pålidelige pipelines, der forsyner AI-systemer med højkvalitetsdata.',s6_rs:'Indtægtsdeling: 15%',s6_tag:'Fundament',
+s7_title:'Strategisk Partnerskab',s7_desc:'Ejerandelsbaseret partnerskab for tidlige startups. Jeg bygger dit AI-produkt mod ejerandel + reduceret honorar.',s7_rs:'Ejerandel + 5% omsætning',s7_tag:'Partnerskab',
+s8_title:'Marketing Automation',s8_desc:'Automatiserede e-mailkampagner, social media-planlægning og intelligente opfølgninger. Drip-sekvenser, abandonded cart recovery og personlige anbefalinger — alt sammen på autopilot.',s8_rs:'Indtægtsdeling: 15%',s8_tag:'Vækst',
+s9_title:'Annonceoptimering',s9_desc:'Google Ads, Facebook &amp; Instagram optimering — reducer spildt annonceforbrug, target kun interesserede målgrupper. Smart budgivning, negativ søgeordsoptimering og A/B-test der eliminerer spildt budget.',s9_rs:'Indtægtsdeling: 20%',s9_tag:'Spar penge',
+s10_title:'SEO &amp; Lead-konvertering',s10_desc:'Optimér din hjemmeside til søgemaskiner og konverter flere besøgende til betalende kunder. Teknisk SEO, content-strategi, konverteringsoptimering og lead-scoring integration med dit CRM.',s10_rs:'Indtægtsdeling: 15%',s10_tag:'Konverter',
+cases_chip:'✦ Resultater',cases_title:'Udvalgte Cases',cases_desc:'Virkelige resultater fra virkelige implementeringer. Hver case leverede målbare forbedringer.',
+c1_ml:'API-omkostningsreduktion',c1_title:'LLM API-omkostningsoptimering',c1_desc:'Omstrukturerede prompt-pipelines og introducerede semantisk caching. Månedlige API-udgifter faldt fra 12.000 kr til under 150 kr.',c1_tag1:'Caching',c1_tag2:'Prompt Engineering',c1_tag3:'Omkostningsoptimering',
+c2_ml:'Autosvar-nøjagtighed',c2_title:'Kundesupport AI-Agent',c2_desc:'Specialtilpasset finjusteret agent, der håndterer 2.500+ daglige henvendelser. Klarer 85% uden menneskelig indblanding, 98% nøjagtighed.',c2_tag1:'Fine-tuning',c2_tag2:'RAG',c2_tag3:'Support',
+c3_ml:'Behandlingstidsreduktion',c3_title:'Fakturabehandlingspipeline',c3_desc:'AI-drevet dokumentekstraktion. Reducerede manuel behandling fra 40 timer om ugen til under 4 minutter med 97% nøjagtighed.',c3_tag1:'Document AI',c3_tag2:'ETL',c3_tag3:'Automatisering',
+c4_ml:'Omsætningsstigning',c4_title:'AI Lead-kvalificeringsmotor',c4_desc:'Scorede og routede 15.000 leads/måned med et LLM-baseret kvalificeringssystem. Konverteringsraten tredobledes.',c4_tag1:'Lead-scoring',c4_tag2:'CRM',c4_tag3:'Analytics',
+c5_ml:'Svartidsreduktion',c5_title:'Realtids AI-Dashboard',c5_desc:'Byggede et realtids dashboard med integreret AI-copilot. Svartiden faldt 60%, brugeradoption nåede 94%.',c5_tag1:'Dashboard',c5_tag2:'Real-time',c5_tag3:'UX',
+c6_ml:'Gentagne køb stigning',c6_title:'Marketing Automatisering',c6_desc:'Automatiserede e-mailkampagner øgede gentagne køb med 45%. Drip-sekvenser, abandonded cart recovery og personlige anbefalinger — alt på autopilot.',c6_tag1:'E-mail',c6_tag2:'Automatisering',c6_tag3:'CRM',
+c7_ml:'Annonceforbrugsreduktion',c7_title:'Annonceomkostningsoptimering',c7_desc:'Reducerede Google Ads-forbrug med 60% mens samme lead-volumen blev opretholdt. Smart targeting, negativ søgeordsoptimering og A/B-test eliminerede spildt budget.',c7_tag1:'Google Ads',c7_tag2:'Optimering',c7_tag3:'ROI',
+about_chip:'✦ Hvem Jeg Er',about_title:'Om BasedNode',about_desc:'Et solo AI-ingeniørstudie, der bygger intelligente systemer til ambitiøse teams.',
+about_h3:'Det er mig, Omar',
+about_p1:'BasedNode er bare mig, Omar — et danskregistreret AI-firma (CVR 43750194). Jeg kombinerer dyb teknisk ekspertise inden for maskinlæring, full-stack-udvikling og systemarkitektur. Pointen? Hvis jeg kan klare det her solo — med AI som min copilot — kan jeg gøre det samme for dig.',
+about_p2:'Min tilgang er partnerskabsdrevet: jeg arbejder tæt sammen med teams, forstår forretningen og bygger systemer, der vokser i værdi over tid.',
+about_p3:'Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.',
+teaching_h3:'Undervisning &amp; community',teaching_desc:'Undervist i matematik &amp; programmering siden 2019 (MentorDanmark) og AI på GXU siden 2025. Hjælper næste generation af byggere med at levelle op.',
+badge_leadgen:'Lead-generering',badge_marketing:'Markedsføring',
+promo_text:'Tjek Resources-siden for gratis guides om AI, automatisering, regnskab og hvordan du bygger din egen AI OS — lavet til ikke-tekniske virksomhedsejere.',promo_btn:'Se Resources →',
+pricing_chip:'✦ Priser',pricing_title:'Enkle, Gennemsigtige Priser',pricing_subtitle:'Hvert projekt er forskelligt. Vi finder den rigtige model sammen — fast pris, per projekt eller revenue share.',
+plan1_name:'Hjemmeside',plan1_price:'1.500-2.900 kr',plan1_per:'/projekt',plan1_desc:'Enkle, hurtige hjemmesider til små virksomheder der har brug for en professionel online tilstedeværelse uden unødigt bøvl.',
+p1f1:'Professionelt design',p1f2:'Mobilvenlig',p1f3:'Basal SEO-opsætning',p1f4:'Kontaktformular',p1f5:'Brugerdefineret funktionalitet',popular:'Populær',
+plan2_name:'Simpel App',plan2_price:'5.000-15.000 kr',plan2_per:'/projekt',plan2_desc:'Brugerdefinerede værktøjer, interne dashboards, lead-generering eller automatisering — bygget til at gøre arbejde for din virksomhed.',
+p2f1:'Brugerdefineret udvikling',p2f2:'Dine data, din logik',p2f3:'3-4 ugers levering',p2f4:'1 måneds support inkluderet',p2f5:'Revenue share mulighed',
+plan3_name:'Lead-generering',plan3_price:'Revenue',plan3_per:'Share',plan3_desc:'Vi vokser sammen. Automatiseret opsøgning, scoring og CRM — du betaler kun når resultaterne kommer.',
+p3f1:'Automatiseret lead-opsamling',p3f2:'Smart lead-scoring',p3f3:'CRM-integration',p3f4:'Resultat-dashboard',p3f5:'Betal per resultat',
+pricing_note:'Brug for noget større? Fuldskala-apps, simuleringer, datapipelines — vi finder scope og pris sammen. Uden forpligtelser, bare en snak.',
+process_chip:'✦ Sådan Arbejder Jeg',process_title:'Fra Idé til Impact',process_subtitle:'En gennemprøvet 4-trins proces der sikrer klarhed, kvalitet og resultater.',
+step1_title:'Discovery',step1_desc:'Forstå din forretning, dine mål og dine kunder.',
+step2_title:'Design',step2_desc:'Tegn løsningen der passer præcist til dit behov.',
+step3_title:'Build',step3_desc:'Byg systemet med løbende feedback og iteration.',
+step4_title:'Deploy &amp; Scale',step4_desc:'Sæt i drift, mål resultater og skaler op.',
+faq_chip:'✦ FAQ',faq_title:'Ofte Stillede Spørgsmål',faq_subtitle:'Almindelige spørgsmål om hvordan jeg arbejder og hvad du kan forvente.',
+faq1_q:'Hvad laver BasedNode?',faq1_a:'BasedNode er min solo-virksomhed. Jeg hjælper virksomheder med at automatisere workflows, bygge AI-agenter, lave hjemmesider og apps, generere leads og reducere omkostninger gennem smart teknologi. Hvert projekt får min direkte opmærksomhed — ingen account managers, intet bureaukrati.',
+faq2_q:'Hvordan fungerer revenue share?',faq2_a:'For mange projekter tilbyder jeg en revenue share-model hvor du betaler et reduceret startgebyr plus en procentdel af værdien der skabes. Det betyder at jeg kun tjener penge når du gør. Typiske revenue shares ligger på 10-20%.',
+faq3_q:'Hvad er din baggrund?',faq3_a:'Jeg læser til Civilingeniør i Fysik &amp; Nanoteknologi fra DTU, med en baggrund i kvantitativ finans. Jeg har undervist i matematik, programmering &amp; AI siden 2019 (MentorDanmark) og AI på GXU siden 2025. Jeg har bygget software siden 2020 og opnået 80-100x reduktion på AI-infrastruktur.',
+faq4_q:'Hvor lang tid tager et projekt?',faq4_a:'En simpel hjemmeside tager 1-2 uger. En custom app eller automatisering tager 3-6 uger. Større løsninger diskuterer og aftaler vi sammen. Jeg arbejder iterativt så du ser resultater undervejs.',
+faq5_q:'Kan en ikke-teknisk person arbejde med dig?',faq5_a:'Absolut. Det er faktisk min speciale. Jeg bygger bro mellem hvad du har brug for og teknologien der leverer det. Du fokuserer på din forretning, jeg håndterer teknikken. Ingen jargon, ingen overraskelser — bare resultater.',
+contact_cta_title:'Klar til at komme i gang?',contact_cta_text:'Jeg arbejder med virksomheder i alle størrelser. Den første samtale er altid gratis og altid uforpligtende. Ræk bare ud så finder vi ud af om det giver mening.',contact_cta_btn:'Kontakt Mig →',
+footer_tagline:'AI Ingeniørstudie · København, Danmark'}};
+
+let currentLang=localStorage.getItem('bn-lang')||'en';
+function applyLang(lang){currentLang=lang;localStorage.setItem('bn-lang',lang);const t=TEXT[lang];document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k]!==undefined)el.innerHTML=t[k]});const btn=document.getElementById('langToggle');if(btn)btn.textContent=lang==='en'?'DA':'EN';document.documentElement.setAttribute('lang',lang==='da'?'da-DK':'en')}
+let currentTheme=localStorage.getItem('bn-theme')||'dark';
+function applyTheme(theme){currentTheme=theme;localStorage.setItem('bn-theme',theme);document.documentElement.setAttribute('data-theme',theme);const btn=document.getElementById('themeToggle');if(btn)btn.textContent=theme==='dark'?'☀️':'🌙'}
+
+/* ── PARTICLES ── */
+!function(){const c=document.getElementById('particles-canvas');if(!c)return;const ctx=c.getContext('2d');let p=[],w,h;function R(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}window.addEventListener('resize',R);R();const n=Math.min(60,Math.floor(w*h/25000));for(let i=0;i<n;i++)p.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*1.8+1,a:Math.random()*0.4+0.1});function D(){ctx.clearRect(0,0,w,h);const s=getComputedStyle(document.documentElement),c1=s.getPropertyValue('--particle-color').trim()||'oklch(0.62 0.19 160/0.18)',c2=s.getPropertyValue('--particle-color2').trim()||'oklch(0.55 0.22 160/0.10)';p.forEach((t,i)=>{t.x+=t.vx;t.y+=t.vy;if(t.x<0)t.x=w;if(t.x>w)t.x=0;if(t.y<0)t.y=h;if(t.y>h)t.y=0;ctx.beginPath();ctx.arc(t.x,t.y,t.r,0,Math.PI*2);ctx.fillStyle=i%2===0?c1:c2;ctx.fill();for(let j=i+1;j<p.length;j++){const dx=t.x-p[j].x,dy=t.y-p[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<140){ctx.beginPath();ctx.moveTo(t.x,t.y);ctx.lineTo(p[j].x,p[j].y);ctx.strokeStyle='oklch(0.62 0.19 160/'+(0.06*(1-dist/140))+')';ctx.lineWidth=0.5;ctx.stroke()}}});requestAnimationFrame(D)}D()}();
+
+/* ── MOUSE GLOW ── */
+(function(){const g=document.getElementById('mouse-glow');if(!g||window.innerWidth<768)return;let t;document.addEventListener('mousemove',e=>{g.classList.add('visible');const x=e.clientX,y=e.clientY;g.style.left=x+'px';g.style.top=y+'px';clearTimeout(t);t=setTimeout(()=>g.classList.remove('visible'),2000)},{passive:true})})();
+
+/* ── PARALLAX ORBS ── */
+(function(){const orbs=document.querySelectorAll('.parallax-orb');if(!orbs.length||window.innerWidth<768)return;window.addEventListener('scroll',()=>{const sy=window.scrollY;orbs.forEach((o,i)=>{const speed=(i+1)*0.03;o.style.transform='translateY('+sy*speed+'px)'})},{passive:true})})();
+
+/* ── SCROLL PROGRESS ── */
+(function(){const bar=document.getElementById('scroll-progress');window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(window.scrollY/h*100)+'%'},{passive:true})})();
+
+/* ── COUNTER ANIMATION ── */
+(function(){const nums=document.querySelectorAll('.hero-stat .num[data-count]');if(!nums.length)return;const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const el=e.target,target=parseInt(el.getAttribute('data-count'));let cur=0;const dur=1500,step=Math.ceil(target/(dur/16));const iv=setInterval(()=>{cur+=step;if(cur>=target){el.textContent=target+(target===80?'-100×':'')+(target===98?'%':'')+(target===50?'+':'');clearInterval(iv)}else{el.textContent=cur+(target===98?'%':'')+(target===50?'+':'')+(target===80?'':target===98?'':'')}},16);obs.unobserve(el)}})},{threshold:0.5});nums.forEach(n=>obs.observe(n))})();
+
+/* ── TYPEWRITER ── */
+(function(){const badge=document.getElementById('hero-badge');if(!badge)return;const orig=badge.innerHTML;const text='✦ AI & Automation Studio';badge.innerHTML='✦ ';let i=1;const iv=setInterval(()=>{if(i<text.length){badge.innerHTML=text.substring(0,i+1)+'<span class="cursor-blink"></span>';i++}else{badge.innerHTML=orig;clearInterval(iv)}},50);setTimeout(()=>{badge.innerHTML=orig;clearInterval(iv)},text.length*50+500)})();
+
+/* ── ANIMATED BORDER ON SCROLL ── */
+(function(){const el=document.getElementById('bento-grid');if(!el)return;const obs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){el.classList.add('visible');obs.unobserve(el)}},{threshold:0.1});obs.observe(el)})();
+
+/* ── CTA MOUSE TRACKING ── */
+(function(){const cta=document.getElementById('cta-block');if(!cta||window.innerWidth<768)return;cta.addEventListener('mousemove',e=>{const r=cta.getBoundingClientRect(),x=((e.clientX-r.left)/r.width*100).toFixed(1),y=((e.clientY-r.top)/r.height*100).toFixed(1);cta.style.setProperty('--mx',x+'%');cta.style.setProperty('--my',y+'%')})})();
+
+/* ── NAV SCROLL BEHAVIOR ── */
+(function(){let lastScroll=0;window.addEventListener('scroll',()=>{const nav=document.getElementById('nav'),sy=window.scrollY;nav.classList.toggle('scrolled',sy>20);if(sy>lastScroll&&sy>300)nav.classList.add('hidden');else if(sy<lastScroll)nav.classList.remove('hidden');lastScroll=sy},{passive:true})})();
+
+/* ── BUTTON MAGNETIC HOVER ── */
+(function(){document.querySelectorAll('.btn').forEach(btn=>{btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect(),x=((e.clientX-r.left)/r.width*100).toFixed(1),y=((e.clientY-r.top)/r.height*100).toFixed(1);btn.style.setProperty('--mx',x+'%');btn.style.setProperty('--my',y+'%')})})})();
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  applyTheme(currentTheme);applyLang(currentLang);
+  document.getElementById('themeToggle').addEventListener('click',()=>applyTheme(currentTheme==='dark'?'light':'dark'));
+  document.getElementById('langToggle').addEventListener('click',()=>applyLang(currentLang==='en'?'da':'en'));
+  const ham=document.getElementById('hamburger'),nl=document.getElementById('navLinks');
+  if(ham&&nl){ham.addEventListener('click',()=>{ham.classList.toggle('active');nl.classList.toggle('open')});nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('active');nl.classList.remove('open')}));document.addEventListener('click',e=>{if(nl.classList.contains('open')&&!document.querySelector('header').contains(e.target)){ham.classList.remove('active');nl.classList.remove('open')}})}
+  /* SCROLL REVEAL */
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}})},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  /* SMOOTH SCROLL */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'})}})});
+  /* ACTIVE NAV */
+  const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{let cur='';secs.forEach(s=>{if(s.getBoundingClientRect().top<180)cur=s.getAttribute('id')});navAs.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur))},{passive:true})
+});
+
+function toggleFaq(el){const item=el.closest('.faq-item');if(!item)return;const was=item.classList.contains('active');document.querySelectorAll('.faq-item.active').forEach(f=>f.classList.remove('active'));if(!was)item.classList.add('active')}
+
+/* ═══════════ DEVTOOLS ENGINE ═══════════ */
+(function(){
+  const panel=document.getElementById('devtools-panel'),toggle=document.getElementById('devtools-toggle'),
+    grid=document.getElementById('grid-overlay'),fpsEl=document.getElementById('dev-fps'),
+    accentInp=document.getElementById('dev-accent'),speedInp=document.getElementById('dev-speed'),
+    fontInp=document.getElementById('dev-font'),speedVal=document.getElementById('dev-speed-val'),
+    fontVal=document.getElementById('dev-font-val');
+  let rippleOn=true,outlineOn=false,gridOn=false,fpsOn=false,fpsFrames=0,fpsLast=0;
+
+  /* PANEL TOGGLE */
+  toggle.addEventListener('click',()=>panel.classList.toggle('open'));
+  document.addEventListener('keydown',e=>{
+    if(e.ctrlKey&&e.shiftKey&&e.key==='D'){e.preventDefault();panel.classList.toggle('open')}
+    if(e.key==='Escape')panel.classList.remove('open');
+    if(e.key==='r'||e.key==='R'){if(!e.target.closest('input,textarea,select')){rippleOn=!rippleOn;toggle.querySelector('[data-action=ripple]')?.classList.toggle('active',rippleOn)}}
+  });
+
+  /* BUTTON ACTIONS */
+  panel.addEventListener('click',e=>{
+    const btn=e.target.closest('.dev-btn');if(!btn)return;
+    const act=btn.dataset.action;
+    if(act==='fps'){fpsOn=!fpsOn;fpsEl.classList.toggle('visible',fpsOn);btn.classList.toggle('active',fpsOn);if(fpsOn){fpsFrames=0;fpsLast=performance.now();requestAnimationFrame(fpsLoop)}}
+    if(act==='grid'){gridOn=!gridOn;grid.classList.toggle('visible',gridOn);btn.classList.toggle('active',gridOn)}
+    if(act==='outline'){outlineOn=!outlineOn;document.body.style.outline=outlineOn?'1px solid rgba(16,185,129,0.3)':'';btn.classList.toggle('active',outlineOn)}
+    if(act==='ripple'){rippleOn=!rippleOn;btn.classList.toggle('active',!rippleOn);rippleOn=!rippleOn}
+    if(act==='reset'){speedInp.value=1;fontInp.value=16;accentInp.value='#10b981';speedVal.textContent='1×';fontVal.textContent='16px';document.documentElement.style.setProperty('--anim-speed','1');document.documentElement.style.fontSize='16px';updateAccent('#10b981')}
+  });
+
+  /* ACCENT COLOR */
+  function updateAccent(hex){
+    const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2,s=max===min?0:(max-min)/(1-Math.abs(2*l-1)),h=max===r?((g-b)/(max-min))*60:max===g?((b-r)/(max-min))*60+120:((r-g)/(max-min))*60+240;
+    if(h<0)h+=360;
+    const cl=(l*100).toFixed(0),cs=(s*100).toFixed(0),ch=h.toFixed(0);
+    document.documentElement.style.setProperty('--accent',`oklch(${(cl/100*0.62).toFixed(2)} ${(cs/100*0.19).toFixed(2)} ${ch})`);
+    document.documentElement.style.setProperty('--accent-strong',`oklch(${(cl/100*0.55).toFixed(2)} ${(cs/100*0.22).toFixed(2)} ${ch})`);
+    document.documentElement.style.setProperty('--accent-soft',`oklch(${(cl/100*0.72).toFixed(2)} ${(cs/100*0.14).toFixed(2)} ${ch})`);
+    document.documentElement.style.setProperty('--accent-dim',`oklch(${(cl/100*0.28).toFixed(2)} ${(cs/100*0.08).toFixed(2)} ${ch})`);
+    document.documentElement.style.setProperty('--accent-glow',`oklch(${(cl/100*0.62).toFixed(2)} ${(cs/100*0.19).toFixed(2)} ${ch}/0.15)`);
+  }
+  accentInp.addEventListener('input',()=>updateAccent(accentInp.value));
+
+  /* ANIMATION SPEED */
+  speedInp.addEventListener('input',()=>{const v=speedInp.value;speedVal.textContent=v+'×';document.documentElement.style.setProperty('--anim-speed',v)});
+
+  /* FONT SIZE */
+  fontInp.addEventListener('input',()=>{const v=fontInp.value;fontVal.textContent=v+'px';document.documentElement.style.fontSize=v+'px'});
+
+  /* FPS LOOP */
+  function fpsLoop(t){
+    fpsFrames++;
+    if(t-fpsLast>=1000){fpsEl.textContent=Math.round(fpsFrames/((t-fpsLast)/1000))+' FPS';fpsFrames=0;fpsLast=t}
+    if(fpsOn)requestAnimationFrame(fpsLoop)
+  }
+
+  /* Toggle DevTools */
+  window.toggleDevTools=()=>panel.classList.toggle('open');
+})();
+
+/* ═══════════ RIPPLE ON CLICK ═══════════ */
+(function(){
+  document.addEventListener('click',e=>{
+    const rippleOn=!document.getElementById('devtools-panel').classList.contains('open')||true;
+    try{const btn=document.querySelector('.dev-btn.active');if(btn&&btn.dataset.action==='ripple'&&document.querySelector('.dev-btn[data-action=ripple]')?.classList.contains('active')===false)return}catch(_){}
+    const r=document.createElement('div');r.className='ripple';
+    r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
+    r.style.background='radial-gradient(circle,var(--accent-glow),transparent)';
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),600)
+  })
+})();
+
+/* ═══════════ GLOW TRAIL ═══════════ */
+(function(){
+  let lastT=0;
+  document.addEventListener('mousemove',e=>{
+    if(window.innerWidth<768)return;
+    const now=Date.now();if(now-lastT<80)return;lastT=now;
+    const t=document.createElement('div');t.className='glow-trail';
+    t.style.left=e.clientX+'px';t.style.top=e.clientY+'px';
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),800)
+  },{passive:true})
+})();
+
+/* ═══════════ PARTICLE BURST ON CTA ═══════════ */
+(function(){
+  document.querySelectorAll('.btn-primary').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+      for(let i=0;i<12;i++){const p=document.createElement('div');p.className='burst-particle';
+        const a=(Math.PI*2*i)/12,dist=40+Math.random()*40;
+        p.style.setProperty('--bx',Math.cos(a)*dist+'px');p.style.setProperty('--by',Math.sin(a)*dist+'px');
+        p.style.left=cx+'px';p.style.top=cy+'px';
+        p.style.width=(4+Math.random()*4)+'px';p.style.height=p.style.width;
+        p.style.background=Math.random()>0.5?'var(--accent)':'var(--accent-soft)';
+        document.body.appendChild(p);setTimeout(()=>p.remove(),800)
+      }
+    })
+  })
+})();
+
+/* ═══════════ TEXT SCRAMBLE ON HOVER ═══════════ */
+(function(){
+  document.querySelectorAll('.section-title,.hero h1,.case-metric,.step-num').forEach(el=>{
+    const orig=el.textContent;
+    el.addEventListener('mouseenter',()=>{
+      el.classList.add('scramble','active');
+      let i=0;const chars='!@#$%&*+-/=?';
+      const iv=setInterval(()=>{
+        let t='';for(let j=0;j<orig.length;j++)t+=j<=i?orig[j]:chars[Math.floor(Math.random()*chars.length)];
+        el.textContent=t;i++;if(i>orig.length){el.textContent=orig;el.classList.remove('active');clearInterval(iv)}
+      },30)
+    })
+  })
+})();
+
+/* ═══════════ KEYBOARD SHORTCUT HINT ═══════════ */
+console.log('%c🐉 BasedNode DevTools %cCtrl+Shift+D %c| %cR %c= Ripple',
+  'color:#10b981;font-weight:bold','color:#fff','','color:#10b981','')
+</script>
+</body>
+</html>
