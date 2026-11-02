@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode — Light Scandinavian</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background 300ms ease,color 300ms ease;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;transition:color 200ms}
+a:hover{color:var(--accent-hover)}
+img{max-width:100%;display:block}
+ul{list-style:none}
+/* ===== CSS VARIABLES — LIGHT (default) ===== */
+:root{--bg:#f5f5f0;--bg-alt:#ecece6;--bg-card:#ffffff;--text:#2d2d2a;--text-muted:#6b6b64;--text-light:#8a8a82;--accent:#8b7cf6;--accent-hover:#7265e0;--accent-light:rgba(139,124,246,0.12);--shadow:0 2px 12px rgba(0,0,0,0.06);--shadow-lg:0 8px 32px rgba(0,0,0,0.08);--border:#e2e2da;--radius:12px;--radius-sm:8px;--radius-lg:16px;--nav-bg:rgba(245,245,240,0.92);--badge-bg:rgba(139,124,246,0.1);--badge-border:rgba(139,124,246,0.2);--input-bg:#ffffff;--input-border:#d4d4cc;--footer-bg:#e8e8e2;--max-w:1200px}
+/* ===== DARK THEME ===== */
+[data-theme="dark"]{--bg:#1a1a1e;--bg-alt:#22222a;--bg-card:#2a2a32;--text:#e8e8ec;--text-muted:#9a9aa2;--text-light:#7a7a82;--accent:#9b8eff;--accent-hover:#b0a4ff;--accent-light:rgba(155,142,255,0.15);--shadow:0 2px 12px rgba(0,0,0,0.3);--shadow-lg:0 8px 32px rgba(0,0,0,0.4);--border:#3a3a44;--nav-bg:rgba(26,26,30,0.92);--badge-bg:rgba(155,142,255,0.12);--badge-border:rgba(155,142,255,0.25);--input-bg:#2a2a32;--input-border:#4a4a54;--footer-bg:#141418}
+/* ===== UTILITY ===== */
+.container{max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section-title{font-size:2rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.section-subtitle{font-size:1.05rem;color:var(--text-muted);margin-bottom:40px;max-width:600px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 600ms ease,transform 600ms ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+/* ===== NAVIGATION ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background 300ms ease,border-color 300ms ease;height:64px}
+.nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:100%}
+.nav-logo{font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{color:var(--text-muted);font-size:0.9rem;font-weight:500;transition:color 200ms;position:relative}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--accent);border-radius:2px}
+.nav-toggle-group{display:flex;align-items:center;gap:8px}
+.theme-toggle,.lang-toggle{background:var(--accent-light);border:1px solid var(--badge-border);color:var(--text);width:36px;height:36px;border-radius:var(--radius-sm);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 200ms}
+.theme-toggle:hover,.lang-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lang-toggle{width:auto;padding:0 12px;font-size:0.8rem;font-weight:700;letter-spacing:0.5px}
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px;padding:4px;background:none;border:none;width:36px;height:36px;align-items:center;justify-content:center}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 300ms ease}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+/* Mobile menu */
+.mobile-menu{position:fixed;top:64px;left:0;right:0;height:calc(100dvh - 64px);background:var(--bg);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:32px;transition:opacity 300ms ease}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1.4rem;font-weight:600;color:var(--text-muted);transition:color 200ms}
+.mobile-menu a:hover{color:var(--accent)}
+.mobile-menu .lang-toggle-mobile{background:var(--accent-light);border:1px solid var(--badge-border);color:var(--text);padding:8px 24px;border-radius:var(--radius-sm);cursor:pointer;font-size:1rem;font-weight:700}
+/* ===== HERO ===== */
+.hero{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:80px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--accent-light) 0%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-badge{display:inline-block;background:var(--accent-light);color:var(--accent);padding:6px 16px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:20px;border:1px solid var(--badge-border)}
+.hero h1{font-size:3rem;font-weight:800;line-height:1.15;margin-bottom:16px;color:var(--text)}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:1.15rem;color:var(--text-muted);max-width:540px;margin:0 auto 32px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 250ms;border:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-light)}
+.btn-secondary{background:var(--bg-card);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--bg-alt);transform:translateY(-2px)}
+/* ===== SERVICES ===== */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:8px}
+.service-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:32px 24px;border:1px solid var(--border);transition:all 300ms ease;position:relative;overflow:hidden}
+.service-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.service-card .icon{font-size:2rem;margin-bottom:16px;display:block}
+.service-card h3{font-size:1.15rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.service-card p{font-size:0.92rem;color:var(--text-muted);margin-bottom:12px;line-height:1.55}
+.service-card .revenue-tag{display:inline-block;background:var(--accent-light);color:var(--accent);padding:4px 12px;border-radius:12px;font-size:0.78rem;font-weight:600}
+.service-card .revenue-tag span{font-weight:400;color:var(--text-muted);margin-right:4px}
+/* ===== CASES ===== */
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.case-card{background:var(--bg-card);border-radius:var(--radius-lg);padding:28px 24px;border:1px solid var(--border);transition:all 300ms ease}
+.case-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.case-stat{font-size:1.8rem;font-weight:800;color:var(--accent);margin-bottom:4px;line-height:1.1}
+.case-stat-label{font-size:0.82rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.case-card h3{font-size:1.1rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.case-card p{font-size:0.9rem;color:var(--text-muted);line-height:1.5}
+/* ===== ABOUT / QUALIFICATIONS ===== */
+.about-content{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.about-text p{font-size:1rem;color:var(--text-muted);margin-bottom:16px;line-height:1.65}
+.about-text p:last-child{margin-bottom:0}
+.qual-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.qual-badge{display:inline-flex;align-items:center;gap:6px;background:var(--badge-bg);border:1px solid var(--badge-border);padding:8px 16px;border-radius:20px;font-size:0.85rem;font-weight:500;color:var(--text);transition:all 200ms}
+.qual-badge:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qual-badge .badge-icon{font-size:1rem}
+.about-right{background:var(--bg-card);border-radius:var(--radius-lg);padding:32px;border:1px solid var(--border)}
+.about-right h3{font-size:1.1rem;font-weight:700;margin-bottom:16px;color:var(--text)}
+.about-right ul{display:flex;flex-direction:column;gap:12px}
+.about-right ul li{display:flex;align-items:flex-start;gap:12px;font-size:0.92rem;color:var(--text-muted);line-height:1.45}
+.about-right ul li .li-icon{color:var(--accent);font-weight:700;font-size:1.1rem;flex-shrink:0;margin-top:1px}
+/* ===== CONTACT FORM ===== */
+.contact-form-wrap{max-width:600px;margin:0 auto}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:0.9rem;font-weight:600;margin-bottom:6px;color:var(--text)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--input-border);background:var(--input-bg);color:var(--text);font-size:0.95rem;transition:all 200ms;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+.form-group textarea{min-height:120px;resize:vertical}
+.form-group select{cursor:pointer;appearance:auto}
+.form-info{font-size:0.82rem;color:var(--text-light);margin-top:6px}
+.submit-btn{width:100%;padding:14px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:all 250ms}
+.submit-btn:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 4px 16px var(--accent-light)}
+/* ===== SOCIAL / CONTACT INFO ===== */
+.social-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.social-link{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-sm);background:var(--bg-card);border:1px solid var(--border);color:var(--text);font-size:0.9rem;font-weight:500;transition:all 200ms}
+.social-link:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px)}
+/* ===== REVENUE SECTION ===== */
+.revenue-highlight{background:var(--accent-light);border:1px solid var(--badge-border);border-radius:var(--radius-lg);padding:32px;text-align:center;margin-top:40px}
+.revenue-highlight h3{font-size:1.3rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.revenue-highlight p{font-size:0.95rem;color:var(--text-muted);max-width:500px;margin:0 auto}
+/* ===== FOOTER ===== */
+footer{background:var(--footer-bg);padding:40px 24px;margin-top:40px;border-top:1px solid var(--border);text-align:center;transition:all 300ms ease}
+footer p{font-size:0.85rem;color:var(--text-muted);margin-bottom:4px}
+footer p:last-child{margin-bottom:0}
+footer .footer-cvr{color:var(--text-light);font-size:0.8rem}
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-light)}
+
+/* ===== PAGE LOAD ANIMATIONS ===== */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.hero .hero-content{animation:fadeInUp 0.8s cubic-bezier(0.2,0.9,0.3,1) forwards}
+.hero .hero-badge{animation:fadeIn 0.6s ease 0.2s both}
+.hero h1{animation:slideUp 0.7s ease 0.3s both}
+.hero p{animation:fadeInUp 0.7s ease 0.5s both}
+.hero .hero-btns{animation:fadeInUp 0.7s ease 0.7s both}
+
+/* ===== HERO GRADIENT MESH ===== */
+.hero-gradient-mesh{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.hero-gradient-mesh .mesh-blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:0.15;animation:floatBlob 20s ease-in-out infinite}
+.hero-gradient-mesh .mesh-blob:nth-child(1){width:600px;height:600px;background:radial-gradient(circle,rgba(139,124,246,0.12),transparent);top:-15%;left:-10%;animation-delay:0s}
+.hero-gradient-mesh .mesh-blob:nth-child(2){width:500px;height:500px;background:radial-gradient(circle,rgba(139,124,246,0.08),transparent);bottom:-10%;right:-5%;animation-delay:-5s}
+.hero-gradient-mesh .mesh-blob:nth-child(3){width:400px;height:400px;background:radial-gradient(circle,rgba(139,124,246,0.05),transparent);top:40%;left:50%;animation-delay:-10s}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(30px,-40px) scale(1.1)}50%{transform:translate(-20px,20px) scale(0.95)}75%{transform:translate(40px,30px) scale(1.05)}}
+
+/* ===== PRICING CARDS ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.pricing-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:36px 28px;text-align:center;position:relative;display:flex;flex-direction:column;transition:all 300ms ease}
+.pricing-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.pricing-card.featured{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-light),rgba(139,124,246,0.03));border-width:2px;position:relative}
+.pricing-card.featured::before{content:'Most Popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#fff;background:var(--accent);padding:4px 16px;border-radius:20px}
+.pricing-card-name{font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:8px}
+.pricing-card-price{font-size:2.8rem;font-weight:800;letter-spacing:-0.04em;color:var(--text);margin-bottom:4px;line-height:1.1}
+.pricing-card-price span{font-size:1rem;font-weight:500;color:var(--text-light)}
+.pricing-card-desc{font-size:0.88rem;color:var(--text-muted);margin-bottom:20px}
+.pricing-card-features{list-style:none;margin:0 0 24px;padding:0;text-align:left;flex:1}
+.pricing-card-features li{display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-muted);padding:8px 0;border-bottom:1px solid var(--border)}
+.pricing-card-features li:last-child{border-bottom:none}
+.pricing-card-features li .feat-icon{color:var(--accent);flex-shrink:0;font-weight:700}
+.pricing-card-features li .feat-icon.muted{color:var(--text-light);opacity:0.5}
+.pricing-card .btn,.pricing-card .btn-primary{width:100%;justify-content:center}
+
+/* ===== 3D TILT CARDS ===== */
+.tilt-card{transition:transform 0.2s cubic-bezier(0.2,0,0.3,1);transform-style:preserve-3d;will-change:transform}
+.tilt-card:hover{transform:perspective(800px) rotateX(var(--tilt-y,0deg)) rotateY(var(--tilt-x,0deg)) scale3d(1.015,1.015,1.015)}
+.tilt-card .tilt-content{transform:translateZ(20px)}
+.tilt-card .tilt-glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--glow-x,50%) var(--glow-y,50%),var(--accent-light),transparent 60%);opacity:0;transition:opacity 0.3s}
+.tilt-card:hover .tilt-glow{opacity:1}
+
+/* ===== STAGGERED SCROLL REVEAL ===== */
+.stagger-reveal{opacity:0;transform:translateY(30px)}
+.stagger-reveal.visible{animation:staggerFadeIn 0.5s ease forwards}
+.stagger-reveal:nth-child(1).visible{animation-delay:0s}
+.stagger-reveal:nth-child(2).visible{animation-delay:0.1s}
+.stagger-reveal:nth-child(3).visible{animation-delay:0.2s}
+.stagger-reveal:nth-child(4).visible{animation-delay:0.3s}
+.stagger-reveal:nth-child(5).visible{animation-delay:0.4s}
+.stagger-reveal:nth-child(6).visible{animation-delay:0.5s}
+.stagger-reveal:nth-child(7).visible{animation-delay:0.6s}
+@keyframes staggerFadeIn{to{opacity:1;transform:translateY(0)}}
+
+/* ===== PROCESS SECTION ===== */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px;position:relative}
+.process-step{text-align:center;position:relative}
+.process-step::after{content:'';position:absolute;top:28px;left:60%;width:80%;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:0.2}
+.process-step:last-child::after{display:none}
+.process-step-num{width:56px;height:56px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:var(--accent-light);border:1px solid var(--badge-border);border-radius:50%;font-size:1.2rem;font-weight:700;color:var(--accent);transition:all 0.3s}
+.process-step:hover .process-step-num{background:var(--accent);color:#fff;transform:scale(1.1);box-shadow:0 4px 16px var(--accent-light)}
+.process-step-title{font-size:1.05rem;font-weight:700;margin-bottom:6px;color:var(--text)}
+.process-step-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin:0}
+
+/* ===== FAQ ACCORDION ===== */
+.faq-list{max-width:680px;margin:40px auto 0}
+.faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:all 200ms}
+.faq-item:hover{border-color:var(--accent)}
+.faq-item.active{border-color:var(--accent);box-shadow:0 2px 8px var(--accent-light)}
+.faq-question{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;font-size:0.95rem;font-weight:600;color:var(--text);background:none;border:none;width:100%;text-align:left;gap:12px;font-family:inherit}
+.faq-question:hover{color:var(--accent)}
+.faq-icon{flex-shrink:0;width:20px;height:20px;transition:transform 0.3s;color:var(--text-light)}
+.faq-item.active .faq-icon{transform:rotate(180deg);color:var(--accent)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.25s;padding:0 22px}
+.faq-item.active .faq-answer{max-height:300px;padding:0 22px 20px}
+.faq-answer p{font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin:0}
+
+/* ===== RESPONSIVE NEW SECTIONS ===== */
+@media(max-width:1024px){.pricing-grid{grid-template-columns:repeat(2,1fr)}.process-grid{grid-template-columns:repeat(2,1fr)}.process-step::after{display:none}}
+@media(max-width:768px){.pricing-grid{grid-template-columns:1fr}.process-grid{grid-template-columns:repeat(2,1fr);gap:32px}.testimonial-card{padding:28px 20px}.pricing-card{padding:28px 20px}}
+@media(max-width:480px){.process-grid{grid-template-columns:1fr}}
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){.about-content{grid-template-columns:1fr;gap:32px}.about-right{padding:24px}}
+@media(max-width:768px){
+.section{padding:60px 0}
+.hero h1{font-size:2.2rem}
+.hero p{font-size:1rem}
+.section-title{font-size:1.6rem}
+.section-subtitle{font-size:0.95rem}
+.grid-3{grid-template-columns:1fr}
+.cases-grid{grid-template-columns:1fr}
+.services-grid{grid-template-columns:1fr}
+.nav-links{display:none}
+.hamburger{display:flex}
+.nav-toggle-group{gap:4px}
+.theme-toggle,.lang-toggle{width:32px;height:32px;font-size:0.85rem}
+.lang-toggle{width:auto;padding:0 10px;font-size:0.75rem}
+.revenue-highlight{padding:24px 16px}
+.qual-badge{font-size:0.8rem;padding:6px 12px}
+}
+@media(max-width:480px){
+.hero h1{font-size:1.8rem}
+.hero-btns{flex-direction:column;align-items:center}
+.btn{width:100%;justify-content:center}
+.social-links{flex-direction:column;align-items:center}
+.social-link{width:100%;justify-content:center}
+.container{padding:0 16px}
+.nav-inner{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">Based<span>Node</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="./" class="nav-link" data-section="home">Hjem</a>
+      <a href="#services" class="nav-link" data-section="services">Ydelser</a>
+      <a href="#cases" class="nav-link" data-section="cases">Cases</a>
+      <a href="#about" class="nav-link" data-section="about">Om</a>
+      <a href="./security-privacy.html?style=3" class="nav-link" data-section="security">Sikkerhed</a>
+      <a href="./contact.html?style=3" class="nav-link" data-section="contact-page" data-i18n="nav_contact_page">Kontakt</a>
+      <div class="nav-toggle-group">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="lang-toggle" id="langToggle">DA</button>
+      </div>
+    </div>
+    <div class="nav-toggle-group" style="display:none" id="navToggleGroupMobile">
+      <button class="theme-toggle" id="themeToggleMobile" aria-label="Toggle theme">🌙</button>
+      <button class="lang-toggle" id="langToggleMobile">DA</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="./" class="mobile-link">Hjem</a>
+  <a href="#services" class="mobile-link">Ydelser</a>
+  <a href="#cases" class="mobile-link">Cases</a>
+  <a href="#about" class="mobile-link">Om</a>
+  <a href="./security-privacy.html?style=3" class="mobile-link">Sikkerhed</a>
+  <a href="./contact.html?style=3" class="mobile-link" data-i18n="nav_contact_page">Kontakt</a>
+  <button class="lang-toggle-mobile" id="langToggleMobileMenu">DA</button>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-gradient-mesh">
+    <div class="mesh-blob"></div>
+    <div class="mesh-blob"></div>
+    <div class="mesh-blob"></div>
+  </div>
+  <div class="hero-bg"></div>
+  <div class="hero-content reveal">
+    <div class="hero-badge" id="heroBadge">✦ Based Node · CVR 43750194</div>
+    <h1 id="heroTitle">Digital <span>Tilstedeværelse</span>.<br>Automatiseret <span>Drift</span>.</h1>
+    <p id="heroDesc">Fra workflow-automatisering til AI-agenter — én mand, der bygger systemer, der skalerer din virksomhed. 5+ års erfaring.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn btn-primary" id="heroBtnServices">↳ Se ydelser</a>
+      <a href="#contact" class="btn btn-secondary" id="heroBtnContact">✉ Kontakt</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section" id="services">
+  <div class="container">
+    <h2 class="section-title reveal" id="servicesTitle">Ydelser</h2>
+    <p class="section-subtitle reveal" id="servicesSub">7 specialiserede områder — alle med mulighed for revenue share eller fast pris.</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="icon">⚙️</span>
+        <h3 id="svc1Title">Automatisering</h3>
+        <p id="svc1Desc">Erstat manuelle processer med skræddersyede workflows. Fra data-entry til komplekse forretningsprocesser — spar timer hver dag.</p>
+        <div class="revenue-tag" data-i18n="svc1_tag"><span>💰</span> Revenue share · Fastpris</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">🤖</span>
+        <h3 id="svc2Title">AI &amp; Agenter</h3>
+        <p id="svc2Desc">Implementér AI-agenter der håndterer kundeservice, dataanalyse og beslutningstagning. 24/7 drift med menneskelig kvalitet.</p>
+        <div class="revenue-tag" data-i18n="svc2_tag"><span>💰</span> Revenue share · Fastpris</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">📊</span>
+        <h3 id="svc3Title">Dashboards</h3>
+        <p id="svc3Desc">Realtids dashboards der visualiserer din forretningsdata. Træf bedre beslutninger med klar, handlingsorienteret indsigt.</p>
+        <div class="revenue-tag" data-i18n="svc3_tag"><span>💰</span> Fastpris · Revenue share</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">🌐</span>
+        <h3 id="svc4Title">Hjemmesider</h3>
+        <p id="svc4Desc">Moderne, lynhurtige hjemmesider bygget med fokus på konvertering og brugeroplevelse. Responsivt design, SEO-optimeret.</p>
+        <div class="revenue-tag" data-i18n="svc4_tag"><span>💰</span> Fastpris</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">📈</span>
+        <h3 id="svc5Title">Markedsføring</h3>
+        <p id="svc5Desc">Datadrevet marketing automation — lead generation, e-mail sequences og tracking. Få flere kunder med mindre manuelt arbejde.</p>
+        <div class="revenue-tag" data-i18n="svc5_tag"><span>💰</span> Revenue share · Fastpris</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">🎓</span>
+        <h3 id="svc6Title">Undervisning</h3>
+        <p id="svc6Desc">Ved siden af mit konsulentarbejde underviser jeg i matematik &amp; programmering (MentorDanmark, siden 2019) og AI på GXU (siden 2025).</p>
+        <div class="revenue-tag" data-i18n="svc6_tag"><span>💰</span> Fastpris · Forløb</div>
+      </div>
+      <div class="service-card reveal">
+        <span class="icon">🤝</span>
+        <h3 id="svc7Title">Partnerskab</h3>
+        <p id="svc7Desc">Equity-baseret partnerskab for startups og scale-ups. Jeg bygger din tekniske infrastruktur mod ejerandel i virksomheden.</p>
+        <div class="revenue-tag" data-i18n="svc7_tag"><span>💰</span> Equity · Revenue share</div>
+      </div>
+      <!-- New: Marketing Automation -->
+      <div class="service-card reveal">
+        <span class="icon">📧</span>
+        <h3 id="svc8Title">Marketing Automation</h3>
+        <p id="svc8Desc">Automatiserede multi-kanal marketingkampagner — email, SMS, sociale medier og retargeting. Plej leads og få konverteringer på autopilot med datadrevet personalisering.</p>
+        <div class="revenue-tag"><span>💰</span> Revenue share · Fastpris</div>
+      </div>
+      <!-- New: Ad Optimization -->
+      <div class="service-card reveal">
+        <span class="icon">🎯</span>
+        <h3 id="svc9Title">Ad Optimization</h3>
+        <p id="svc9Desc">Datadrevet annoncekampagneoptimering på tværs af Google Ads, Meta, LinkedIn og flere. Maksimer ROAS gennem smart budgivning, A/B-testning og målgruppesegmentering.</p>
+        <div class="revenue-tag"><span>💰</span> Revenue share · Fastpris</div>
+      </div>
+      <!-- New: SEO & Lead Conversion -->
+      <div class="service-card reveal">
+        <span class="icon">🔍</span>
+        <h3 id="svc10Title">SEO &amp; Lead Conversion</h3>
+        <p id="svc10Desc">Tekniske SEO-revisioner, on-page optimering og konverteringsrateoptimering. Gør organisk trafik til betalende kunder med databaseret tragtdesign.</p>
+        <div class="revenue-tag"><span>💰</span> Fastpris · Revenue share</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVENUE HIGHLIGHT ===== -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="revenue-highlight reveal">
+      <h3 id="revTitle">💰 Revenue Share Model</h3>
+      <p id="revDesc">Jeg tilbyder fleksible prismodeller: Fastpris for afgrænsede projekter, eller revenue share / equity for løbende partnerskaber. Du betaler kun, når løsningen skaber værdi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASE STUDIES ===== -->
+<section class="section" id="cases">
+  <div class="container">
+    <h2 class="section-title reveal" id="casesTitle">Cases</h2>
+    <p class="section-subtitle reveal" id="casesSub">Dokumenterede resultater fra tidligere projekter.</p>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-stat">80–100×</div>
+        <div class="case-stat-label" id="case1Label">Cost Reduction</div>
+        <h3 id="case1Title">AI Infrastructure Optimization</h3>
+        <p id="case1Desc">Optimeret API-infrastruktur og reducerede cloud-omkostninger med 80-100x gennem caching, batch-processing og model-optimering.</p>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-stat">340%</div>
+        <div class="case-stat-label" id="case2Label">Lead Growth</div>
+        <h3 id="case2Title">Lead Generation Pipeline</h3>
+        <p id="case2Desc">Automatiseret lead generation pipeline der øgede kvalificerede leads med 340% gennem intelligent sourcing og scoring.</p>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-stat">12 uger</div>
+        <div class="case-stat-label" id="case3Label">Uddannelse</div>
+        <h3 id="case3Title">GXU — AI Forløb</h3>
+        <p id="case3Desc">Undervist gymnasieelever i at bygge AI-applikationer på 12 uger (GXU, 2025). Fra grundlæggende Python til funktionelle AI-systemer.</p>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-stat">100%</div>
+        <div class="case-stat-label" id="case4Label">Automation</div>
+        <h3 id="case4Title">Quant Data Pipeline</h3>
+        <p id="case4Desc">Fuldt automatiseret quant data pipeline der indsamler, renser og analyserer finansielle data i realtid uden manuel intervention.</p>
+      </div>
+      <div class="case-card reveal">
+        <div class="case-stat">95%</div>
+        <div class="case-stat-label" id="case5Label">Resolution Rate</div>
+        <h3 id="case5Title">Custom Chatbot</h3>
+        <p id="case5Desc">AI-drevet kundeservice chatbot med 95% automatisk opløsning. 24/7 tilgængelighed med menneskelig eskalering ved komplekse sager.</p>
+      </div>
+      <!-- New: Marketing Automation Case -->
+      <div class="case-card reveal">
+        <div class="case-stat">+45%</div>
+        <div class="case-stat-label">Engagement Rate</div>
+        <h3>Multi-Channel Marketing Automation</h3>
+        <p>Fuldt automatiseret email-, SMS- og social media marketingsystem med intelligent segmentering. Triggerede kampagner baseret på brugeradfærd, A/B-testning og realtidsanalyse.</p>
+      </div>
+      <!-- New: Ad Optimization Case -->
+      <div class="case-card reveal">
+        <div class="case-stat">-60%</div>
+        <div class="case-stat-label">Ad Spend</div>
+        <h3>Ad Cost Optimization Engine</h3>
+        <p>AI-drevet annoncebudgetoptimering på tværs af Google Ads og Meta. Smarte budalgoritmer, målgruppeklynger og kreativ A/B-testning der reducerede CPA markant.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="section-title reveal" id="aboutTitle">Om</h2>
+    <p class="section-subtitle reveal" id="aboutSub">Solo-operator med tværfaglig baggrund i fysik, kvantitativ finans og AI.</p>
+    <div class="about-content">
+      <div class="about-text reveal">
+        <p id="aboutP1">Jeg er solo-operatøren bag Based Node. Med en Civilingeniør i Fysik & Nanoteknologi fra DTU og erfaring fra kvantitativ finans, kombinerer jeg teknisk dybde med forretningsforståelse.</p>
+        <p id="aboutP2">Siden 2020 har jeg arbejdet med softwareudvikling og AI-optimering — bl.a. med 80-100x reduktion af API-omkostninger. Ved siden af underviser jeg i matematik &amp; programmering (MentorDanmark, siden 2019) og AI på GXU (siden 2025).</p>
+        <p id="aboutP3">Det hele kører gennem mig — én mand, tre søjler: <strong>Workflow</strong> (automatisering), <strong>Data</strong> (analyse & infrastruktur) og <strong>Digital Presence</strong> (websites & marketing).</p>
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-top:12px;line-height:1.6">💡 Jeg forstår at små virksomheder har brug for prisvenlig tech-hjælp. Derfor tilbyder jeg fleksible prismodeller — fra fastprisprojekter til revenue share. Ingen store bureau-gebyrer, bare ærligt arbejde.</p>
+        <div class="qual-grid">
+          <span class="qual-badge"><span class="badge-icon">🎓</span> Civilingeniør i Fysik & Nanoteknologi fra DTU</span>
+          <span class="qual-badge"><span class="badge-icon">📊</span> Quant Finance</span>
+          <span class="qual-badge" id="qualBadgeTeach"><span class="badge-icon">👨‍🏫</span> Underviser · Matematik &amp; programmering (2019–) og AI på GXU (2025–)</span>
+          <span class="qual-badge"><span class="badge-icon">⚡</span> AI Optimization · 80-100×</span>
+          <span class="qual-badge" id="qualBadgeSince"><span class="badge-icon">🛠️</span> Software siden 2020</span>
+        </div>
+      </div>
+      <div class="about-right reveal">
+        <h3 id="aboutRightTitle">💡 Mine 3 Søjler</h3>
+        <ul>
+          <li><span class="li-icon">⚙️</span> <span id="pillar1"><strong>Workflow</strong> — Automatisering af forretningsprocesser, reduktion af manuelt arbejde, øget effektivitet</span></li>
+          <li><span class="li-icon">📊</span> <span id="pillar2"><strong>Data</strong> — Dataindsamling, analyse, infrastruktur og dashboards for bedre beslutninger</span></li>
+          <li><span class="li-icon">🌐</span> <span id="pillar3"><strong>Digital Presence</strong> — Hjemmesider, marketing automation og online synlighed</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing" style="background:var(--bg-alt)">
+  <div class="container">
+    <h2 class="section-title reveal" id="pricingTitle">Priser</h2>
+    <p class="section-subtitle reveal">Simple, transparent pricing for every stage of your business.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">Hjemmeside / Website</div>
+          <div class="pricing-card-price">1.500-2.900<span> kr</span></div>
+          <p class="pricing-card-desc">Fastpris hjemmeside — perfekt til små virksomheder, leads og professionelle</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Responsivt design — alle enheder</li>
+            <li><span class="feat-icon">✓</span> SEO-optimeret struktur</li>
+            <li><span class="feat-icon">✓</span> Kontaktformular &amp; analytics</li>
+            <li><span class="feat-icon">✓</span> 2 revisionsrunder</li>
+            <li><span class="feat-icon">✓</span> Hostingopsætning inkluderet</li>
+            <li><span class="feat-icon muted">—</span> Brugerdefineret funktionalitet</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Kom i gang</a>
+        </div>
+      </div>
+      <div class="pricing-card featured stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">App / System</div>
+          <div class="pricing-card-price">5.000-15.000<span> kr</span></div>
+          <p class="pricing-card-desc">Brugerdefineret webapp, dashboard eller AI-system — skaleret til dine behov</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Brugerdefineret udvikling</li>
+            <li><span class="feat-icon">✓</span> AI-agent eller automatisering</li>
+            <li><span class="feat-icon">✓</span> Analyse-dashboard</li>
+            <li><span class="feat-icon">✓</span> Prioriteret support</li>
+            <li><span class="feat-icon">✓</span> 5 revisionsrunder</li>
+            <li><span class="feat-icon">✓</span> Revenue share mulighed</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Kom i gang</a>
+        </div>
+      </div>
+      <div class="pricing-card stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">Leadgenerering</div>
+          <div class="pricing-card-price">Revenue<span> Share</span></div>
+          <p class="pricing-card-desc">Ingen forudbetaling — kun betal når du får resultater. Revenue share model.</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Automatiseret outreach pipeline</li>
+            <li><span class="feat-icon">✓</span> CRM-integration &amp; scoring</li>
+            <li><span class="feat-icon">✓</span> Email + LinkedIn-sekvenser</li>
+            <li><span class="feat-icon">✓</span> Dedikeret support</li>
+            <li><span class="feat-icon">✓</span> Løbende optimering</li>
+            <li><span class="feat-icon">✓</span> Kun betal for resultater</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Kom i gang</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="section" id="process">
+  <div class="container">
+    <h2 class="section-title reveal" id="processTitle">How I Work</h2>
+    <p class="section-subtitle reveal">A proven 4-step process from discovery to growth.</p>
+    <div class="process-grid">
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">01</div>
+        <h3 class="process-step-title">Discover</h3>
+        <p class="process-step-desc">Deep dive into your business goals and pain points. Map current workflows and identify automation opportunities.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">02</div>
+        <h3 class="process-step-title">Build</h3>
+        <p class="process-step-desc">Architect and develop your solution — from AI agents to dashboards. Transparent sprints with regular check-ins.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">03</div>
+        <h3 class="process-step-title">Launch</h3>
+        <p class="process-step-desc">Deploy to production with thorough testing. Documentation and walkthrough for your team.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">04</div>
+        <h3 class="process-step-title">Grow</h3>
+        <p class="process-step-desc">Continuous monitoring, optimization, and iteration. Systems that scale as you grow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title reveal" id="faqTitle">FAQ</h2>
+    <p class="section-subtitle reveal">Everything you need to know before we start.</p>
+    <div class="faq-list">
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How does the revenue share model work?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Instead of charging upfront, I take a percentage of the revenue the solution generates. Zero risk for you — I only get paid when the system delivers results. Typical revenue share: 10-20%.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What if I need changes after the project is done?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Every project includes revision rounds. For ongoing support, I offer maintenance retainers that cover updates, monitoring, and optimizations.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How long does a typical project take?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Most projects take 1-4 weeks. A simple workflow can be done in under a week, full-stack solutions in 3-4 weeks. Timeline is agreed during the discovery call.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Do you work with clients outside Denmark?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Yes! Everything is remote. I work with clients across Europe and beyond via Slack, email, or video calls. Async-first approach keeps things moving.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Fixed price vs equity — what's the difference?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Fixed price for defined projects with clear deliverables. Equity for early-stage startups with limited capital. Revenue share sits in between — no upfront cost, shared upside.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How do we get started?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Fill out the contact form below or email contact@basednode.xyz. We'll schedule a free 30-minute discovery call. No pitch, no pressure.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESOURCES PROMO ===== -->
+<section class="section" style="padding:20px 0;background:var(--bg-alt)">
+  <div class="container">
+    <div class="revenue-highlight" style="padding:24px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg)">
+      <p style="font-size:0.95rem;font-weight:500;color:var(--text-muted);margin:0 0 12px">📚 <strong>Check out my free resources — guides, templates, and tools for automation, AI, and digital growth.</strong></p>
+      <a href="./resources.html?style=3" class="btn btn-primary" style="font-size:0.85rem;padding:10px 24px;display:inline-flex">→ Browse Resources</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contact">
+  <div class="container">
+    <h2 class="section-title reveal" id="contactTitle">Kontakt</h2>
+    <p class="section-subtitle reveal" id="contactSub">Har du et projekt eller en idé? Lad os tale om det.</p>
+    <div class="contact-form-wrap reveal">
+      <form id="contactForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="formName" id="formNameLabel">Navn</label>
+          <input type="text" id="formName" name="name" required placeholder="Dit navn">
+        </div>
+        <div class="form-group">
+          <label for="formEmail" id="formEmailLabel">Email</label>
+          <input type="email" id="formEmail" name="email" required placeholder="din@email.dk">
+        </div>
+        <div class="form-group">
+          <label for="formType" id="formTypeLabel">Type</label>
+          <select id="formType" name="type">
+            <option value="Fastpris">Fastpris</option>
+            <option value="Revenue">Revenue Share</option>
+            <option value="Partnership">Partnerskab / Equity</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="formMessage" id="formMsgLabel">Besked</label>
+          <textarea id="formMessage" name="message" required placeholder="Fortæl om dit projekt..."></textarea>
+        </div>
+        <button type="submit" class="submit-btn" id="submitBtn">✉ Send besked</button>
+        <p class="form-info" id="formInfo">Du modtager svar inden for 24 timer. Email sendes direkte til contact@basednode.xyz</p>
+      </form>
+    </div>
+    <div class="social-links">
+      <a href="https://linkedin.com/in/omar-jennane-576a26265" target="_blank" rel="noopener" class="social-link">in Omar Jennane</a>
+      <a href="https://t.me/IkkeOmar" target="_blank" rel="noopener" class="social-link">✈ @IkkeOmar</a>
+      <a href="mailto:contact@basednode.xyz" class="social-link">✉ contact@basednode.xyz</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <p>© <span id="footerYear">2025</span> Based Node — <span id="footerName">Omar Jennane</span></p>
+    <p class="footer-cvr">CVR 43750194 · <span id="footerContact">contact@basednode.xyz</span></p>
+    <p style="margin-top:8px"><a href="./resources.html?style=3" data-i18n="nav_resources" style="color:var(--accent)">Ressourcer</a></p>
+  </div>
+</footer>
+
+<script>
+/* ===== TEXT OBJECTS ===== */
+const TEXT = {
+  da: {
+    heroBadge: '✦ Based Node · CVR 43750194',
+    heroTitle: 'Digital <span>Tilstedeværelse</span>.<br>Automatiseret <span>Drift</span>.',
+    heroDesc: 'Fra workflow-automatisering til AI-agenter — én mand, der bygger systemer, der skalerer din virksomhed. 5+ års erfaring.',
+    heroBtnServices: '↳ Se ydelser',
+    heroBtnContact: '✉ Kontakt',
+    navServices: 'Ydelser',
+    navCases: 'Cases',
+    navAbout: 'Om',
+    navContact: 'Kontakt',
+    navHome: 'Hjem',
+    navSecurity: 'Sikkerhed',
+    servicesTitle: 'Ydelser',
+    servicesSub: '7 specialiserede områder — alle med mulighed for revenue share eller fast pris.',
+    svc1Title: 'Automatisering',
+    svc1Desc: 'Erstat manuelle processer med skræddersyede workflows. Fra data-entry til komplekse forretningsprocesser — spar timer hver dag.',
+    svc2Title: 'AI & Agenter',
+    svc2Desc: 'Implementér AI-agenter der håndterer kundeservice, dataanalyse og beslutningstagning. 24/7 drift med menneskelig kvalitet.',
+    svc3Title: 'Dashboards',
+    svc3Desc: 'Realtids dashboards der visualiserer din forretningsdata. Træf bedre beslutninger med klar, handlingsorienteret indsigt.',
+    svc4Title: 'Hjemmesider',
+    svc4Desc: 'Moderne, lynhurtige hjemmesider bygget med fokus på konvertering og brugeroplevelse. Responsivt design, SEO-optimeret.',
+    svc5Title: 'Markedsføring',
+    svc5Desc: 'Datadrevet marketing automation — lead generation, e-mail sequences og tracking. Få flere kunder med mindre manuelt arbejde.',
+    svc6Title: 'Undervisning',
+    svc6Desc: 'Ved siden af mit konsulentarbejde underviser jeg i matematik & programmering (MentorDanmark, siden 2019) og AI på GXU (siden 2025).',
+    svc7Title: 'Partnerskab',
+    svc7Desc: 'Equity-baseret partnerskab for startups og scale-ups. Jeg bygger din tekniske infrastruktur mod ejerandel i virksomheden.',
+    svc1_tag: '<span>💰</span> Revenue share · Fastpris',
+    svc2_tag: '<span>💰</span> Revenue share · Fastpris',
+    svc3_tag: '<span>💰</span> Fastpris · Revenue share',
+    svc4_tag: '<span>💰</span> Fastpris',
+    svc5_tag: '<span>💰</span> Revenue share · Fastpris',
+    svc6_tag: '<span>💰</span> Fastpris · Forløb',
+    svc7_tag: '<span>💰</span> Equity · Revenue share',
+    revTitle: '💰 Revenue Share Model',
+    revDesc: 'Jeg tilbyder fleksible prismodeller: Fastpris for afgrænsede projekter, eller revenue share / equity for løbende partnerskaber. Du betaler kun, når løsningen skaber værdi.',
+    casesTitle: 'Cases',
+    casesSub: 'Dokumenterede resultater fra tidligere projekter.',
+    case1Label: 'Cost Reduction',
+    case1Title: 'AI Infrastructure Optimization',
+    case1Desc: 'Optimeret API-infrastruktur og reducerede cloud-omkostninger med 80-100x gennem caching, batch-processing og model-optimering.',
+    case2Label: 'Lead Growth',
+    case2Title: 'Lead Generation Pipeline',
+    case2Desc: 'Automatiseret lead generation pipeline der øgede kvalificerede leads med 340% gennem intelligent sourcing og scoring.',
+    case3Label: 'Uddannelse',
+    case3Title: 'GXU — AI Forløb',
+    case3Desc: 'Undervist gymnasieelever i at bygge AI-applikationer på 12 uger (GXU, 2025). Fra grundlæggende Python til funktionelle AI-systemer.',
+    case4Label: 'Automation',
+    case4Title: 'Quant Data Pipeline',
+    case4Desc: 'Fuldt automatiseret quant data pipeline der indsamler, renser og analyserer finansielle data i realtid uden manuel intervention.',
+    case5Label: 'Resolution Rate',
+    case5Title: 'Custom Chatbot',
+    case5Desc: 'AI-drevet kundeservice chatbot med 95% automatisk opløsning. 24/7 tilgængelighed med menneskelig eskalering ved komplekse sager.',
+    aboutTitle: 'Om',
+    aboutSub: 'Solo-operator med tværfaglig baggrund i fysik, kvantitativ finans og AI.',
+    aboutP1: 'Jeg er solo-operatøren bag Based Node. Med en Civilingeniør i Fysik & Nanoteknologi fra DTU og erfaring fra kvantitativ finans, kombinerer jeg teknisk dybde med forretningsforståelse.',
+    aboutP2: 'Siden 2020 har jeg arbejdet med softwareudvikling og AI-optimering — bl.a. med 80-100x reduktion af API-omkostninger. Ved siden af underviser jeg i matematik & programmering (MentorDanmark, siden 2019) og AI på GXU (siden 2025).',
+    aboutP3: 'Alt går gennem mig — én mand, tre søjler: <strong>Workflow</strong> (automatisering), <strong>Data</strong> (analyse & infrastruktur) og <strong>Digital Presence</strong> (websites & marketing).',
+    aboutRightTitle: '💡 Mine 3 Søjler',
+    pillar1: '<strong>Workflow</strong> — Automatisering af forretningsprocesser, reduktion af manuelt arbejde, øget effektivitet',
+    pillar2: '<strong>Data</strong> — Dataindsamling, analyse, infrastruktur og dashboards for bedre beslutninger',
+    pillar3: '<strong>Digital Presence</strong> — Hjemmesider, marketing automation og online synlighed',
+    contactTitle: 'Kontakt',
+    contactSub: 'Har du et projekt eller en idé? Lad os tale om det.',
+    formNameLabel: 'Navn',
+    formNamePlaceholder: 'Dit navn',
+    formEmailLabel: 'Email',
+    formEmailPlaceholder: 'din@email.dk',
+    formTypeLabel: 'Type',
+    formTypeOpt1: 'Fastpris',
+    formTypeOpt2: 'Revenue Share',
+    formTypeOpt3: 'Partnerskab / Equity',
+    formMsgLabel: 'Besked',
+    formMsgPlaceholder: 'Fortæl om dit projekt...',
+    submitBtn: '✉ Send besked',
+    formInfo: 'Du modtager svar inden for 24 timer. Email sendes direkte til contact@basednode.xyz',
+    footerCopy: 'Based Node — Omar Jennane',
+    footerCvr: 'CVR 43750194 · contact@basednode.xyz',
+    qualBadgeTeach: '👨‍🏫 Underviser · Matematik & programmering (2019–) og AI på GXU (2025–)',
+    qualBadgeSince: '🛠️ Software siden 2020',
+    langToggleLabel: 'DA',
+    nav_resources: 'Ressourcer'
+  },
+  en: {
+    heroBadge: '✦ Based Node · CVR 43750194',
+    heroTitle: 'Digital <span>Presence</span>.<br>Automated <span>Operations</span>.',
+    heroDesc: 'From workflow automation to AI agents — just one guy building systems that scale your business. 5+ years of experience.',
+    heroBtnServices: '↳ View services',
+    heroBtnContact: '✉ Contact',
+    navServices: 'Services',
+    navCases: 'Cases',
+    navAbout: 'About',
+    navContact: 'Contact',
+    navHome: 'Home',
+    navSecurity: 'Security',
+    servicesTitle: 'Services',
+    servicesSub: '7 specialized areas — all available with revenue share or fixed price.',
+    svc1Title: 'Automation',
+    svc1Desc: 'Replace manual processes with custom workflows. From data entry to complex business processes — save hours every day.',
+    svc2Title: 'AI & Agents',
+    svc2Desc: 'Implement AI agents that handle customer service, data analysis, and decision making. 24/7 operation with human quality.',
+    svc3Title: 'Dashboards',
+    svc3Desc: 'Real-time dashboards visualizing your business data. Make better decisions with clear, actionable insights.',
+    svc4Title: 'Websites',
+    svc4Desc: 'Modern, lightning-fast websites built with focus on conversion and user experience. Responsive design, SEO-optimized.',
+    svc5Title: 'Marketing',
+    svc5Desc: 'Data-driven marketing automation — lead generation, email sequences and tracking. Get more customers with less manual work.',
+    svc6Title: 'Teaching',
+    svc6Desc: 'Alongside my consulting work, I teach math & programming (MentorDanmark, since 2019) and AI at GXU (since 2025).',
+    svc7Title: 'Partnership',
+    svc7Desc: 'Equity-based partnership for startups and scale-ups. I build your technical infrastructure in exchange for ownership.',
+    svc1_tag: '<span>💰</span> Revenue share · Fixed price',
+    svc2_tag: '<span>💰</span> Revenue share · Fixed price',
+    svc3_tag: '<span>💰</span> Fixed price · Revenue share',
+    svc4_tag: '<span>💰</span> Fixed price',
+    svc5_tag: '<span>💰</span> Revenue share · Fixed price',
+    svc6_tag: '<span>💰</span> Fixed price · Programs',
+    svc7_tag: '<span>💰</span> Equity · Revenue share',
+    revTitle: '💰 Revenue Share Model',
+    revDesc: 'I offer flexible pricing models: Fixed price for defined projects, or revenue share / equity for ongoing partnerships. You only pay when the solution creates value.',
+    casesTitle: 'Case Studies',
+    casesSub: 'Documented results from previous projects.',
+    case1Label: 'Cost Reduction',
+    case1Title: 'AI Infrastructure Optimization',
+    case1Desc: 'Optimized API infrastructure and reduced cloud costs by 80-100x through caching, batch processing, and model optimization.',
+    case2Label: 'Lead Growth',
+    case2Title: 'Lead Generation Pipeline',
+    case2Desc: 'Automated lead generation pipeline that increased qualified leads by 340% through intelligent sourcing and scoring.',
+    case3Label: 'Education',
+    case3Title: 'GXU — AI Program',
+    case3Desc: 'Taught high school students to build AI applications in 12 weeks (GXU, 2025). From basic Python to functional AI systems.',
+    case4Label: 'Automation',
+    case4Title: 'Quant Data Pipeline',
+    case4Desc: 'Fully automated quant data pipeline that collects, cleans, and analyzes financial data in real-time without manual intervention.',
+    case5Label: 'Resolution Rate',
+    case5Title: 'Custom Chatbot',
+    case5Desc: 'AI-powered customer service chatbot with 95% automatic resolution. 24/7 availability with human escalation for complex cases.',
+    aboutTitle: 'About',
+    aboutSub: 'Solo operator with interdisciplinary background in physics, quantitative finance, and AI.',
+    aboutP1: 'I\'m the solo operator behind Based Node. With an M.Sc. in Engineering (Civilingeniør) in Physics & Nanotechnology from DTU and experience in quantitative finance, I combine technical depth with business understanding.',
+    aboutP2: 'Since 2020 I have worked with software development and AI optimization — including 80-100x reduction of API costs. Alongside that, I teach math & programming (MentorDanmark, since 2019) and AI at GXU (since 2025).',
+    aboutP3: 'It all runs through me — one guy, three pillars: <strong>Workflow</strong> (automation), <strong>Data</strong> (analysis & infrastructure) and <strong>Digital Presence</strong> (websites & marketing).',
+    aboutRightTitle: '💡 My 3 Pillars',
+    pillar1: '<strong>Workflow</strong> — Business process automation, reduction of manual work, increased efficiency',
+    pillar2: '<strong>Data</strong> — Data collection, analysis, infrastructure and dashboards for better decisions',
+    pillar3: '<strong>Digital Presence</strong> — Websites, marketing automation and online visibility',
+    contactTitle: 'Contact',
+    contactSub: 'Have a project or an idea? Let\'s talk about it.',
+    formNameLabel: 'Name',
+    formNamePlaceholder: 'Your name',
+    formEmailLabel: 'Email',
+    formEmailPlaceholder: 'you@email.com',
+    formTypeLabel: 'Type',
+    formTypeOpt1: 'Fixed Price',
+    formTypeOpt2: 'Revenue Share',
+    formTypeOpt3: 'Partnership / Equity',
+    formMsgLabel: 'Message',
+    formMsgPlaceholder: 'Tell me about your project...',
+    submitBtn: '✉ Send message',
+    formInfo: 'You will receive a reply within 24 hours. Email is sent directly to contact@basednode.xyz',
+    footerCopy: 'Based Node — Omar Jennane',
+    footerCvr: 'CVR 43750194 · contact@basednode.xyz',
+    qualBadgeTeach: '👨‍🏫 Teaching · Math & programming (2019–) and AI at GXU (2025–)',
+    qualBadgeSince: '🛠️ Software since 2020',
+    langToggleLabel: 'EN',
+    nav_resources: 'Resources'
+  }
+};
+
+/* ===== STATE ===== */
+let currentLang = localStorage.getItem('bn-lang') || 'da';
+let currentTheme = localStorage.getItem('bn-theme') || 'light';
+
+/* ===== RENDER FUNCTION ===== */
+function renderPage() {
+  const t = TEXT[currentLang];
+  /* Hero */
+  gId('heroBadge').innerHTML = t.heroBadge;
+  gId('heroTitle').innerHTML = t.heroTitle;
+  gId('heroDesc').textContent = t.heroDesc;
+  gId('heroBtnServices').textContent = t.heroBtnServices;
+  gId('heroBtnContact').textContent = t.heroBtnContact;
+  /* Nav */
+  const navLinks = document.querySelectorAll('.nav-link');
+  if(navLinks[0]) navLinks[0].textContent = t.navHome;
+  if(navLinks[1]) navLinks[1].textContent = t.navServices;
+  if(navLinks[2]) navLinks[2].textContent = t.navCases;
+  if(navLinks[3]) navLinks[3].textContent = t.navAbout;
+  if(navLinks[4]) navLinks[4].textContent = t.navSecurity;
+  if(navLinks[5]) navLinks[5].textContent = t.navContact;
+  /* Mobile links */
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+  if(mobileLinks[0]) mobileLinks[0].textContent = t.navHome;
+  if(mobileLinks[1]) mobileLinks[1].textContent = t.navServices;
+  if(mobileLinks[2]) mobileLinks[2].textContent = t.navCases;
+  if(mobileLinks[3]) mobileLinks[3].textContent = t.navAbout;
+  if(mobileLinks[4]) mobileLinks[4].textContent = t.navSecurity;
+  if(mobileLinks[5]) mobileLinks[5].textContent = t.navContact;
+  /* Lang toggles */
+  document.querySelectorAll('#langToggle, #langToggleMobile, #langToggleMobileMenu').forEach(el => {
+    if(el) el.textContent = t.langToggleLabel;
+  });
+  /* Services */
+  gId('servicesTitle').textContent = t.servicesTitle;
+  gId('servicesSub').textContent = t.servicesSub;
+  gId('svc1Title').textContent = t.svc1Title; gId('svc1Desc').textContent = t.svc1Desc;
+  gId('svc2Title').textContent = t.svc2Title; gId('svc2Desc').textContent = t.svc2Desc;
+  gId('svc3Title').textContent = t.svc3Title; gId('svc3Desc').textContent = t.svc3Desc;
+  gId('svc4Title').textContent = t.svc4Title; gId('svc4Desc').textContent = t.svc4Desc;
+  gId('svc5Title').textContent = t.svc5Title; gId('svc5Desc').textContent = t.svc5Desc;
+  gId('svc6Title').textContent = t.svc6Title; gId('svc6Desc').textContent = t.svc6Desc;
+  gId('svc7Title').textContent = t.svc7Title; gId('svc7Desc').textContent = t.svc7Desc;
+  /* Revenue */
+  gId('revTitle').textContent = t.revTitle;
+  gId('revDesc').textContent = t.revDesc;
+  /* Revenue tags (data-i18n) */
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key]) el.innerHTML = t[key];
+  });
+  /* Cases */
+  gId('casesTitle').textContent = t.casesTitle;
+  gId('casesSub').textContent = t.casesSub;
+  gId('case1Label').textContent = t.case1Label; gId('case1Title').textContent = t.case1Title; gId('case1Desc').textContent = t.case1Desc;
+  gId('case2Label').textContent = t.case2Label; gId('case2Title').textContent = t.case2Title; gId('case2Desc').textContent = t.case2Desc;
+  gId('case3Label').textContent = t.case3Label; gId('case3Title').textContent = t.case3Title; gId('case3Desc').textContent = t.case3Desc;
+  gId('case4Label').textContent = t.case4Label; gId('case4Title').textContent = t.case4Title; gId('case4Desc').textContent = t.case4Desc;
+  gId('case5Label').textContent = t.case5Label; gId('case5Title').textContent = t.case5Title; gId('case5Desc').textContent = t.case5Desc;
+  /* About */
+  gId('aboutTitle').textContent = t.aboutTitle;
+  gId('aboutSub').textContent = t.aboutSub;
+  gId('aboutP1').textContent = t.aboutP1;
+  gId('aboutP2').textContent = t.aboutP2;
+  gId('aboutP3').innerHTML = t.aboutP3;
+  gId('aboutRightTitle').innerHTML = t.aboutRightTitle;
+  gId('pillar1').innerHTML = t.pillar1;
+  gId('pillar2').innerHTML = t.pillar2;
+  gId('pillar3').innerHTML = t.pillar3;
+  /* Qual badges */
+  const qbTeach = gId('qualBadgeTeach');
+  if (qbTeach) qbTeach.innerHTML = '<span class="badge-icon">👨‍🏫</span> ' + t.qualBadgeTeach;
+  const qbSince = gId('qualBadgeSince');
+  if (qbSince) qbSince.innerHTML = '<span class="badge-icon">🛠️</span> ' + t.qualBadgeSince;
+  /* Contact */
+  gId('contactTitle').textContent = t.contactTitle;
+  gId('contactSub').textContent = t.contactSub;
+  gId('formNameLabel').textContent = t.formNameLabel;
+  gId('formName').placeholder = t.formNamePlaceholder;
+  gId('formEmailLabel').textContent = t.formEmailLabel;
+  gId('formEmail').placeholder = t.formEmailPlaceholder;
+  gId('formTypeLabel').textContent = t.formTypeLabel;
+  const typeSelect = gId('formType');
+  if(typeSelect.options.length >= 3) {
+    typeSelect.options[0].textContent = t.formTypeOpt1;
+    typeSelect.options[0].value = t.formTypeOpt1;
+    typeSelect.options[1].textContent = t.formTypeOpt2;
+    typeSelect.options[1].value = t.formTypeOpt2;
+    typeSelect.options[2].textContent = t.formTypeOpt3;
+    typeSelect.options[2].value = t.formTypeOpt3;
+  }
+  gId('formMsgLabel').textContent = t.formMsgLabel;
+  gId('formMessage').placeholder = t.formMsgPlaceholder;
+  gId('submitBtn').textContent = t.submitBtn;
+  gId('formInfo').textContent = t.formInfo;
+  /* Footer */
+  gId('footerYear').textContent = new Date().getFullYear();
+  gId('footerName').textContent = 'Omar Jennane';
+  gId('footerContact').textContent = 'contact@basednode.xyz';
+}
+function gId(id) { return document.getElementById(id); }
+
+/* ===== LANGUAGE TOGGLE ===== */
+function toggleLang() {
+  currentLang = currentLang === 'da' ? 'en' : 'da';
+  localStorage.setItem('bn-lang', currentLang);
+  document.documentElement.lang = currentLang;
+  renderPage();
+}
+
+/* ===== THEME TOGGLE ===== */
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('bn-theme', currentTheme);
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  const icon = currentTheme === 'dark' ? '☀️' : '🌙';
+  document.querySelectorAll('.theme-toggle').forEach(el => { if(el) el.textContent = icon; });
+}
+
+/* ===== FORM SUBMIT ===== */
+function handleSubmit(e) {
+  e.preventDefault();
+  const name = gId('formName').value.trim();
+  const email = gId('formEmail').value.trim();
+  const type = gId('formType').value;
+  const message = gId('formMessage').value.trim();
+  if(!name || !email || !message) return;
+  const subject = encodeURIComponent(`[BasedNode] ${type} — ${name}`);
+  const body = encodeURIComponent(
+    `Navn: ${name}\nEmail: ${email}\nType: ${type}\n\nBesked:\n${message}`
+  );
+  window.location.href = `mailto:contact@basednode.xyz?subject=${subject}&body=${body}`;
+}
+
+/* ===== HAMBURGER ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = gId('hamburger');
+  const mobileMenu = gId('mobileMenu');
+  if(hamburger && mobileMenu) {
+    hamburger.addEventListener('click', function() {
+      this.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  /* ===== INTERSECTION OBSERVER — SCROLL REVEAL ===== */
+  const revealEls = document.querySelectorAll('.reveal');
+  if(revealEls.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+  }
+
+  /* ===== ACTIVE NAV LINK ===== */
+  const navLinkEls = document.querySelectorAll('.nav-link');
+  const sections = ['services','cases','about','contact'];
+  const observerActive = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinkEls.forEach(link => {
+          link.classList.remove('active');
+          if(link.getAttribute('data-section') === id) link.classList.add('active');
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) observerActive.observe(el);
+  });
+
+  /* ===== INIT THEME ===== */
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  const themeIcon = currentTheme === 'dark' ? '☀️' : '🌙';
+  document.querySelectorAll('.theme-toggle').forEach(el => { if(el) el.textContent = themeIcon; });
+
+  /* ===== INIT LANG ===== */
+  document.documentElement.lang = currentLang;
+  renderPage();
+
+  /* ===== THEME/LANG EVENT LISTENERS ===== */
+  document.querySelectorAll('#themeToggle, #themeToggleMobile').forEach(el => {
+    if(el) el.addEventListener('click', toggleTheme);
+  });
+  document.querySelectorAll('#langToggle, #langToggleMobile, #langToggleMobileMenu').forEach(el => {
+    if(el) el.addEventListener('click', toggleLang);
+  });
+
+  /* ===== RESPONSIVE TOGGLE GROUP VISIBILITY ===== */
+  function handleResize() {
+    const tg = gId('navToggleGroupMobile');
+    const hamburger = gId('hamburger');
+    if(tg && hamburger) {
+      if(window.innerWidth <= 768) {
+        tg.style.display = 'flex';
+      } else {
+        tg.style.display = 'none';
+      }
+    }
+  }
+  handleResize();
+  window.addEventListener('resize', handleResize);
+
+  /* ===== CLOSE MOBILE MENU ON RESIZE ===== */
+  window.addEventListener('resize', function() {
+    if(window.innerWidth > 768 && mobileMenu) {
+      mobileMenu.classList.remove('open');
+      if(hamburger) hamburger.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  /* ===== FAQ ACCORDION ===== */
+  window.toggleFaq = function(btn){
+    var item = btn.closest('.faq-item');
+    if(!item) return;
+    var isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item.active').forEach(function(el){ el.classList.remove('active'); });
+    if(!isActive) item.classList.add('active');
+  };
+
+  /* ===== 3D TILT ===== */
+  (function(){
+    var cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var rect = card.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top;
+        card.style.setProperty('--tilt-x', (((x - rect.width / 2) / rect.width * 2) * 8) + 'deg');
+        card.style.setProperty('--tilt-y', (((y - rect.height / 2) / rect.height * 2) * -8) + 'deg');
+        card.style.setProperty('--glow-x', (x / rect.width * 100) + '%');
+        card.style.setProperty('--glow-y', (y / rect.height * 100) + '%');
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      });
+    });
+  })();
+
+  /* ===== STAGGERED REVEAL ===== */
+  (function(){
+    var els = document.querySelectorAll('.stagger-reveal');
+    if(!els.length) return;
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    els.forEach(function(el){ observer.observe(el); });
+  })();
+});
+</script>
+</body>
+</html>

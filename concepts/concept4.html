@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode · Cosmic</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);transition:background 0.3s ease,color 0.3s ease;overflow-x:hidden;line-height:1.6}
+
+/* ===== CSS VARIABLES (Dark default) ===== */
+:root{--bg:#0b0d17;--bg2:#11152a;--surface:rgba(17,21,42,0.7);--surface2:rgba(17,21,42,0.5);--text:#e2e8f0;--text2:#94a3b8;--accent1:#7c5cfc;--accent2:#38bdf8;--grad1:linear-gradient(135deg,#7c5cfc,#38bdf8);--grad2:linear-gradient(135deg,#38bdf8,#7c5cfc);--glass:rgba(17,21,42,0.55);--glass-border:rgba(124,92,252,0.2);--shadow:0 8px 32px rgba(0,0,0,0.4);--radius:16px;--nav-bg:rgba(11,13,23,0.85);--card-bg:rgba(17,21,42,0.6);--input-bg:rgba(17,21,42,0.8);--badge-bg:rgba(124,92,252,0.15);--particle-opacity:0.35}
+[data-theme="light"]{--bg:#f0f2f8;--bg2:#ffffff;--surface:rgba(255,255,255,0.85);--surface2:rgba(255,255,255,0.6);--text:#1a1a2e;--text2:#4a4a6a;--accent1:#6a4cfa;--accent2:#0ea5e9;--grad1:linear-gradient(135deg,#6a4cfa,#0ea5e9);--grad2:linear-gradient(135deg,#0ea5e9,#6a4cfa);--glass:rgba(255,255,255,0.7);--glass-border:rgba(106,76,250,0.2);--shadow:0 8px 32px rgba(0,0,0,0.1);--nav-bg:rgba(240,242,248,0.92);--card-bg:rgba(255,255,255,0.75);--input-bg:#ffffff;--badge-bg:rgba(106,76,250,0.1);--particle-opacity:0.12}
+
+/* ===== PARTICLES CANVAS ===== */
+#particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+/* ===== NAV ===== */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);height:70px;display:flex;align-items:center}
+.nav-inner{max-width:1280px;width:100%;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.5rem;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;padding:8px 16px;border-radius:8px;font-size:0.9rem;font-weight:500;transition:all 0.25s ease}
+.nav-links a:hover,.nav-links a.active{color:var(--accent1);background:var(--badge-bg)}
+.nav-toggles{display:flex;align-items:center;gap:6px}
+.toggle-btn{background:var(--surface);border:1px solid var(--glass-border);color:var(--text2);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:all 0.25s ease;display:flex;align-items:center;gap:4px}
+.toggle-btn:hover{color:var(--accent1);border-color:var(--accent1);background:var(--badge-bg)}
+.toggle-btn.active{color:var(--accent1);border-color:var(--accent1);background:var(--badge-bg)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+.hamburger span{width:26px;height:2.5px;background:var(--text);border-radius:4px;transition:all 0.3s ease}
+.hamburger.active span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ===== HERO ===== */
+.hero{min-height:100dvh;display:flex;align-items:center;justify-content:center;position:relative;padding:100px 24px 60px;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(124,92,252,0.12) 0%,transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(56,189,248,0.08) 0%,transparent 60%);pointer-events:none}
+.hero-content{text-align:center;max-width:820px;position:relative;z-index:2}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:100px;background:var(--badge-bg);border:1px solid var(--glass-border);font-size:0.85rem;color:var(--accent2);margin-bottom:20px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.15;margin-bottom:20px}
+.hero h1 .gradient-text{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:clamp(1rem,2vw,1.25rem);color:var(--text2);max-width:640px;margin:0 auto 32px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:12px;background:var(--grad1);color:#fff;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-size:1rem;transition:all 0.3s ease;box-shadow:0 4px 20px rgba(124,92,252,0.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(124,92,252,0.4)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:12px;background:var(--surface);border:1px solid var(--glass-border);color:var(--text);font-weight:600;text-decoration:none;cursor:pointer;font-size:1rem;transition:all 0.3s ease}
+.btn-secondary:hover{background:var(--badge-bg);border-color:var(--accent1);transform:translateY(-3px)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:40px}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:1.8rem;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat .label{font-size:0.8rem;color:var(--text2);margin-top:2px}
+
+/* ===== SECTION COMMON ===== */
+section{padding:90px 24px;position:relative;z-index:2}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-header h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:12px}
+.section-header h2 .highlight{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-header p{color:var(--text2);font-size:1.05rem;max-width:600px;margin:0 auto}
+.section-chip{display:inline-block;padding:4px 14px;border-radius:100px;background:var(--badge-bg);border:1px solid var(--glass-border);font-size:0.8rem;color:var(--accent2);margin-bottom:12px}
+
+/* ===== SERVICES ===== */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.service-card{background:var(--card-bg);border-radius:var(--radius);padding:32px 28px;border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.4s ease;cursor:default;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad1);opacity:0;transition:opacity 0.4s ease}
+.service-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(124,92,252,0.35)}
+.service-card:hover::before{opacity:1}
+.service-card .icon{font-size:2.4rem;margin-bottom:14px}
+.service-card h3{font-size:1.2rem;font-weight:700;margin-bottom:10px}
+.service-card p{color:var(--text2);font-size:0.92rem;margin-bottom:16px;line-height:1.55}
+.service-card .revshare{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;background:rgba(56,189,248,0.12);color:var(--accent2);font-size:0.8rem;font-weight:600}
+.service-card .revshare.alt{background:rgba(124,92,252,0.12);color:var(--accent1)}
+.service-card .tag{position:absolute;top:16px;right:16px;padding:3px 12px;border-radius:100px;background:var(--badge-bg);color:var(--accent1);font-size:0.75rem;font-weight:600}
+
+/* ===== CASES ===== */
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
+.case-card{background:var(--card-bg);border-radius:var(--radius);padding:32px 28px;border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:all 0.4s ease}
+.case-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:rgba(124,92,252,0.3)}
+.case-card .metric{font-size:2.2rem;font-weight:900;background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.case-card .metric-label{font-size:0.85rem;color:var(--text2);margin:-4px 0 10px}
+.case-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+.case-card p{color:var(--text2);font-size:0.88rem;line-height:1.5;margin-bottom:12px}
+.case-card .tags{display:flex;flex-wrap:wrap;gap:6px}
+.case-card .tags span{padding:3px 10px;border-radius:6px;background:var(--badge-bg);color:var(--accent2);font-size:0.75rem}
+
+/* ===== ABOUT ===== */
+.about-grid{max-width:800px;margin:0 auto}
+.about-text h3{font-size:1.4rem;font-weight:700;margin-bottom:14px}
+.about-text p{color:var(--text2);line-height:1.7;margin-bottom:16px}
+.about-badges{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.about-badges .badge{padding:6px 16px;border-radius:100px;background:var(--badge-bg);border:1px solid var(--glass-border);font-size:0.85rem;font-weight:600;color:var(--accent1);transition:all 0.25s ease}
+.about-badges .badge:hover{background:rgba(124,92,252,0.25);transform:translateY(-2px)}
+
+/* ===== TEACHING ===== */
+.teaching-banner{background:var(--card-bg);border-radius:var(--radius);padding:36px 40px;border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin-top:40px;text-align:center}
+.teaching-banner .big{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.teaching-banner .big span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.teaching-banner .sub{color:var(--text2);font-size:0.95rem}
+
+/* ===== FOOTER ===== */
+footer{background:var(--nav-bg);border-top:1px solid var(--glass-border);padding:40px 24px 24px;position:relative;z-index:2}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between;align-items:center}
+.footer-copy{color:var(--text2);font-size:0.85rem}
+.footer-socials{display:flex;gap:14px}
+.footer-socials a{color:var(--text2);text-decoration:none;padding:8px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--glass-border);font-size:0.85rem;transition:all 0.25s ease}
+.footer-socials a:hover{color:var(--accent1);border-color:var(--accent1);background:var(--badge-bg)}
+.footer-cvr{color:var(--text2);font-size:0.8rem;opacity:0.7}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ===== PAGE LOAD ANIMATIONS ===== */
+@keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+@keyframes scaleIn{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(124,92,252,0.2)}50%{box-shadow:0 0 40px rgba(124,92,252,0.4)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes slideDown{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
+.hero-content{animation:fadeInUp 1s ease-out}
+.hero-badge{animation:fadeInUp 0.8s ease-out 0.2s both}
+.hero h1{animation:fadeInUp 0.8s ease-out 0.4s both}
+.hero p{animation:fadeInUp 0.8s ease-out 0.6s both}
+.hero-actions{animation:fadeInUp 0.8s ease-out 0.8s both}
+.hero-stats{animation:fadeInUp 0.8s ease-out 1s both}
+.hero .glow-orb{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:float 8s ease-in-out infinite}
+.hero .glow-orb:nth-child(1){background:radial-gradient(circle,rgba(124,92,252,0.15),transparent 70%);top:-10%;left:-5%}
+.hero .glow-orb:nth-child(2){background:radial-gradient(circle,rgba(56,189,248,0.1),transparent 70%);bottom:-10%;right:-5%;animation-delay:-4s}
+/* Staggered card reveals */
+.services-grid .service-card,.cases-grid .case-card{animation:scaleIn 0.6s ease-out both}
+.services-grid .service-card:nth-child(1){animation-delay:0.1s}
+.services-grid .service-card:nth-child(2){animation-delay:0.2s}
+.services-grid .service-card:nth-child(3){animation-delay:0.3s}
+.services-grid .service-card:nth-child(4){animation-delay:0.4s}
+.services-grid .service-card:nth-child(5){animation-delay:0.5s}
+.services-grid .service-card:nth-child(6){animation-delay:0.6s}
+.services-grid .service-card:nth-child(7){animation-delay:0.7s}
+.services-grid .service-card:nth-child(8){animation-delay:0.8s}
+.services-grid .service-card:nth-child(9){animation-delay:0.9s}
+.services-grid .service-card:nth-child(10){animation-delay:1.0s}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:16px}
+.pricing-card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:32px 28px;transition:all 0.4s ease;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad1);opacity:0;transition:opacity 0.4s ease}
+.pricing-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(124,92,252,0.35)}
+.pricing-card:hover::before{opacity:1}
+.pricing-card.featured{border-color:rgba(124,92,252,0.5);transform:scale(1.03);box-shadow:0 0 30px rgba(124,92,252,0.15),var(--shadow)}
+.pricing-card.featured:hover{transform:scale(1.03) translateY(-8px)}
+.pricing-card .pricing-badge{position:absolute;top:16px;right:-30px;background:var(--grad1);color:#fff;padding:4px 36px;font-size:0.7rem;font-weight:700;transform:rotate(45deg);text-transform:uppercase;letter-spacing:1px}
+.pricing-card .plan-name{font-size:1rem;font-weight:700;color:var(--text2);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
+.pricing-card .plan-price{font-size:3rem;font-weight:900;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.pricing-card .plan-price span{font-size:1rem;font-weight:600;color:var(--text2);-webkit-text-fill-color:var(--text2)}
+.pricing-card .plan-desc{color:var(--text2);font-size:0.85rem;margin-bottom:20px;line-height:1.5}
+.pricing-card .plan-features{list-style:none;padding:0;margin:0 0 24px;flex:1}
+.pricing-card .plan-features li{padding:10px 0;border-bottom:1px solid rgba(124,92,252,0.08);font-size:0.88rem;display:flex;align-items:center;gap:10px;color:var(--text)}
+.pricing-card .plan-features li:last-child{border-bottom:none}
+.pricing-card .plan-features li .check{color:var(--accent2);font-weight:700;flex-shrink:0;width:20px;text-align:center}
+.pricing-card .plan-features li .cross{color:#ef4444;font-weight:700;flex-shrink:0;width:20px;text-align:center}
+.pricing-card .plan-btn{display:block;text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:0.9rem;text-decoration:none;transition:all 0.3s ease;border:1px solid var(--glass-border);color:var(--text);background:var(--surface)}
+.pricing-card .plan-btn:hover{background:var(--badge-bg);border-color:var(--accent1);transform:translateY(-2px)}
+.pricing-card.featured .plan-btn{background:var(--grad1);color:#fff;border:none}
+.pricing-card.featured .plan-btn:hover{box-shadow:0 4px 20px rgba(124,92,252,0.4);transform:translateY(-2px)}
+
+/* ===== PROCESS ===== */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;counter-reset:step}
+.process-step{text-align:center;position:relative;z-index:1}
+.process-step .step-num{width:60px;height:60px;border-radius:50%;background:var(--grad1);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;color:#fff;box-shadow:0 0 20px rgba(124,92,252,0.3);transition:all 0.3s ease;position:relative}
+.process-step:hover .step-num{transform:scale(1.1);box-shadow:0 0 30px rgba(124,92,252,0.5)}
+.process-step h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.process-step p{font-size:0.85rem;color:var(--text2);line-height:1.5;max-width:220px;margin:0 auto}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:700px;margin:0 auto}
+.faq-item{background:var(--card-bg);border-radius:12px;border:1px solid var(--glass-border);margin-bottom:12px;overflow:hidden;transition:all 0.3s ease}
+.faq-item:hover{border-color:rgba(124,92,252,0.25)}
+.faq-question{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;font-weight:600;font-size:0.95rem;user-select:none;gap:12px}
+.faq-question .faq-toggle{color:var(--accent1);font-size:1.2rem;transition:transform 0.3s ease;flex-shrink:0}
+.faq-item.active .faq-question .faq-toggle{transform:rotate(45deg)}
+.faq-answer{padding:0 22px 18px;color:var(--text2);font-size:0.9rem;line-height:1.6;display:none}
+.faq-item.active .faq-answer{display:block;animation:slideDown 0.3s ease-out}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .cases-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .nav-links{position:fixed;top:70px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);flex-direction:column;padding:16px 24px;gap:4px;border-bottom:1px solid var(--glass-border);transform:translateY(-120%);opacity:0;transition:all 0.35s ease;pointer-events:none}
+  .nav-links.open{transform:translateY(0);opacity:1;pointer-events:all}
+  .nav-links a{width:100%;padding:12px 16px}
+  .nav-toggles{gap:4px}
+  .toggle-btn{padding:6px 10px;font-size:0.8rem}
+  .services-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;gap:16px}
+  .pricing-card.featured{transform:none}
+  .pricing-card.featured:hover{transform:translateY(-8px)}
+  .process-grid{grid-template-columns:repeat(2,1fr);gap:32px}
+  .hero h1{font-size:clamp(2rem,7vw,2.8rem)}
+  .hero-stats{gap:16px}
+  section{padding:60px 16px}
+  .teaching-banner{padding:24px 20px}
+  .teaching-banner .big{font-size:1.2rem}
+}
+@media(max-width:480px){
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn-primary,.hero-actions .btn-secondary{justify-content:center}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES CANVAS -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- NAV -->
+<header>
+  <div class="nav-inner">
+    <div class="logo">BasedNode</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="./" data-i18n="nav_home">Home</a></li>
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#cases" data-i18n="nav_cases">Cases</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="./security-privacy.html?style=4" data-i18n="nav_security">Security</a></li>
+      <li><a href="./contact.html?style=4" data-i18n="nav_contact_page">Contact</a></li>
+    </ul>
+    <div class="nav-toggles">
+      <button class="toggle-btn" id="langToggle" title="Til DA">DA</button>
+      <button class="toggle-btn" id="themeToggle" title="Toggle theme">🌙</button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge" data-i18n="hero_badge">✦ AI & Automation Studio</div>
+    <h1><span class="gradient-text" data-i18n="hero_title">Intelligent Systems.<br>Bold Results.</span></h1>
+    <p data-i18n="hero_desc">I help ordinary businesses get more customers, convert more leads, and automate their accounting and bookkeeping. No tech jargon — just solutions that work. I also build full-scale apps, websites, webapps, data analysis pipelines, and simulation work for those who need the advanced stuff too.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary" data-i18n="hero_cta1">Explore Services →</a>
+      <a href="./contact.html?style=4" class="btn-secondary" data-i18n="hero_cta2">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">50+</div><div class="label" data-i18n="stat1">Projects Delivered</div></div>
+      <div class="hero-stat"><div class="num">98%</div><div class="label" data-i18n="stat2">Client Satisfaction</div></div>
+      <div class="hero-stat"><div class="num">80-100×</div><div class="label" data-i18n="stat3">API Cost Reduction</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="services_chip">✦ What I Build</div>
+      <h2><span class="highlight" data-i18n="services_title">Services & Capabilities</span></h2>
+      <p data-i18n="services_desc">End-to-end AI development with transparent pricing and revenue-aligned partnerships.</p>
+    </div>
+    <div class="services-grid">
+      <!-- Service 1 -->
+      <div class="service-card reveal">
+        <div class="icon">🤖</div>
+        <h3 data-i18n="s1_title">Custom GPT Agents</h3>
+        <p data-i18n="s1_desc">Tailored large-language-model agents for customer support, lead qualification, and internal knowledge retrieval with your data.</p>
+        <div class="revshare" data-i18n="s1_rs">Revenue Share: 15%</div>
+        <div class="tag" data-i18n="s1_tag">Popular</div>
+      </div>
+      <!-- Service 2 -->
+      <div class="service-card reveal">
+        <div class="icon">⚡</div>
+        <h3 data-i18n="s2_title">API Integration & Cost Optimization</h3>
+        <p data-i18n="s2_desc">Rewrite and consolidate API call patterns. I've reduced costs by 80-100× through smart caching, batching, and model routing.</p>
+        <div class="revshare alt" data-i18n="s2_rs">Revenue Share: 20%</div>
+        <div class="tag" data-i18n="s2_tag">Best ROI</div>
+      </div>
+      <!-- Service 3 -->
+      <div class="service-card reveal">
+        <div class="icon">🏗️</div>
+        <h3 data-i18n="s3_title">Full-Stack AI Pipelines</h3>
+        <p data-i18n="s3_desc">End-to-end data ingestion → processing → model inference → output. Deployed on serverless or containerized infra.</p>
+        <div class="revshare" data-i18n="s3_rs">Revenue Share: 18%</div>
+        <div class="tag" data-i18n="s3_tag">End-to-end</div>
+      </div>
+      <!-- Service 4 -->
+      <div class="service-card reveal">
+        <div class="icon">🎨</div>
+        <h3 data-i18n="s4_title">AI-Native UX & Dashboards</h3>
+        <p data-i18n="s4_desc">React/Next.js dashboards with integrated AI copilots. Real-time analytics, natural-language querying, and proactive alerts.</p>
+        <div class="revshare alt" data-i18n="s4_rs">Revenue Share: 15%</div>
+        <div class="tag" data-i18n="s4_tag">UX Focus</div>
+      </div>
+      <!-- Service 5 -->
+      <div class="service-card reveal">
+        <div class="icon">🔗</div>
+        <h3 data-i18n="s5_title">Workflow Automation</h3>
+        <p data-i18n="s5_desc">Automate repetitive business processes with AI — document processing, invoice extraction, email routing, and more.</p>
+        <div class="revshare" data-i18n="s5_rs">Revenue Share: 12%</div>
+        <div class="tag" data-i18n="s5_tag">Save Time</div>
+      </div>
+      <!-- Service 6 -->
+      <div class="service-card reveal">
+        <div class="icon">📊</div>
+        <h3 data-i18n="s6_title">Data Engineering & ETL</h3>
+        <p data-i18n="s6_desc">Clean, transform, and unify your data. I build reliable pipelines feeding AI systems with high-quality structured data.</p>
+        <div class="revshare alt" data-i18n="s6_rs">Revenue Share: 15%</div>
+        <div class="tag" data-i18n="s6_tag">Foundation</div>
+      </div>
+      <!-- Service 7 -->
+      <div class="service-card reveal">
+        <div class="icon">🤝</div>
+        <h3 data-i18n="s7_title">Strategic Partnership</h3>
+        <p data-i18n="s7_desc">Equity-based partnership for early-stage startups. I build your AI product in exchange for equity + reduced cash retainer.</p>
+        <div class="revshare" data-i18n="s7_rs">Equity + 5% Revenue</div>
+        <div class="tag" style="background:rgba(124,92,252,0.25);color:#7c5cfc" data-i18n="s7_tag">Partnership</div>
+      </div>
+      <!-- Service 8 -->
+      <div class="service-card reveal">
+        <div class="icon">📧</div>
+        <h3 data-i18n="s8_title">Marketing Automation</h3>
+        <p data-i18n="s8_desc">Automated email campaigns, social media scheduling, and intelligent follow-ups. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.</p>
+        <div class="revshare" data-i18n="s8_rs">Revenue Share: 15%</div>
+        <div class="tag" data-i18n="s8_tag">Grow</div>
+      </div>
+      <!-- Service 9 -->
+      <div class="service-card reveal">
+        <div class="icon">📈</div>
+        <h3 data-i18n="s9_title">Ad Optimization</h3>
+        <p data-i18n="s9_desc">Google Ads, Facebook & Instagram optimization — reduce wasted spend, target only interested audiences. Smart bidding, negative keyword optimization, and A/B testing that eliminates wasted budget.</p>
+        <div class="revshare alt" data-i18n="s9_rs">Revenue Share: 20%</div>
+        <div class="tag" data-i18n="s9_tag">Save Money</div>
+      </div>
+      <!-- Service 10 -->
+      <div class="service-card reveal">
+        <div class="icon">🔎</div>
+        <h3 data-i18n="s10_title">SEO & Lead Conversion</h3>
+        <p data-i18n="s10_desc">Optimize your site for search engines and convert more visitors into paying customers. Technical SEO, content strategy, conversion optimization, and lead scoring integration with your CRM.</p>
+        <div class="revshare" data-i18n="s10_rs">Revenue Share: 15%</div>
+        <div class="tag" data-i18n="s10_tag">Convert</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="cases_chip">✦ Impact</div>
+      <h2><span class="highlight" data-i18n="cases_title">Selected Case Studies</span></h2>
+      <p data-i18n="cases_desc">Real results from real deployments. Each case delivered measurable improvements.</p>
+    </div>
+    <div class="cases-grid">
+      <!-- Case 1 -->
+      <div class="case-card reveal-left">
+        <div class="metric">80-100×</div>
+        <div class="metric-label" data-i18n="c1_ml">API cost reduction</div>
+        <h3 data-i18n="c1_title">LLM API Cost Optimization</h3>
+        <p data-i18n="c1_desc">Restructured prompt pipelines and introduced semantic caching layer. Monthly API spend dropped from €12,000 to under €150 while maintaining response quality.</p>
+        <div class="tags"><span data-i18n="c1_tag1">Caching</span><span data-i18n="c1_tag2">Prompt Engineering</span><span data-i18n="c1_tag3">Cost Optimization</span></div>
+      </div>
+      <!-- Case 2 -->
+      <div class="case-card reveal-right">
+        <div class="metric">98%</div>
+        <div class="metric-label" data-i18n="c2_ml">Auto-response accuracy</div>
+        <h3 data-i18n="c2_title">Customer Support AI Agent</h3>
+        <p data-i18n="c2_desc">Custom fine-tuned agent handling 2,500+ daily tickets. Handles 85% without human intervention, 98% accuracy with human review fallback.</p>
+        <div class="tags"><span data-i18n="c2_tag1">Fine-tuning</span><span data-i18n="c2_tag2">RAG</span><span data-i18n="c2_tag3">Support</span></div>
+      </div>
+      <!-- Case 3 -->
+      <div class="case-card reveal-left">
+        <div class="metric">40 hrs→4 min</div>
+        <div class="metric-label" data-i18n="c3_ml">Processing time reduction</div>
+        <h3 data-i18n="c3_title">Invoice Processing Pipeline</h3>
+        <p data-i18n="c3_desc">AI-powered document extraction pipeline. Reduced manual processing from 40 hours weekly to under 4 minutes with 97% extraction accuracy.</p>
+        <div class="tags"><span data-i18n="c3_tag1">Document AI</span><span data-i18n="c3_tag2">ETL</span><span data-i18n="c3_tag3">Automation</span></div>
+      </div>
+      <!-- Case 4 -->
+      <div class="case-card reveal-right">
+        <div class="metric">3.2×</div>
+        <div class="metric-label" data-i18n="c4_ml">Revenue increase</div>
+        <h3 data-i18n="c4_title">AI Lead Qualification Engine</h3>
+        <p data-i18n="c4_desc">Scored and routed 15,000 leads/month with an LLM-based qualification system. Conversion rate tripled within the first quarter.</p>
+        <div class="tags"><span data-i18n="c4_tag1">Lead Scoring</span><span data-i18n="c4_tag2">CRM</span><span data-i18n="c4_tag3">Analytics</span></div>
+      </div>
+      <!-- Case 5 -->
+      <div class="case-card reveal-left">
+        <div class="metric">60%</div>
+        <div class="metric-label" data-i18n="c5_ml">Response latency reduction</div>
+        <h3 data-i18n="c5_title">Real-Time AI Dashboard</h3>
+        <p data-i18n="c5_desc">Built a real-time operational dashboard with embedded AI copilot for a logistics firm. Query latency dropped 60%, user adoption reached 94%.</p>
+        <div class="tags"><span data-i18n="c5_tag1">Dashboard</span><span data-i18n="c5_tag2">Real-time</span><span data-i18n="c5_tag3">UX</span></div>
+      </div>
+      <!-- Case 6 -->
+      <div class="case-card reveal-right">
+        <div class="metric">+45%</div>
+        <div class="metric-label" data-i18n="c6_ml">Repeat purchase increase</div>
+        <h3 data-i18n="c6_title">Marketing Automation Engine</h3>
+        <p data-i18n="c6_desc">Automated email campaigns increased repeat purchases by 45%. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.</p>
+        <div class="tags"><span data-i18n="c6_tag1">Email</span><span data-i18n="c6_tag2">Automation</span><span data-i18n="c6_tag3">CRM</span></div>
+      </div>
+      <!-- Case 7 -->
+      <div class="case-card reveal-left">
+        <div class="metric">-60%</div>
+        <div class="metric-label" data-i18n="c7_ml">Ad spend reduction</div>
+        <h3 data-i18n="c7_title">Ad Cost Optimization</h3>
+        <p data-i18n="c7_desc">Reduced Google Ads spend by 60% while maintaining same lead volume. Smart targeting, negative keyword optimization, and A/B testing eliminated wasted budget.</p>
+        <div class="tags"><span data-i18n="c7_tag1">Google Ads</span><span data-i18n="c7_tag2">Optimization</span><span data-i18n="c7_tag3">ROI</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="about_chip">✦ Who I Am</div>
+      <h2><span class="highlight" data-i18n="about_title">About BasedNode</span></h2>
+      <p data-i18n="about_desc">A solo AI engineering studio building intelligent systems for ambitious teams.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <h3 data-i18n="about_h3">It's just me, Omar</h3>
+        <p data-i18n="about_p1">BasedNode is just me — Omar Jennane, a Danish-registered AI engineer (CVR 43750194). I combine deep technical expertise in machine learning, full-stack development, and systems architecture to deliver production-grade AI solutions. The whole point? If I can handle this solo — with AI as my copilot — I can do the same for you.</p>
+        <p data-i18n="about_p2">My approach is partnership-driven: I embed with teams, understand the domain, and build systems that compound in value over time. Every engagement is treated as a long-term relationship.</p>
+        <p data-i18n="about_p3">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p>
+        <div class="about-badges">
+          <span class="badge">🎓 Civilingeniør · Fysik & Nanoteknologi, DTU</span>
+          <span class="badge">🧠 LLM Fine-tuning Specialist</span>
+          <span class="badge" data-i18n="badge_leadgen">🎯 Lead Generation</span>
+          <span class="badge">📊 Data Engineering</span>
+          <span class="badge">🤖 Agentic Systems</span>
+          <span class="badge">☁️ Cloud Infrastructure</span>
+          <span class="badge">🔐 Security-Conscious</span>
+          <span class="badge" data-i18n="badge_marketing">🎯 Markedsføring</span>
+        </div>
+      </div>
+      <!-- No sidebar - clean story view -->
+    </div>
+    <!-- Teaching Banner (side activity) -->
+    <div class="teaching-banner reveal">
+      <div class="big" data-i18n="teaching_title"><span>Side project · Teaching math & programming since 2019 (MentorDanmark) and AI at GXU since 2025</span></div>
+      <div class="sub" data-i18n="teaching_desc">Teaching math & programming since 2019 (MentorDanmark) and AI at GXU since 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES PROMO -->
+<section style="padding:30px 24px;position:relative;z-index:2">
+  <div class="section-inner">
+    <div class="reveal" style="background:var(--card-bg);border-radius:var(--radius);padding:32px 36px;border:1px solid var(--glass-border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+      <div>
+        <h3 data-i18n="promo_title" style="font-size:1.15rem;font-weight:700;margin-bottom:6px">📚 Free Resources</h3>
+        <p data-i18n="promo_text" style="color:var(--text2);font-size:0.9rem;max-width:600px">Check out the Resources page for free guides on AI, automation, accounting, and building your own AI OS — made for non-technical business owners.</p>
+      </div>
+      <a href="./resources.html?style=4" class="btn-secondary" data-i18n="promo_btn" style="white-space:nowrap">Visit Resources →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING / HVORDAN VI ARBEJDER -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="pricing_chip">✦ Pricing</div>
+      <h2><span class="highlight" data-i18n="pricing_title">Simple, Transparent Pricing</span></h2>
+      <p data-i18n="pricing_subtitle">Every project is different. We figure out the right model together — fixed price, per-project, or revenue share.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="plan-name" data-i18n="plan1_name">Website</div>
+        <div class="plan-price" data-i18n="plan1_price">1.500-2.900 kr <span data-i18n="plan1_per">/project</span></div>
+        <div class="plan-desc" data-i18n="plan1_desc">Simple, fast websites for small businesses that need a professional online presence without the bloat.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> <span data-i18n="p1f1">Professional design</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p1f2">Mobile-friendly</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p1f3">Basic SEO setup</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p1f4">Contact form</span></li>
+          <li><span class="cross">✗</span> <span data-i18n="p1f5">Custom functionality</span></li>
+        </ul>
+      </div>
+      <div class="pricing-card featured reveal">
+        <div class="pricing-badge" data-i18n="popular">Popular</div>
+        <div class="plan-name" data-i18n="plan2_name">Simple App</div>
+        <div class="plan-price" data-i18n="plan2_price">5.000-15.000 kr <span data-i18n="plan2_per">/project</span></div>
+        <div class="plan-desc" data-i18n="plan2_desc">Custom tools, internal dashboards, lead gen systems, or automation workflows — built to do real work for your business.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> <span data-i18n="p2f1">Custom development</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p2f2">Your data, your logic</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p2f3">3-4 week delivery</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p2f4">1 month support included</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p2f5">Revenue share option</span></li>
+        </ul>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="plan-name" data-i18n="plan3_name">Lead Generation</div>
+        <div class="plan-price" data-i18n="plan3_price">Revenue <span data-i18n="plan3_per">Share</span></div>
+        <div class="plan-desc" data-i18n="plan3_desc">We grow together. Automated outreach, scoring, and CRM — you only pay when results come in.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> <span data-i18n="p3f1">Automated lead capture</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p3f2">Smart lead scoring</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p3f3">CRM integration</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p3f4">Performance dashboard</span></li>
+          <li><span class="check">✓</span> <span data-i18n="p3f5">Pay per result</span></li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px;color:var(--text2);font-size:0.85rem" data-i18n="pricing_note">
+      Need something bigger? Full-scale apps, simulations, data pipelines — we figure out the scope and price together. No commitment, just a conversation.
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="process_chip">✦ How I Work</div>
+      <h2><span class="highlight" data-i18n="process_title">From Idea to Impact</span></h2>
+      <p data-i18n="process_subtitle">A proven 4-step process that ensures clarity, quality, and results.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal" style="transition-delay:0.1s">
+        <div class="step-num">🔍</div>
+        <h3 data-i18n="step1_title">Discovery</h3>
+        <p data-i18n="step1_desc">Forstå din forretning, dine mål og dine kunder</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.2s">
+        <div class="step-num">🧩</div>
+        <h3 data-i18n="step2_title">Design</h3>
+        <p data-i18n="step2_desc">Tegn løsningen der passer præcist til dit behov</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.3s">
+        <div class="step-num">🏗️</div>
+        <h3 data-i18n="step3_title">Build</h3>
+        <p data-i18n="step3_desc">Byg systemet med løbende feedback og iteration</p>
+      </div>
+      <div class="process-step reveal" style="transition-delay:0.4s">
+        <div class="step-num">🚀</div>
+        <h3 data-i18n="step4_title">Deploy & Scale</h3>
+        <p data-i18n="step4_desc">Sæt i drift, mål resultater og skaler op</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="faq_chip">✦ FAQ</div>
+      <h2><span class="highlight" data-i18n="faq_title">Frequently Asked Questions</span></h2>
+      <p data-i18n="faq_subtitle">Common questions about how I work and what to expect.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq1_q">What does BasedNode do?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer" data-i18n="faq1_a">BasedNode is my solo operation. I help businesses automate workflows, build AI agents, create websites and apps, generate leads, and reduce costs through smart technology. Every project gets my direct attention — no account managers, no bureaucracy.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq2_q">How does revenue share work?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer" data-i18n="faq2_a">For many projects, I offer a revenue share model where you pay a reduced upfront fee plus a percentage of the value generated. This aligns incentives — I only do well when you do. Typical revenue shares range from 10-20%.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq3_q">What's your background?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer" data-i18n="faq3_a">I'm studying to be a Civilingeniør in Physics & Nanotechnology from DTU, with a background in quant finance. I've been teaching math, programming & AI since 2019 (MentorDanmark) and AI at GXU since 2025. I've built software since 2020 and achieved 80-100x cost reductions on AI infrastructure.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq4_q">How long does a project take?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer" data-i18n="faq4_a">A simple website takes 1-2 weeks. A custom app or automation workflow takes 3-6 weeks. Larger full-scale solutions are discussed and scoped together. I work iteratively so you see results as we go.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span data-i18n="faq5_q">Can a non-technical person work with you?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer" data-i18n="faq5_a">Absolutely. That is actually my specialty. I bridge the gap between what you need and the technology to deliver it. You focus on your business, I handle the technical side. No jargon, no surprises — just results.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-chip" data-i18n="contact_chip">✦ Let's Talk</div>
+      <h2><span class="highlight" data-i18n="contact_title">Get in Touch</span></h2>
+      <p data-i18n="contact_desc">Ready to build something remarkable? Reach out and I'll respond within 24 hours.</p>
+    </div>
+    <div class="contact-cta" style="text-align:center;max-width:640px;margin:0 auto">
+      <h3 data-i18n="contact_cta_title" style="font-size:1.8rem;font-weight:800;margin-bottom:16px">Ready to get started?</h3>
+      <p data-i18n="contact_cta_text" style="color:var(--text2);font-size:1.1rem;line-height:1.6;margin-bottom:28px">I work with businesses of all sizes. The first conversation is always free and always low-pressure. Just reach out and we will figure out if it makes sense.</p>
+      <a href="./contact.html?style=4" class="btn-primary" style="font-size:1.1rem;padding:16px 40px" data-i18n="contact_cta_btn">✉️ Contact Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-copy">© 2025 BasedNode · CVR 43750194</div>
+      <div class="footer-cvr" data-i18n="footer_tagline">AI Engineering Studio · Copenhagen, Denmark</div>
+      <div style="margin-top:10px"><a href="./resources.html?style=4" data-i18n="nav_resources" style="color:var(--accent2);font-size:0.85rem;text-decoration:none">Resources</a></div>
+    </div>
+    <div class="footer-socials">
+      <a href="mailto:contact@basednode.xyz">✉ Email</a>
+      <a href="https://linkedin.com/in/omar-jennane-576a26265" target="_blank">in</a>
+      <a href="https://t.me/IkkeOmar" target="_blank">Telegram</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== TRANSLATION DATA ===== */
+const TEXT = {
+  en: {
+    nav_home:'Home',nav_services:'Services',nav_cases:'Cases',nav_about:'About',nav_contact_page:'Contact',nav_security:'Security',
+    hero_badge:'✦ AI & Automation Studio',hero_title:'Intelligent Systems.<br>Bold Results.',
+    hero_desc:'I help ordinary businesses get more customers, convert more leads, and automate their accounting and bookkeeping. No tech jargon — just solutions that work. I also build full-scale apps, websites, webapps, data analysis pipelines, and simulation work for those who need the advanced stuff too.',
+    hero_cta1:'Explore Services →',hero_cta2:'Get in Touch',
+    stat1:'Projects Delivered',stat2:'Client Satisfaction',stat3:'API Cost Reduction',
+    services_chip:'✦ What I Build',services_title:'Services & Capabilities',
+    services_desc:'End-to-end AI development with transparent pricing and revenue-aligned partnerships.',
+    s1_title:'Custom GPT Agents',
+    s1_desc:'Tailored large-language-model agents for customer support, lead qualification, and internal knowledge retrieval with your data.',
+    s1_rs:'Revenue Share: 15%',
+    s2_title:'API Integration & Cost Optimization',
+    s2_desc:'Rewrite and consolidate API call patterns. I have reduced costs by 80-100× through smart caching, batching, and model routing.',
+    s2_rs:'Revenue Share: 20%',
+    s3_title:'Full-Stack AI Pipelines',
+    s3_desc:'End-to-end data ingestion → processing → model inference → output. Deployed on serverless or containerized infra.',
+    s3_rs:'Revenue Share: 18%',
+    s4_title:'AI-Native UX & Dashboards',
+    s4_desc:'React/Next.js dashboards with integrated AI copilots. Real-time analytics, natural-language querying, and proactive alerts.',
+    s4_rs:'Revenue Share: 15%',
+    s5_title:'Workflow Automation',
+    s5_desc:'Automate repetitive business processes with AI — document processing, invoice extraction, email routing, and more.',
+    s5_rs:'Revenue Share: 12%',
+    s6_title:'Data Engineering & ETL',
+    s6_desc:'Clean, transform, and unify your data. I build reliable pipelines feeding AI systems with high-quality structured data.',
+    s6_rs:'Revenue Share: 15%',
+    s7_title:'Strategic Partnership',
+    s7_desc:'Equity-based partnership for early-stage startups. I build your AI product in exchange for equity + reduced cash retainer.',
+    s7_rs:'Equity + 5% Revenue',
+    s1_tag:'Popular',s2_tag:'Best ROI',s3_tag:'End-to-end',
+    s4_tag:'UX Focus',s5_tag:'Save Time',s6_tag:'Foundation',s7_tag:'Partnership',
+    s8_tag:'Grow',s9_tag:'Save Money',s10_tag:'Convert',
+    s8_title:'Marketing Automation',
+    s8_desc:'Automated email campaigns, social media scheduling, and intelligent follow-ups. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.',
+    s8_rs:'Revenue Share: 15%',
+    s9_title:'Ad Optimization',
+    s9_desc:'Google Ads, Facebook & Instagram optimization — reduce wasted spend, target only interested audiences. Smart bidding, negative keyword optimization, and A/B testing that eliminates wasted budget.',
+    s9_rs:'Revenue Share: 20%',
+    s10_title:'SEO & Lead Conversion',
+    s10_desc:'Optimize your site for search engines and convert more visitors into paying customers. Technical SEO, content strategy, conversion optimization, and lead scoring integration with your CRM.',
+    s10_rs:'Revenue Share: 15%',
+    cases_chip:'✦ Results',cases_title:'Selected Case Studies',
+    cases_desc:'Real results from real deployments. Each case delivered measurable improvements.',
+    c1_ml:'API cost reduction',c1_title:'LLM API Cost Optimization',
+    c1_desc:'Restructured prompt pipelines and introduced semantic caching layer. Monthly API spend dropped from €12,000 to under €150 while maintaining response quality.',
+    c2_ml:'Auto-response accuracy',c2_title:'Customer Support AI Agent',
+    c2_desc:'Custom fine-tuned agent handling 2,500+ daily tickets. Handles 85% without human intervention, 98% accuracy with human review fallback.',
+    c3_ml:'Processing time reduction',c3_title:'Invoice Processing Pipeline',
+    c3_desc:'AI-powered document extraction pipeline. Reduced manual processing from 40 hours weekly to under 4 minutes with 97% extraction accuracy.',
+    c4_ml:'Revenue increase',c4_title:'AI Lead Qualification Engine',
+    c4_desc:'Scored and routed 15,000 leads/month with an LLM-based qualification system. Conversion rate tripled within the first quarter.',
+    c5_ml:'Response latency reduction',c5_title:'Real-Time AI Dashboard',
+    c5_desc:'Built a real-time operational dashboard with embedded AI copilot for a logistics firm. Query latency dropped 60%, user adoption reached 94%.',
+    c1_tag1:'Caching',c1_tag2:'Prompt Engineering',c1_tag3:'Cost Optimization',
+    c2_tag1:'Fine-tuning',c2_tag2:'RAG',c2_tag3:'Support',
+    c3_tag1:'Document AI',c3_tag2:'ETL',c3_tag3:'Automation',
+    c4_tag1:'Lead Scoring',c4_tag2:'CRM',c4_tag3:'Analytics',
+    c5_tag1:'Dashboard',c5_tag2:'Real-time',c5_tag3:'UX',
+    c6_ml:'Repeat purchase increase',c6_title:'Marketing Automation Engine',
+    c6_desc:'Automated email campaigns increased repeat purchases by 45%. Drip sequences, abandoned cart recovery, and personalized recommendations — all running on autopilot.',
+    c6_tag1:'Email',c6_tag2:'Automation',c6_tag3:'CRM',
+    c7_ml:'Ad spend reduction',c7_title:'Ad Cost Optimization',
+    c7_desc:'Reduced Google Ads spend by 60% while maintaining same lead volume. Smart targeting, negative keyword optimization, and A/B testing eliminated wasted budget.',
+    c7_tag1:'Google Ads',c7_tag2:'Optimization',c7_tag3:'ROI',
+    about_chip:'✦ Who I Am',about_title:'About BasedNode',
+    about_desc:'A solo AI engineering studio building intelligent systems for ambitious teams.',
+    about_h3:'It\'s just me, Omar',
+    about_p1:'BasedNode is just me — Omar Jennane, a Danish-registered AI engineer (CVR 43750194). I combine deep technical expertise in machine learning, full-stack development, and systems architecture to deliver production-grade AI solutions. The whole point? If I can handle this solo — with AI as my copilot — I can do the same for you.',
+    about_p2:'My approach is partnership-driven: I embed with teams, understand the domain, and build systems that compound in value over time. Every engagement is treated as a long-term relationship.',
+    about_p3:'I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.',
+    teaching_title:'Side project · <span>Teaching math & programming since 2019 (MentorDanmark) and AI at GXU since 2025</span>',
+    teaching_desc:'Teaching math & programming since 2019 (MentorDanmark) and AI at GXU since 2025',
+    contact_chip:'✦ Let\'s Talk',contact_title:'Get in Touch',
+    contact_desc:'Ready to build something remarkable? Reach out and I\'ll respond within 24 hours.',
+    contact_cta_title:'Ready to get started?',
+    contact_cta_text:'I work with businesses of all sizes. The first conversation is always free and always low-pressure. Just reach out and we will figure out if it makes sense.',
+    contact_cta_btn:'✉️ Contact Me',
+    nav_resources:'Resources',
+    badge_marketing:'🎯 Marketing',
+    badge_leadgen:'🎯 Lead Generation',
+    pricing_chip:'✦ Pricing',
+    pricing_title:'Simple, Transparent Pricing',
+    pricing_subtitle:'Every project is different. We figure out the right model together — fixed price, per-project, or revenue share.',
+    plan1_name:'Website',plan1_price:'1.500-2.900 kr',plan1_per:'/project',
+    plan1_desc:'Simple, fast websites for small businesses that need a professional online presence without the bloat.',
+    p1f1:'Professional design',p1f2:'Mobile-friendly',p1f3:'Basic SEO setup',p1f4:'Contact form',p1f5:'Custom functionality',
+    popular:'Popular',
+    plan2_name:'Simple App',plan2_price:'5.000-15.000 kr',plan2_per:'/project',
+    plan2_desc:'Custom tools, internal dashboards, lead gen systems, or automation workflows — built to do real work for your business.',
+    p2f1:'Custom development',p2f2:'Your data, your logic',p2f3:'3-4 week delivery',p2f4:'1 month support included',p2f5:'Revenue share option',
+    plan3_name:'Lead Generation',plan3_price:'Revenue',plan3_per:'Share',
+    plan3_desc:'We grow together. Automated outreach, scoring, and CRM — you only pay when results come in.',
+    p3f1:'Automated lead capture',p3f2:'Smart lead scoring',p3f3:'CRM integration',p3f4:'Performance dashboard',p3f5:'Pay per result',
+    pricing_note:'Need something bigger? Full-scale apps, simulations, data pipelines — we figure out the scope and price together. No commitment, just a conversation.',
+    footer_tagline:'AI Engineering Studio · Copenhagen, Denmark',
+    step1_title:'Discovery',step1_desc:'Understand your business, your goals, and your customers.',
+    step2_title:'Design',step2_desc:'Design the solution that fits your needs precisely.',
+    step3_title:'Build',step3_desc:'Build the system with continuous feedback and iteration.',
+    step4_title:'Deploy & Scale',step4_desc:'Deploy, measure results, and scale up.',
+    process_chip:'✦ How I Work',
+    process_title:'From Idea to Impact',
+    process_subtitle:'A proven 4-step process that ensures clarity, quality, and results.',
+    faq1_q:'What does BasedNode do?',
+    faq1_a:"BasedNode is my solo operation. I help businesses automate workflows, build AI agents, create websites and apps, generate leads, and reduce costs through smart technology. Every project gets my direct attention — no account managers, no bureaucracy.",
+    faq2_q:'How does revenue share work?',
+    faq2_a:'For many projects, I offer a revenue share model where you pay a reduced upfront fee plus a percentage of the value generated. This aligns incentives — I only do well when you do. Typical revenue shares range from 10-20%.',
+    faq3_q:"What's your background?",
+    faq3_a:"I'm studying to be a Civilingeniør in Physics & Nanotechnology from DTU, with a background in quant finance. I've been teaching math, programming & AI since 2019 (MentorDanmark) and AI at GXU since 2025. I've built software since 2020 and achieved 80-100x cost reductions on AI infrastructure.",
+    faq4_q:'How long does a project take?',
+    faq4_a:'A simple website takes 1-2 weeks. A custom app or automation workflow takes 3-6 weeks. Larger full-scale solutions are discussed and scoped together. I work iteratively so you see results as we go.',
+    faq5_q:'Can a non-technical person work with you?',
+    faq5_a:'Absolutely. That is actually my specialty. I bridge the gap between what you need and the technology to deliver it. You focus on your business, I handle the technical side. No jargon, no surprises — just results.',
+    faq_chip:'✦ FAQ',
+    faq_title:'Frequently Asked Questions',
+    faq_subtitle:'Common questions about how I work and what to expect.',
+    promo_title:'📚 Free Resources',
+    promo_text:'Check out the Resources page for free guides on AI, automation, accounting, and building your own AI OS — made for non-technical business owners.',
+    promo_btn:'Visit Resources →'
+  },
+  da: {
+    nav_home:'Hjem',nav_services:'Services',nav_cases:'Cases',nav_about:'Om',nav_contact_page:'Kontakt',nav_security:'Sikkerhed',
+    hero_badge:'✦ BasedNode · Automatisering & AI',hero_title:'Systemer der virker.<br>Forretning der vokser.',
+    hero_desc:'Jeg hjælper almindelige virksomheder med at få flere kunder, omsætte flere leads og automatisere deres regnskab og bogholderi. Ingen tech-jargon — bare løsninger der virker. Jeg bygger også fuldskala-apps, hjemmesider, webapps, dataanalyse-pipelines og simulationsarbejde for dem der har brug for den avancerede del også.',
+    hero_cta1:'Udforsk Services →',hero_cta2:'Kontakt Mig',
+    stat1:'Projekter Leveret',stat2:'Kundetilfredshed',stat3:'API-omkostningsreduktion',
+    services_chip:'✦ Hvad jeg bygger',services_title:'Services & Kapaciteter',
+    services_desc:'End-to-end AI-udvikling med gennemsigtige priser og indtægtsdelte partnerskaber.',
+    s1_title:'Skræddersyede GPT-agenter',
+    s1_desc:'Skræddersyede LLM-agenter til kundesupport, lead-kvalificering og intern videnindsamling med dine data.',
+    s1_rs:'Indtægtsdeling: 15%',
+    s2_title:'API-integration & Omkostningsoptimering',
+    s2_desc:'Omskriv og konsolider API-kald. Jeg har reduceret omkostninger med 80-100× gennem smart caching, batching og model-routing.',
+    s2_rs:'Indtægtsdeling: 20%',
+    s3_title:'Full-Stack AI Pipelines',
+    s3_desc:'End-to-end dataopsamling → behandling → modelinferens → output. Implementeret på serverless eller containeriseret infrastruktur.',
+    s3_rs:'Indtægtsdeling: 18%',
+    s4_title:'AI-Native UX & Dashboards',
+    s4_desc:'React/Next.js dashboards med integrerede AI-copiloter. Realtidsanalyser, naturligt sprog og proaktive advarsler.',
+    s4_rs:'Indtægtsdeling: 15%',
+    s5_title:'Workflow-automatisering',
+    s5_desc:'Automatiser gentagne forretningsprocesser med AI — dokumentbehandling, fakturaekstraktion, e-mail-routing og meget mere.',
+    s5_rs:'Indtægtsdeling: 12%',
+    s6_title:'Data Engineering & ETL',
+    s6_desc:'Rens, transformér og saml dine data. Jeg bygger pålidelige pipelines, der forsyner AI-systemer med højkvalitetsdata.',
+    s6_rs:'Indtægtsdeling: 15%',
+    s7_title:'Strategisk Partnerskab',
+    s7_desc:'Ejerandelsbaseret partnerskab for tidlige startups. Jeg bygger dit AI-produkt mod ejerandel + reduceret honorar.',
+    s7_rs:'Ejerandel + 5% omsætning',
+    s1_tag:'Populær',s2_tag:'Bedste ROI',s3_tag:'End-to-end',
+    s4_tag:'UX-fokus',s5_tag:'Spar tid',s6_tag:'Fundament',s7_tag:'Partnerskab',
+    s8_tag:'Vækst',s9_tag:'Spar penge',s10_tag:'Konverter',
+    s8_title:'Marketing Automation',
+    s8_desc:'Automatiserede e-mailkampagner, social media-planlægning og intelligente opfølgninger. Drip-sekvenser, abandonded cart recovery og personlige anbefalinger — alt sammen på autopilot.',
+    s8_rs:'Indtægtsdeling: 15%',
+    s9_title:'Annonceoptimering',
+    s9_desc:'Google Ads, Facebook & Instagram optimering — reducer spildt annonceforbrug, target kun interesserede målgrupper. Smart budgivning, negativ søgeordsoptimering og A/B-test der eliminerer spildt budget.',
+    s9_rs:'Indtægtsdeling: 20%',
+    s10_title:'SEO & Lead-konvertering',
+    s10_desc:'Optimér din hjemmeside til søgemaskiner og konverter flere besøgende til betalende kunder. Teknisk SEO, content-strategi, konverteringsoptimering og lead-scoring integration med dit CRM.',
+    s10_rs:'Indtægtsdeling: 15%',
+    cases_chip:'✦ Resultater',cases_title:'Udvalgte Cases',
+    cases_desc:'Virkelige resultater fra virkelige implementeringer. Hver case leverede målbare forbedringer.',
+    c1_ml:'API-omkostningsreduktion',c1_title:'LLM API-omkostningsoptimering',
+    c1_desc:'Omstrukturerede prompt-pipelines og introducerede semantisk caching. Månedlige API-udgifter faldt fra 12.000 kr til under 150 kr.',
+    c2_ml:'Autosvar-nøjagtighed',c2_title:'Kundesupport AI-agent',
+    c2_desc:'Specialtilpasset finjusteret agent, der håndterer 2.500+ daglige henvendelser. Klarer 85% uden menneskelig indblanding.',
+    c3_ml:'Behandlingstidsreduktion',c3_title:'Fakturabehandlingspipeline',
+    c3_desc:'AI-drevet dokumentekstraktion. Reducerede manuel behandling fra 40 timer om ugen til under 4 minutter med 97% nøjagtighed.',
+    c4_ml:'Omsætningsstigning',c4_title:'AI Lead-kvalificeringsmotor',
+    c4_desc:'Scorede og routede 15.000 leads/måned med et LLM-baseret kvalificeringssystem. Konverteringsraten tredobledes.',
+    c5_ml:'Svartidsreduktion',c5_title:'Realtids AI-dashboard',
+    c5_desc:'Byggede et realtids dashboard med integreret AI-copilot. Svartiden faldt 60%, brugeradoption nåede 94%.',
+    c1_tag1:'Caching',c1_tag2:'Prompt Engineering',c1_tag3:'Omkostningsoptimering',
+    c2_tag1:'Fine-tuning',c2_tag2:'RAG',c2_tag3:'Support',
+    c3_tag1:'Document AI',c3_tag2:'ETL',c3_tag3:'Automatisering',
+    c4_tag1:'Lead-scoring',c4_tag2:'CRM',c4_tag3:'Analytics',
+    c5_tag1:'Dashboard',c5_tag2:'Real-time',c5_tag3:'UX',
+    c6_ml:'Gentagne køb stigning',c6_title:'Marketing Automatisering',
+    c6_desc:'Automatiserede e-mailkampagner øgede gentagne køb med 45%. Drip-sekvenser, abandonded cart recovery og personlige anbefalinger — alt på autopilot.',
+    c6_tag1:'E-mail',c6_tag2:'Automatisering',c6_tag3:'CRM',
+    c7_ml:'Annonceforbrugsreduktion',c7_title:'Annonceomkostningsoptimering',
+    c7_desc:'Reducerede Google Ads-forbrug med 60% mens samme lead-volumen blev opretholdt. Smart targeting, negativ søgeordsoptimering og A/B-test eliminerede spildt budget.',
+    c7_tag1:'Google Ads',c7_tag2:'Optimering',c7_tag3:'ROI',
+    about_chip:'✦ Hvem jeg er',about_title:'Om BasedNode',
+    about_desc:'Et solo AI-ingeniørstudie, der bygger intelligente systemer til ambitiøse teams.',
+    about_h3:'Det er mig, Omar',
+    about_p1:'BasedNode er bare mig, Omar — et danskregistreret AI-firma (CVR 43750194). Jeg kombinerer dyb teknisk ekspertise inden for maskinlæring, full-stack-udvikling og systemarkitektur. Pointen? Hvis jeg kan klare det her solo — med AI som min copilot — kan jeg gøre det samme for dig.',
+    about_p2:'Min tilgang er partnerskabsdrevet: jeg arbejder tæt sammen med teams, forstår forretningen og bygger systemer, der vokser i værdi over tid.',
+    about_p3:'Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.',
+    teaching_title:'Sideprojekt · <span>Undervist i matematik & programmering siden 2019 (MentorDanmark) og AI på GXU siden 2025</span>',
+    teaching_desc:'Undervist i matematik & programmering siden 2019 (MentorDanmark) og AI på GXU siden 2025',
+    contact_chip:'✦ Lad os snakke',contact_title:'Kontakt Mig',
+    contact_desc:'Klar til at bygge noget fedt? Skriv til mig, så svarer jeg inden for 24 timer.',
+    contact_cta_title:'Klar til at komme i gang?',
+    contact_cta_text:'Jeg arbejder med virksomheder i alle størrelser. Den første samtale er altid gratis og altid uforpligtende. Ræk bare ud så finder vi ud af om det giver mening.',
+    contact_cta_btn:'✉️ Kontakt Mig',
+    nav_resources:'Ressourcer',
+    badge_marketing:'🎯 Markedsføring',
+    badge_leadgen:'🎯 Lead-generation',
+    pricing_chip:'✦ Priser',
+    pricing_title:'Priser efter projekt',
+    pricing_subtitle:'Hvert projekt er forskelligt. Vi finder den rigtige model sammen — fast pris, per projekt eller revenue share.',
+    plan1_name:'Hjemmeside',plan1_price:'1.500-2.900 kr',plan1_per:'/projekt',
+    plan1_desc:'Enkle, hurtige hjemmesider til små virksomheder der har brug for en professionel online tilstedeværelse uden unødigt bøvl.',
+    p1f1:'Professionelt design',p1f2:'Mobilvenlig',p1f3:'Basal SEO-opsætning',p1f4:'Kontaktformular',p1f5:'Brugerdefineret funktionalitet',
+    popular:'Populær',
+    plan2_name:'Simpel App',plan2_price:'5.000-15.000 kr',plan2_per:'/projekt',
+    plan2_desc:'Brugerdefinerede værktøjer, interne dashboards, lead-generering eller automatisering — bygget til at gøre arbejde for din virksomhed.',
+    p2f1:'Brugerdefineret udvikling',p2f2:'Dine data, din logik',p2f3:'3-4 ugers levering',p2f4:'1 måneds support inkluderet',p2f5:'Revenue share mulighed',
+    plan3_name:'Lead-generering',plan3_price:'Revenue',plan3_per:'Share',
+    plan3_desc:'Vi vokser sammen. Automatiseret opsøgning, scoring og CRM — du betaler kun når resultaterne kommer.',
+    p3f1:'Automatiseret lead-opsamling',p3f2:'Smart lead-scoring',p3f3:'CRM-integration',p3f4:'Resultat-dashboard',p3f5:'Betal per resultat',
+    pricing_note:'Brug for noget større? Fuldskala-apps, simuleringer, datapipelines — vi finder scope og pris sammen. Uden forpligtelser, bare en snak.',
+    footer_tagline:'AI Ingeniørstudie · København, Danmark',
+    step1_title:'Discovery',step1_desc:'Forstå din forretning, dine mål og dine kunder',
+    step2_title:'Design',step2_desc:'Tegn løsningen der passer præcist til dit behov',
+    step3_title:'Build',step3_desc:'Byg systemet med løbende feedback og iteration',
+    step4_title:'Deploy & Scale',step4_desc:'Sæt i drift, mål resultater og skaler op',
+    process_chip:'✦ Sådan arbejder jeg',
+    process_title:'Fra idé til impact',
+    process_subtitle:'En gennemprøvet 4-trins proces der sikrer klarhed, kvalitet og resultater.',
+    faq1_q:'Hvad laver BasedNode?',
+    faq1_a:'BasedNode er min solo-virksomhed. Jeg hjælper virksomheder med at automatisere workflows, bygge AI-agenter, lave hjemmesider og apps, generere leads og reducere omkostninger gennem smart teknologi. Hvert projekt får min direkte opmærksomhed — ingen account managers, intet bureaukrati.',
+    faq2_q:'Hvordan fungerer revenue share?',
+    faq2_a:'For mange projekter tilbyder jeg en revenue share-model hvor du betaler et reduceret startgebyr plus en procentdel af værdien der skabes. Det betyder at jeg kun tjener penge når du gør. Typiske revenue shares ligger på 10-20%.',
+    faq3_q:'Hvad er din baggrund?',
+    faq3_a:'Jeg læser til Civilingeniør i Fysik & Nanoteknologi fra DTU, med en baggrund i kvantitativ finans. Jeg har undervist i matematik, programmering & AI siden 2019 (MentorDanmark) og AI på GXU siden 2025. Jeg har bygget software siden 2020 og opnået 80-100x reduktion på AI-infrastruktur.',
+    faq4_q:'Hvor lang tid tager et projekt?',
+    faq4_a:'En simpel hjemmeside tager 1-2 uger. En custom app eller automatisering tager 3-6 uger. Større løsninger diskuterer og aftaler vi sammen. Jeg arbejder iterativt så du ser resultater undervejs.',
+    faq5_q:'Kan en ikke-teknisk person arbejde med dig?',
+    faq5_a:'Absolut. Det er faktisk min speciale. Jeg bygger bro mellem hvad du har brug for og teknologien der leverer det. Du fokuserer på din forretning, jeg håndterer teknikken. Ingen jargon, ingen overraskelser — bare resultater.',
+    faq_chip:'✦ FAQ',
+    faq_title:'Ofte Stillede Spørgsmål',
+    faq_subtitle:'Almindelige spørgsmål om hvordan jeg arbejder og hvad du kan forvente.',
+    promo_title:'📚 Gratis Ressourcer',
+    promo_text:'Tjek Resources-siden for gratis guides om AI, automatisering, regnskab og hvordan du bygger din egen AI OS — lavet til ikke-tekniske virksomhedsejere.',
+    promo_btn:'Se Resources →'
+  }
+};
+
+/* ===== I18N ENGINE ===== */
+let currentLang = localStorage.getItem('bn-lang') || 'en';
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('bn-lang', lang);
+  const t = TEXT[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+  const btn = document.getElementById('langToggle');
+  if (btn) btn.textContent = lang === 'en' ? 'DA' : 'EN';
+  const html = document.documentElement;
+  html.setAttribute('lang', lang === 'da' ? 'da-DK' : 'en');
+}
+
+/* ===== THEME ENGINE ===== */
+let currentTheme = localStorage.getItem('bn-theme') || 'dark';
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('bn-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+}
+
+/* ===== PARTICLES ===== */
+(function initParticles() {
+  const canvas = document.getElementById('particles-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let w,h;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  const count = Math.min(80, Math.floor((w * h) / 20000));
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1,
+      alpha: Math.random() * 0.5 + 0.15
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const colors = isLight ? ['124,92,252','56,189,248'] : ['124,92,252','56,189,248'];
+    particles.forEach((p,i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = w;
+      if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h;
+      if (p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${colors[i % 2]},${p.alpha})`;
+      ctx.fill();
+      // connections
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = p.x - particles[j].x;
+        const dy = p.y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 160) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(${colors[i % 2]},${0.08 * (1 - dist / 160)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ===== HAMBURGER ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', function() {
+      this.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+  }
+  // close nav on outside click
+  document.addEventListener('click', function(e) {
+    if (navLinks && navLinks.classList.contains('open')) {
+      const header = document.querySelector('header');
+      if (header && !header.contains(e.target)) {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+      }
+    }
+  });
+});
+
+/* ===== SCROLL REVEAL ===== */
+(function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  });
+})();
+
+/* ===== THEME / LANG TOGGLES ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  applyTheme(currentTheme);
+  applyLang(currentLang);
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    const next = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    // restart particles with new colors
+    const canvas = document.getElementById('particles-canvas');
+    if (canvas) {
+      const old = canvas;
+      old.parentNode.removeChild(old);
+      const neu = document.createElement('canvas');
+      neu.id = 'particles-canvas';
+      document.body.prepend(neu);
+      // re-init particles
+      (function reParticles(){
+        const c = document.getElementById('particles-canvas');
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        let p = [];
+        let w,h;
+        function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
+        window.addEventListener('resize',resize);
+        resize();
+        const cnt = Math.min(80, Math.floor((w*h)/20000));
+        for(let i=0;i<cnt;i++){p.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,r:Math.random()*2+1,alpha:Math.random()*0.5+0.15})}
+        function draw(){
+          ctx.clearRect(0,0,w,h);
+          const lt = document.documentElement.getAttribute('data-theme')==='light';
+          const cols = ['124,92,252','56,189,248'];
+          p.forEach((pt,i)=>{
+            pt.x+=pt.vx;pt.y+=pt.vy;
+            if(pt.x<0)pt.x=w;if(pt.x>w)pt.x=0;if(pt.y<0)pt.y=h;if(pt.y>h)pt.y=0;
+            ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(${cols[i%2]},${pt.alpha})`;ctx.fill();
+            for(let j=i+1;j<p.length;j++){const dx=pt.x-p[j].x,dy=pt.y-p[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<160){ctx.beginPath();ctx.moveTo(pt.x,pt.y);ctx.lineTo(p[j].x,p[j].y);ctx.strokeStyle=`rgba(${cols[i%2]},${0.08*(1-dist/160)})`;ctx.lineWidth=0.6;ctx.stroke()}}
+          });
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+    }
+  });
+  document.getElementById('langToggle').addEventListener('click', function() {
+    const next = currentLang === 'en' ? 'da' : 'en';
+    applyLang(next);
+  });
+});
+
+/* ===== SMOOTH SCROLL FOR NAV ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+});
+
+/* ===== ACTIVE NAV HIGHLIGHT ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('section[id]');
+  const navAnchors = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', function() {
+    let current = '';
+    sections.forEach(s => {
+      const top = s.getBoundingClientRect().top;
+      if (top < 200) current = s.getAttribute('id');
+    });
+    navAnchors.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+});
+
+/* ===== FAQ ACCORDION ===== */
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  if (!item) return;
+  const isActive = item.classList.contains('active');
+  // Close all
+  document.querySelectorAll('.faq-item.active').forEach(f => f.classList.remove('active'));
+  if (!isActive) item.classList.add('active');
+}
+
+/* ===== HERO AMBIENT GLOW ORBS ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  const hero = document.querySelector('.hero');
+  if (hero && !hero.querySelector('.glow-orb')) {
+    const orb1 = document.createElement('div');
+    orb1.className = 'glow-orb';
+    const orb2 = document.createElement('div');
+    orb2.className = 'glow-orb';
+    hero.prepend(orb1);
+    hero.prepend(orb2);
+  }
+});
+</script>
+</body>
+</html>

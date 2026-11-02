@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en" class="concept-agency">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Based Node | Automation, AI Agents & Data</title>
+<meta name="description" content="Based Node helps solopreneurs and small businesses scale with workflow automation, AI agents, dashboards, websites, and digital strategy.">
+<meta property="og:title" content="Based Node — Automation, AI Agents & Data">
+<meta property="og:description" content="Power your business with Automation, AI Agents, Data.">
+<meta property="og:url" content="https://basednode.xyz">
+<meta property="og:site_name" content="Based Node">
+<meta property="og:locale" content="en_US">
+<style>
+/* ===== CONCEPT 1: THE AGENCY ===== */
+/* Slate/purple · Glassmorphism · Spring transitions */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); transition-duration: 350ms; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root, [data-theme="dark"] {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181b24;
+  --bg-tertiary: #1e2230;
+  --bg-card: rgba(24, 27, 36, 0.6);
+  --bg-glass: rgba(15, 17, 23, 0.72);
+  --bg-glass-hover: rgba(24, 27, 36, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #f1f3f5;
+  --text-secondary: #8b95a5;
+  --text-tertiary: #5c6675;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --accent-glow: rgba(167, 139, 250, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --input-bg: rgba(255,255,255,0.04);
+  --input-border: rgba(255,255,255,0.08);
+  --badge-bg: rgba(167,139,250,0.1);
+  --pill-bg: rgba(255,255,255,0.03);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8f5f0;
+  --bg-secondary: #eeebe6;
+  --bg-tertiary: #e5e0d8;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(248, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-dim: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.15);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --input-bg: rgba(0,0,0,0.02);
+  --input-border: rgba(0,0,0,0.1);
+  --badge-bg: rgba(124,58,237,0.08);
+  --pill-bg: rgba(0,0,0,0.02);
+}
+
+body { margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { transition: background 300ms ease, color 300ms ease; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+
+/* ===== NAV ===== */
+.nav { position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100; background: var(--bg-glass); backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--border-subtle); }
+.nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.3); border-bottom-color: rgba(167, 139, 250, 0.15); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.nav-logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+.nav-logo:hover { opacity: 0.8; }
+.nav-logo .logo-accent { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav-link { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; padding: 6px 14px; border-radius: 6px; }
+.nav-link:hover { color: var(--text-primary); background: var(--accent-dim); }
+.nav-cta { font-size: 0.8rem; font-weight: 600; color: #fff; background: var(--accent); text-decoration: none; padding: 8px 18px; border-radius: 6px; }
+.nav-cta:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
+.nav-toggle-btn { background: none; border: 1px solid var(--border-subtle); color: var(--text-secondary); cursor: pointer; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1; }
+.nav-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-toggles { display: flex; align-items: center; gap: 6px; }
+
+/* ===== MOBILE NAV ===== */
+.mobile-menu-btn { display: none; background: none; border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; padding: 8px; border-radius: 6px; }
+.mobile-nav-overlay { display: none; position: fixed; inset: 0; z-index: 99; background: var(--bg-primary); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-top: calc(56px + 16px); padding-bottom: 24px; opacity: 0; visibility: hidden; }
+.mobile-nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-nav-links { list-style: none; margin: 0; padding: 0 24px; display: flex; flex-direction: column; gap: 2px; }
+.mobile-nav-link { display: block; font-size: 1.05rem; font-weight: 500; color: var(--text-secondary); text-decoration: none; padding: 14px 16px; border-radius: 10px; }
+.mobile-nav-link:hover { color: var(--text-primary); background: var(--accent-dim); }
+.mobile-nav-cta { display: block; text-align: center; font-size: 1rem; font-weight: 600; color: #fff; background: var(--accent); text-decoration: none; padding: 14px 24px; margin: 12px 24px 0; border-radius: 10px; }
+.mobile-nav-toggles { display: flex; gap: 10px; justify-content: center; margin: 16px 24px; }
+
+/* ===== SECTIONS ===== */
+.section { padding: 100px 0; }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-label { display: inline-block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 12px; }
+.section-title { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 16px; color: var(--text-primary); }
+.section-subtitle { font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+/* ===== HERO ===== */
+.hero { min-height: 100dvh; display: flex; align-items: center; justify-content: center; position: relative; padding: 120px 0 80px; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 30% 40%, rgba(167, 139, 250, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(167, 139, 250, 0.04) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; margin: 0 auto; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 500; color: var(--accent); background: var(--accent-dim); padding: 6px 16px; border-radius: 100px; border: 1px solid rgba(167, 139, 250, 0.2); margin-bottom: 32px; }
+.hero-title { font-size: 4rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin: 0 0 24px; color: var(--text-primary); }
+.hero-title .accent-text { color: var(--accent); position: relative; }
+.hero-title .accent-text::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 4px; background: var(--accent); border-radius: 2px; opacity: 0.4; }
+.hero-subtitle { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 40px; line-height: 1.7; }
+.hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+/* ===== BUTTONS ===== */
+.btn-primary, .btn-secondary { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; padding: 14px 28px; border-radius: 6px; text-decoration: none; border: none; cursor: pointer; }
+.btn-primary { color: #fff; background: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 32px var(--accent-glow); }
+.btn-secondary { color: var(--text-primary); background: transparent; border: 1px solid var(--border-subtle); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); background: var(--accent-dim); }
+
+/* ===== PILLARS ===== */
+.pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.pillar-card { background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 40px 32px; text-align: center; }
+.pillar-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 48px rgba(167, 139, 250, 0.1); background: var(--bg-glass-hover); }
+.pillar-icon { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: var(--accent-dim); border-radius: 10px; margin: 0 auto 20px; color: var(--accent); }
+.pillar-card:hover .pillar-icon { background: var(--accent); color: #fff; transform: scale(1.05); }
+.pillar-title { font-size: 1.2rem; font-weight: 600; margin: 0 0 12px; letter-spacing: -0.02em; }
+.pillar-desc { font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+
+/* ===== SERVICES GRID ===== */
+.software-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.software-card { background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 32px 28px; position: relative; }
+.software-card:hover { border-color: var(--accent); transform: translateY(-4px) scale(1.01); box-shadow: 0 12px 48px rgba(167, 139, 250, 0.08); }
+.software-card-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--accent-dim); border-radius: 10px; margin-bottom: 18px; color: var(--accent); }
+.software-card:hover .software-card-icon { background: var(--accent); color: #fff; }
+.software-card-title { font-size: 1.05rem; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em; }
+.software-card-desc { font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.6; }
+.software-card-tag { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: var(--accent-dim); display: inline-block; padding: 3px 10px; border-radius: 100px; margin-top: 10px; }
+.software-card-link { font-size: 0.8rem; font-weight: 600; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.software-card-link:hover { gap: 10px; }
+
+/* ===== CASES ===== */
+.cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.case-card { background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 32px 28px; position: relative; overflow: hidden; }
+.case-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 48px rgba(167, 139, 250, 0.08); }
+.case-card-tag { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: var(--accent-dim); display: inline-block; padding: 4px 10px; border-radius: 100px; margin-bottom: 16px; }
+.case-card-title { font-size: 1.05rem; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.02em; }
+.case-card-desc { font-size: 0.85rem; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+.case-card-metrics { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.case-card-metric { font-size: 0.75rem; font-weight: 600; color: var(--success); background: var(--pill-bg); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-subtle); }
+
+/* ===== ABOUT ===== */
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.about-content .section-label, .about-content .section-title, .about-content .section-subtitle { text-align: left; }
+.about-content .section-subtitle { margin: 0 0 24px; max-width: 100%; }
+.about-text { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin: 0 0 24px; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.badge { font-size: 0.7rem; font-weight: 500; color: var(--accent); background: var(--badge-bg); border: 1px solid rgba(167,139,250,0.15); padding: 5px 12px; border-radius: 100px; }
+.badge:hover { border-color: var(--accent); }
+.about-details { display: flex; flex-direction: column; gap: 12px; }
+.about-detail-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.9rem; color: var(--text-secondary); }
+.about-visual { display: flex; align-items: center; justify-content: center; }
+.about-card { background: var(--bg-glass); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 48px 40px; width: 100%; max-width: 420px; text-align: center; }
+.about-card-name { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+.about-card-role { font-size: 0.85rem; color: var(--accent); margin: 0 0 20px; font-weight: 500; }
+.about-card-stats { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.about-stat { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 10px; background: var(--pill-bg); border: 1px solid var(--border-subtle); font-size: 0.8rem; }
+.about-stat-label { color: var(--text-tertiary); }
+.about-stat-value { color: var(--text-primary); font-weight: 500; font-family: monospace; }
+
+/* ===== CONTACT FORM ===== */
+.form-wrapper { max-width: 560px; margin: 0 auto; background: var(--bg-glass); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 24px; padding: 48px 40px; }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+.form-input, .form-select, .form-textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; padding: 12px 16px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text-primary); outline: none; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+.form-textarea { min-height: 120px; resize: vertical; }
+.form-submit { width: 100%; margin-top: 8px; }
+
+/* ===== FOOTER ===== */
+.footer { border-top: 1px solid var(--border-subtle); padding: 80px 0 40px; margin-top: 40px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 60px; }
+.footer-brand { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; }
+.footer-brand .logo-accent { color: var(--accent); }
+.footer-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 20px; max-width: 300px; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social-link { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 6px; background: var(--bg-tertiary); color: var(--text-secondary); text-decoration: none; border: 1px solid var(--border-subtle); }
+.footer-social-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); transform: translateY(-2px); }
+.footer-heading { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); margin: 0 0 20px; }
+.footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer-link { font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; display: inline-block; }
+.footer-link:hover { color: var(--accent); transform: translateX(3px); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 32px; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-tertiary); }
+.footer-cvr { font-family: 'Courier New', monospace; font-size: 0.75rem; }
+
+/* ===== SCROLL REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 600ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+::selection { background: var(--accent-dim); color: var(--text-primary); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) { .pillars-grid, .software-grid { grid-template-columns: repeat(2, 1fr); } .cases-grid { grid-template-columns: repeat(2, 1fr); } .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 768px) {
+  .nav-links { display: none; } .mobile-menu-btn { display: flex; align-items: center; justify-content: center; } .mobile-nav-overlay { display: block; }
+  .hero-title { font-size: 2.5rem; } .hero-subtitle { font-size: 1rem; } .section-title { font-size: 1.8rem; }
+  .pillars-grid, .software-grid, .cases-grid { grid-template-columns: 1fr; }
+  .about-layout { grid-template-columns: 1fr; gap: 40px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .section { padding: 60px 0; }
+  .form-wrapper { padding: 32px 24px; }
+}
+@media (max-width: 480px) { .hero-title { font-size: 2rem; } .container { padding: 0 16px; } .hero-actions { flex-direction: column; width: 100%; } .btn-primary, .btn-secondary { width: 100%; justify-content: center; } }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+
+/* ===== PAGE LOAD ANIMATIONS ===== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px var(--accent-glow); } 50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(167, 139, 250, 0.15); } }
+
+.hero-content { animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.hero .hero-badge { animation: fadeIn 0.6s ease 0.2s both; }
+.hero .hero-title { animation: slideUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both; }
+.hero .hero-subtitle { animation: fadeInUp 0.7s ease 0.5s both; }
+.hero .hero-actions { animation: fadeInUp 0.7s ease 0.7s both; }
+
+/* ===== HERO GRADIENT MESH ===== */
+.hero-gradient-mesh { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.hero-gradient-mesh .mesh-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: floatBlob 20s ease-in-out infinite; }
+.hero-gradient-mesh .mesh-blob:nth-child(1) { width: 600px; height: 600px; background: radial-gradient(circle, rgba(167, 139, 250, 0.15), transparent); top: -10%; left: -10%; animation-delay: 0s; }
+.hero-gradient-mesh .mesh-blob:nth-child(2) { width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.1), transparent); bottom: -10%; right: -5%; animation-delay: -5s; }
+.hero-gradient-mesh .mesh-blob:nth-child(3) { width: 400px; height: 400px; background: radial-gradient(circle, rgba(167, 139, 250, 0.08), transparent); top: 40%; left: 50%; animation-delay: -10s; }
+@keyframes floatBlob { 0%, 100% { transform: translate(0, 0) scale(1); } 25% { transform: translate(30px, -40px) scale(1.1); } 50% { transform: translate(-20px, 20px) scale(0.95); } 75% { transform: translate(40px, 30px) scale(1.05); } }
+
+/* ===== PRICING CARDS ===== */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.pricing-card { background: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 40px 32px; text-align: center; position: relative; display: flex; flex-direction: column; }
+.pricing-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(167, 139, 250, 0.12); }
+.pricing-card.featured { border-color: var(--accent); background: linear-gradient(135deg, rgba(167, 139, 250, 0.08), rgba(139, 92, 246, 0.04)); border-width: 2px; position: relative; }
+.pricing-card.featured::before { content: 'Most Popular'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fff; background: var(--accent); padding: 4px 16px; border-radius: 100px; }
+.pricing-card-name { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 8px; }
+.pricing-card-price { font-size: 3rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text-primary); margin-bottom: 4px; line-height: 1.1; }
+.pricing-card-price span { font-size: 1rem; font-weight: 500; color: var(--text-tertiary); }
+.pricing-card-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px; }
+.pricing-card-features { list-style: none; margin: 0 0 28px; padding: 0; text-align: left; flex: 1; }
+.pricing-card-features li { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+.pricing-card-features li:last-child { border-bottom: none; }
+.pricing-card-features li .feat-icon { color: var(--success); flex-shrink: 0; }
+.pricing-card-features li .feat-icon.muted { color: var(--text-tertiary); }
+.pricing-card .btn-primary, .pricing-card .btn-secondary { width: 100%; justify-content: center; }
+
+/* ===== 3D TILT CARDS ===== */
+.tilt-card { transition: transform 0.2s cubic-bezier(0.2, 0, 0.3, 1); transform-style: preserve-3d; will-change: transform; }
+.tilt-card:hover { transform: perspective(800px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) scale3d(1.02, 1.02, 1.02); }
+.tilt-card .tilt-content { transform: translateZ(20px); }
+.tilt-card .tilt-glow { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(167, 139, 250, 0.06), transparent 60%); opacity: 0; transition: opacity 0.3s; }
+.tilt-card:hover .tilt-glow { opacity: 1; }
+
+/* ===== STAGGERED SCROLL REVEAL ===== */
+.stagger-reveal { opacity: 0; transform: translateY(40px); }
+.stagger-reveal.visible { animation: staggerFadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.stagger-reveal:nth-child(1).visible { animation-delay: 0s; }
+.stagger-reveal:nth-child(2).visible { animation-delay: 0.1s; }
+.stagger-reveal:nth-child(3).visible { animation-delay: 0.2s; }
+.stagger-reveal:nth-child(4).visible { animation-delay: 0.3s; }
+.stagger-reveal:nth-child(5).visible { animation-delay: 0.4s; }
+.stagger-reveal:nth-child(6).visible { animation-delay: 0.5s; }
+.stagger-reveal:nth-child(7).visible { animation-delay: 0.6s; }
+@keyframes staggerFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+/* ===== PROCESS SECTION ===== */
+.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; position: relative; }
+.process-step { text-align: center; position: relative; }
+.process-step::after { content: ''; position: absolute; top: 28px; left: 60%; width: 80%; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0.3; }
+.process-step:last-child::after { display: none; }
+.process-step-num { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; background: var(--accent-dim); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 50%; font-size: 1.2rem; font-weight: 700; color: var(--accent); transition: all 0.3s; }
+.process-step:hover .process-step-num { background: var(--accent); color: #fff; transform: scale(1.1); box-shadow: 0 0 30px var(--accent-glow); }
+.process-step-title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+.process-step-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+/* ===== FAQ ACCORDION ===== */
+.faq-list { max-width: 720px; margin: 40px auto 0; }
+.faq-item { background: var(--bg-glass); backdrop-filter: blur(12px); border: 1px solid var(--border-subtle); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+.faq-item:hover { border-color: var(--border-hover); }
+.faq-item.active { border-color: var(--accent); }
+.faq-question { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; cursor: pointer; font-size: 0.95rem; font-weight: 600; color: var(--text-primary); background: none; border: none; width: 100%; text-align: left; font-family: 'Inter', sans-serif; gap: 16px; }
+.faq-question:hover { color: var(--accent); }
+.faq-icon { flex-shrink: 0; width: 20px; height: 20px; transition: transform 0.3s; color: var(--text-tertiary); }
+.faq-item.active .faq-icon { transform: rotate(180deg); color: var(--accent); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), padding 0.3s; padding: 0 24px; }
+.faq-item.active .faq-answer { max-height: 300px; padding: 0 24px 20px; }
+.faq-answer p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+
+/* ===== RESPONSIVE NEW SECTIONS ===== */
+@media (max-width: 1024px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } .process-grid { grid-template-columns: repeat(2, 1fr); } .process-step::after { display: none; } }
+@media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } .process-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; } .pricing-card { padding: 28px 20px; } }
+@media (max-width: 480px) { .process-grid { grid-template-columns: 1fr; } }
+}
+</head>
+<body>
+<!-- ===== NAV ===== -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="closeMobile()">Based<span class="logo-accent">Node</span></a>
+    <ul class="nav-links">
+      <li><a href="./" class="nav-link" data-i18n="nav_home">Home</a></li>
+      <li><a href="#services" class="nav-link" data-i18n="nav_services">Services</a></li>
+      <li><a href="#cases" class="nav-link" data-i18n="nav_cases">Cases</a></li>
+      <li><a href="#about" class="nav-link" data-i18n="nav_about">About</a></li>
+      <li><a href="./security-privacy.html?style=1" class="nav-link" data-i18n="nav_security">Security</a></li>
+      <li><a href="./contact.html?style=1" class="nav-link" data-i18n="nav_contact_page">Contact</a></li>
+      <li class="nav-toggles">
+        <button class="nav-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="nav-toggle-btn" id="langToggle" aria-label="Toggle language">DA | EN</button>
+      </li>
+      <li><a href="./contact.html?style=1" class="nav-cta" data-i18n="nav_cta">Book Estimate</a></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="toggleMobile()" aria-label="Open menu" id="menuBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobile()">
+  <ul class="mobile-nav-links">
+    <li><a href="./" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_home">Home</a></li>
+    <li><a href="#services" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_services">Services</a></li>
+    <li><a href="#cases" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_cases">Cases</a></li>
+    <li><a href="#about" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_about">About</a></li>
+    <li><a href="./security-privacy.html?style=1" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_security">Security</a></li>
+    <li><a href="./contact.html?style=1" class="mobile-nav-link" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_contact_page">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-toggles">
+    <button class="nav-toggle-btn" id="mobileThemeToggle" aria-label="Toggle theme">🌙</button>
+    <button class="nav-toggle-btn" id="mobileLangToggle" aria-label="Toggle language">DA | EN</button>
+  </div>
+  <a href="./contact.html?style=1" class="mobile-nav-cta" onclick="closeMobile();event.stopPropagation();" data-i18n="nav_cta">Book Estimate</a>
+</div>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-gradient-mesh">
+    <div class="mesh-blob"></div>
+    <div class="mesh-blob"></div>
+    <div class="mesh-blob"></div>
+  </div>
+  <div class="hero-content container" style="padding:0 24px">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6Z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+      <span data-i18n="hero_badge">Built for scale</span>
+    </div>
+    <h1 class="hero-title"><span data-i18n="hero_title_prefix">Power your business with</span> <span class="accent-text" id="rotatingWord">Automation</span></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">It's just me running Based Node — and that's the point. If I can handle all this solo, imagine what I can do for your business.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary" data-i18n="hero_cta1">Get Started <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#services" class="btn-secondary" data-i18n="hero_cta2">View Services <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES SECTION ===== -->
+<section class="section" id="services" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label" data-i18n="services_label">Services</span>
+      <h2 class="section-title" data-i18n="services_title">Full-stack digital services</h2>
+      <p class="section-subtitle" data-i18n="services_subtitle">From AI agents to websites — everything you need to operate at the speed of software. Jeg kombinerer min baggrund i fysik og nanoteknologi med AI og software engineering.</p>
+    </div>
+    <div class="software-grid">
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv1_title">Automatisering / Automation</h3>
+        <p class="software-card-desc" data-i18n="srv1_desc">Eliminate repetitive tasks with custom workflow automation. Connect Slack, Notion, CRM, email, and more into seamless pipelines. Betalingsmodel: Fastpris eller revenue share.</p>
+        <span class="software-card-tag" data-i18n="srv1_tag">Fastpris / Revenue Share</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6Z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv2_title">AI & Agenter / AI & Agents</h3>
+        <p class="software-card-desc" data-i18n="srv2_desc">LLM-powered agents for content generation, data extraction, customer support, and decision support. Fra kvantemekanik til machine learning. Betalingsmodel: Fastpris eller revenue share.</p>
+        <span class="software-card-tag" data-i18n="srv2_tag">Fastpris / Revenue Share</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 12v9"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv3_title">Dashboards</h3>
+        <p class="software-card-desc" data-i18n="srv3_desc">Real-time analytics dashboards with charts, KPIs, and alerts. Built with modern visualization libraries and your data sources. Betalingsmodel: Fastpris.</p>
+        <span class="software-card-tag" data-i18n="srv3_tag">Fastpris</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv4_title">Hjemmesider / Websites</h3>
+        <p class="software-card-desc" data-i18n="srv4_desc">High-performance websites built with modern frameworks — fast, accessible, and conversion-focused. Betalingsmodel: Fastpris.</p>
+        <span class="software-card-tag" data-i18n="srv4_tag">Fastpris</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv5_title">Markedsføring / Marketing</h3>
+        <p class="software-card-desc" data-i18n="srv5_desc">Automated email campaigns, social media scheduling, and data-driven marketing strategies. Revenue share — kun betaling for resultater. Betalingsmodel: Revenue share.</p>
+        <span class="software-card-tag" data-i18n="srv5_tag">Revenue Share</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv6_title">Undervisning / Tutoring</h3>
+        <p class="software-card-desc" data-i18n="srv6_desc">Teaching since 2019: Math & programming (MentorDanmark) and AI at GXU (2025–). Students build their own AI projects after 12 weeks. Payment: Fixed price.</p>
+        <span class="software-card-tag" data-i18n="srv6_tag">Fastpris</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv7_title">Partnerskab / Partnership</h3>
+        <p class="software-card-desc" data-i18n="srv7_desc">Har du en idé men ingen kapital? Lad os slå os sammen. Jeg tager X% ejerskab i stedet for betaling. Equity — ejerskab i stedet for honorar.</p>
+        <span class="software-card-tag" data-i18n="srv7_tag">Equity</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv8_title">Marketing Automation</h3>
+        <p class="software-card-desc" data-i18n="srv8_desc">📧 email campaigns, social media, automated follow-ups. Automatiser din marketing så du kan fokusere på at vokse din forretning. Betalingsmodel: Fastpris eller revenue share.</p>
+        <span class="software-card-tag" data-i18n="srv8_tag">Fastpris / Revenue Share</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv9_title">Ad Optimization</h3>
+        <p class="software-card-desc" data-i18n="srv9_desc">📈 Google Ads, Facebook, reduce wasted spend. Få mere ud af dit annoncebudget med datadrevet optimering. Betalingsmodel: Revenue share.</p>
+        <span class="software-card-tag" data-i18n="srv9_tag">Revenue Share</span>
+      </div>
+      <div class="software-card reveal">
+        <div class="software-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3 class="software-card-title" data-i18n="srv10_title">SEO & Lead Conversion</h3>
+        <p class="software-card-desc" data-i18n="srv10_desc">🔎 optimize for search, convert visitors. Få din hjemmeside til at rangere højere og omdanne besøgende til kunder. Betalingsmodel: Fastpris.</p>
+        <span class="software-card-tag" data-i18n="srv10_tag">Fastpris</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASES ===== -->
+<section class="section" id="cases">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label" data-i18n="cases_label">Case Studies</span>
+      <h2 class="section-title" data-i18n="cases_title">Real results, real systems</h2>
+      <p class="section-subtitle" data-i18n="cases_subtitle">From workflow automation to full-stack digital presence — here's how we've helped businesses transform their operations.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case1_tag">AI Optimering</span>
+        <h3 class="case-card-title" data-i18n="case1_title">AI Infrastructure Optimization</h3>
+        <p class="case-card-desc" data-i18n="case1_desc">80-100x reduction i API costs for AI-drevet virksomhed gennem intelligent caching, prompt optimization og model distillation. Fra 10.000 kr/måned til under 100 kr.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case1_m1">80-100x cost reduction</span><span class="case-card-metric" data-i18n="case1_m2">AI</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case2_tag">Revenue Share</span>
+        <h3 class="case-card-title" data-i18n="case2_title">Lead Generation Pipeline</h3>
+        <p class="case-card-desc" data-i18n="case2_desc">340% flere kvalificerede leads via revenue share model. Automated outreach, scoring, and CRM integration that turned a cold pipeline into a revenue engine.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case2_m1">+340% leads</span><span class="case-card-metric" data-i18n="case2_m2">Revenue Share</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case3_tag">Undervisning · 2019–</span>
+        <h3 class="case-card-title" data-i18n="case3_title">GXU Undervisning</h3>
+        <p class="case-card-desc" data-i18n="case3_desc">Elever bygger AI-projekter efter 12 ugers undervisning på GXU Gladsaxe. Undervist siden 2019: Matematik & programmering (MentorDanmark) og AI på GXU (2025–).</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case3_m1">12 uger</span><span class="case-card-metric" data-i18n="case3_m2">AI-projekter</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case4_tag">Automation</span>
+        <h3 class="case-card-title" data-i18n="case4_title">Quant Data Pipeline</h3>
+        <p class="case-card-desc" data-i18n="case4_desc">Automatiseret finansiel data processing for quant fund. Real-time market data ingestion, signal calculation, and portfolio rebalancing — fully automated pipeline.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case4_m1">Realtid</span><span class="case-card-metric" data-i18n="case4_m2">Quant</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case5_tag">AI</span>
+        <h3 class="case-card-title" data-i18n="case5_title">Custom Chatbot — 24/7 Support</h3>
+        <p class="case-card-desc" data-i18n="case5_desc">24/7 automated customer support med 95% resolution rate. LLM-powered chatbot with human escalation, Slack integration, and continuous learning from past tickets.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case5_m1">95% resolution</span><span class="case-card-metric" data-i18n="case5_m2">24/7</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case6_tag">Marketing Automation</span>
+        <h3 class="case-card-title" data-i18n="case6_title">Marketing Automation</h3>
+        <p class="case-card-desc" data-i18n="case6_desc">Automated email campaigns increased repeat purchases by 45%. Segmenterede email-sekvenser og automatiserede follow-ups der dobler kundeloyaliteten.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case6_m1">+45% repeat purchases</span><span class="case-card-metric" data-i18n="case6_m2">Email</span></div>
+      </div>
+      <div class="case-card reveal">
+        <span class="case-card-tag" data-i18n="case7_tag">Ad Optimization</span>
+        <h3 class="case-card-title" data-i18n="case7_title">Ad Cost Optimization</h3>
+        <p class="case-card-desc" data-i18n="case7_desc">Reduced Google Ads spend by 60% while maintaining same lead volume. Datadrevet optimering af kampagner der sparer penge uden at miste leads.</p>
+        <div class="case-card-metrics"><span class="case-card-metric" data-i18n="case7_m1">-60% spend</span><span class="case-card-metric" data-i18n="case7_m2">Google Ads</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-content">
+        <div class="reveal">
+          <span class="section-label" data-i18n="about_label">About</span>
+          <h2 class="section-title" data-i18n="about_title">Hej, jeg er Omar</h2>
+          <p class="section-subtitle" data-i18n="about_subtitle">Solo-founder, Civilingeniørstuderende i Fysik & Nanoteknologi fra DTU, tidligere quant finance. Jeg kombinerer min baggrund i fysik og nanoteknologi med AI og software engineering for at bygge systemer der virker.</p>
+        </div>
+        <div class="badges reveal">
+          <span class="badge">🎓 Civilingeniør i Fysik & Nanoteknologi fra DTU</span>
+          <span class="badge">📈 Baggrund i quant finance</span>
+          <span class="badge">🛠️ Bygger software siden 2020</span>
+          <span class="badge" data-i18n="about_badge_teaching">👨‍🏫 Undervist siden 2019 · Matematik & programmering (MentorDanmark) og AI på GXU (2025–)</span>
+          <span class="badge">⚡ AI infrastruktur (80-100x)</span>
+        </div>
+        <p class="about-text reveal" data-i18n="about_text">It's just me, Omar, behind Based Node. I build automation, AI agents, data dashboards, websites and digital strategy from the ground up. From quantum mechanics to machine learning — I translate complex science into functional software. If I can juggle all this with the help of AI, imagine what I can do to help you save time, win more clients, and cut costs. Every project gets direct founder attention — no account managers, no bureaucracy, just clean, working software that ships.</p>
+        <p class="about-text reveal" style="font-size:0.9rem;font-style:italic;border-left:3px solid var(--accent);padding-left:16px" data-i18n="about_affordable">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects. / Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.</p>
+        <div class="about-details reveal">
+          <div class="about-detail-item">
+            <span class="about-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <span>Omar — Founder &amp; Operator</span>
+          </div>
+          <div class="about-detail-item">
+            <span class="about-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
+            <span>CVR: 43750194 — Registered in Denmark</span>
+          </div>
+          <div class="about-detail-item">
+            <span class="about-detail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+            <span>contact@basednode.xyz</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <div class="about-card-name">Based<span style="color:var(--accent)">Node</span></div>
+          <div class="about-card-role" data-i18n="about_role">Digital Operations</div>
+          <div class="about-card-stats">
+            <div class="about-stat"><span class="about-stat-label" data-i18n="stat_founded">Founded</span><span class="about-stat-value">2023</span></div>
+            <div class="about-stat"><span class="about-stat-label" data-i18n="stat_location">Location</span><span class="about-stat-value">Denmark</span></div>
+            <div class="about-stat"><span class="about-stat-label">CVR</span><span class="about-stat-value">43750194</span></div>
+            <div class="about-stat"><span class="about-stat-label" data-i18n="stat_contact">Contact</span><span class="about-stat-value" style="font-size:0.7rem">contact@basednode.xyz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESOURCES PROMO ===== -->
+<section class="section" id="resources-promo" style="background:var(--bg-secondary);padding:40px 0">
+  <div class="container">
+    <div class="reveal" style="background:var(--bg-glass);backdrop-filter:blur(12px);border:1px solid var(--border-subtle);border-radius:16px;padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <p style="font-size:1.05rem;font-weight:600;margin:0 0 6px;color:var(--text-primary)">📚 Free Resources</p>
+        <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.6">Check out the Resources page for free guides on AI, automation, accounting, and building your own AI OS — made for non-technical business owners.</p>
+      </div>
+      <a href="./resources.html?style=1" class="btn-primary" style="flex-shrink:0">Browse Resources →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title">Simple, transparent pricing</h2>
+      <p class="section-subtitle">Choose the plan that fits your stage. All plans include a free discovery call.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">Starter</div>
+          <div class="pricing-card-price">5,000<span> kr</span></div>
+          <p class="pricing-card-desc">Perfect for getting started with automation</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Custom workflow automation</li>
+            <li><span class="feat-icon">✓</span> 1 AI agent integration</li>
+            <li><span class="feat-icon">✓</span> Basic dashboard setup</li>
+            <li><span class="feat-icon">✓</span> Email support</li>
+            <li><span class="feat-icon">✓</span> 2 revision rounds</li>
+            <li><span class="feat-icon muted">—</span> Revenue share option</li>
+          </ul>
+          <a href="#contact" class="btn-primary">Get Started</a>
+        </div>
+      </div>
+      <div class="pricing-card featured stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">Growth</div>
+          <div class="pricing-card-price">15,000<span> kr</span></div>
+          <p class="pricing-card-desc">For growing businesses scaling operations</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Everything in Starter +</li>
+            <li><span class="feat-icon">✓</span> 3 AI agent integrations</li>
+            <li><span class="feat-icon">✓</span> Advanced analytics dashboard</li>
+            <li><span class="feat-icon">✓</span> Priority email & Slack support</li>
+            <li><span class="feat-icon">✓</span> 5 revision rounds</li>
+            <li><span class="feat-icon">✓</span> Revenue share option</li>
+          </ul>
+          <a href="#contact" class="btn-primary">Get Started</a>
+        </div>
+      </div>
+      <div class="pricing-card stagger-reveal tilt-card">
+        <div class="tilt-glow"></div>
+        <div class="tilt-content">
+          <div class="pricing-card-name">Scale</div>
+          <div class="pricing-card-price">30,000<span> kr</span></div>
+          <p class="pricing-card-desc">Enterprise-grade systems for maximum impact</p>
+          <ul class="pricing-card-features">
+            <li><span class="feat-icon">✓</span> Everything in Growth +</li>
+            <li><span class="feat-icon">✓</span> Unlimited AI agents</li>
+            <li><span class="feat-icon">✓</span> Full-stack dashboard + website</li>
+            <li><span class="feat-icon">✓</span> Dedicated support & strategy calls</li>
+            <li><span class="feat-icon">✓</span> Unlimited revisions</li>
+            <li><span class="feat-icon">✓</span> Priority revenue share + equity</li>
+          </ul>
+          <a href="#contact" class="btn-primary">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="section" id="process">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Process</span>
+      <h2 class="section-title">How I Work</h2>
+      <p class="section-subtitle">From discovery to growth — a proven 4-step process that delivers results.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">01</div>
+        <h3 class="process-step-title">Discover</h3>
+        <p class="process-step-desc">Deep dive into your business, goals, and pain points. I map out your current workflows and identify automation opportunities.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">02</div>
+        <h3 class="process-step-title">Build</h3>
+        <p class="process-step-desc">I architect and develop your solution — from AI agents to dashboards. Transparent sprints with regular check-ins.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">03</div>
+        <h3 class="process-step-title">Launch</h3>
+        <p class="process-step-desc">Deploy to production with thorough testing. You get documentation and a walkthrough so your team can hit the ground running.</p>
+      </div>
+      <div class="process-step stagger-reveal">
+        <div class="process-step-num">04</div>
+        <h3 class="process-step-title">Grow</h3>
+        <p class="process-step-desc">Continuous monitoring, optimization, and iteration. I ensure your systems scale as your business grows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">FAQ</span>
+      <h2 class="section-title">Common questions</h2>
+      <p class="section-subtitle">Everything you need to know before we start working together.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How does the revenue share model work?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Instead of charging upfront, I take a percentage of the revenue the solution generates. This means zero risk for you — I only make money when the system delivers results. Typical revenue share ranges from 10-20% depending on the scope.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What if I need changes after the project is done?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Every project includes revision rounds based on your plan. For ongoing support, I offer maintenance retainers that cover updates, monitoring, and optimizations. You're never left with a static system.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How long does a typical project take?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Most projects take 1-4 weeks from kickoff to launch. A simple workflow automation can be done in under a week, while a full-stack solution with AI agents and dashboards might take 3-4 weeks. We'll agree on a timeline during the discovery call.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Do you work with clients outside Denmark?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Yes! Everything is done remotely. I work with clients across Europe and beyond. We communicate via Slack, email, or video calls. Time zone differences are rarely an issue — the async-first approach means I'm often working while you sleep.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What's the difference between fixed price and equity?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Fixed price is best for defined projects with clear deliverables. Equity partnerships are for early-stage startups with limited capital — I take an ownership stake instead of payment. Revenue share sits in between: no upfront cost, but we share in the upside.</p></div>
+      </div>
+      <div class="faq-item stagger-reveal">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How do we get started?</span>
+          <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer"><p>Simple — fill out the contact form below or email me directly at contact@basednode.xyz. We'll schedule a free 30-minute discovery call to understand your needs and see if we're a good fit. No pitch, no pressure, just an honest conversation.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT FORM ===== -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom:32px">
+      <span class="section-label" data-i18n="contact_label">Contact</span>
+      <h2 class="section-title" data-i18n="contact_title">Lad os arbejde sammen</h2>
+      <p class="section-subtitle" data-i18n="contact_subtitle">Ingen salgssnak — bare en ærlig samtale om hvad der giver mening for din virksomhed. Send mig en besked så vender jeg tilbage inden for 24 timer.</p>
+    </div>
+    <div style="text-align:center">
+      <a href="./contact.html?style=1" class="btn-primary" style="font-size:1rem;padding:16px 36px">📬 Send mig en besked / Send me a message</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="reveal">
+        <div class="footer-brand">Based<span class="logo-accent">Node</span></div>
+        <p class="footer-desc" data-i18n="footer_desc">Power your business with Automation, AI Agents, Data. Based Node is the digital operations partner for solopreneurs and small businesses who want enterprise-grade systems.</p>
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/omar-jennane-576a26265" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="https://t.me/IkkeOmar" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+        </div>
+      </div>
+      <div class="reveal">
+        <h4 class="footer-heading" data-i18n="f_company">Company</h4>
+        <ul class="footer-links">
+          <li><a href="#about" class="footer-link" data-i18n="f_about">About</a></li>
+          <li><a href="#contact" class="footer-link" data-i18n="f_contact">Contact</a></li>
+          <li><a href="#" class="footer-link" data-i18n="f_privacy">Privacy</a></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h4 class="footer-heading" data-i18n="f_resources">Resources</h4>
+        <ul class="footer-links">
+          <li><a href="#cases" class="footer-link" data-i18n="f_cases">Case Studies</a></li>
+          <li><a href="#services" class="footer-link" data-i18n="f_services">Services</a></li>
+          <li><a href="#faqs" class="footer-link">FAQs</a></li>
+          <li><a href="./resources.html?style=1" class="footer-link" data-i18n="nav_resources">Resources</a></li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <h4 class="footer-heading" data-i18n="f_follow">Follow Us</h4>
+        <ul class="footer-links">
+          <li><a href="https://linkedin.com/in/omar-jennane-576a26265" class="footer-link" target="_blank">LinkedIn</a></li>
+          <li><a href="https://t.me/IkkeOmar" class="footer-link" target="_blank">Telegram</a></li>
+          <li style="margin-top:12px"><a href="mailto:contact@basednode.xyz" class="footer-link" style="color:var(--accent)">contact@basednode.xyz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Based Node.</span>
+      <span class="footer-cvr">CVR: 43750194 — contact@basednode.xyz</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== TEXT CONTENT OBJECTS =====
+const TEXT = {
+  da: {
+    nav_services: 'Services', nav_cases: 'Cases', nav_about: 'Om',    nav_contact: 'Kontakt', nav_resources: 'Ressourcer',
+    nav_home: 'Hjem', nav_security: 'Sikkerhed', nav_contact_page: 'Kontakt',
+    nav_cta: 'Book Opkald',
+    hero_badge: 'Bygget til skalering',
+    hero_title_prefix: 'Boost din virksomhed med',
+    hero_subtitle: 'Det er kun mig der driver Based Node — og det er pointen. Hvis jeg kan klare alt det her alene, så tænk på hvad jeg kan gøre for din virksomhed.',
+    hero_cta1: 'Kom i gang', hero_cta2: 'Se Services',
+    services_label: 'Ydelser', services_title: 'Fuldservice digitale løsninger',
+    services_subtitle: 'Fra AI-agenter til hjemmesider — alt hvad du behøver for at operere i softwarens hastighed.',
+    srv1_title: 'Automatisering', srv1_desc: 'Eliminer gentagne opgaver med brugerdefineret workflow automation. Forbind Slack, Notion, CRM, email og mere. Betalingsmodel: Fastpris eller revenue share.', srv1_tag: 'Fastpris / Revenue Share',
+    srv2_title: 'AI & Agenter', srv2_desc: 'LLM-drevne agenter til indholdsgenerering, dataekstraktion, kundesupport og beslutningsstøtte. Betalingsmodel: Fastpris eller revenue share.', srv2_tag: 'Fastpris / Revenue Share',
+    srv3_title: 'Dashboards', srv3_desc: 'Realtidsanalyse med grafer, KPIer og alarmer. Bygget med moderne visualiseringsbiblioteker og dine datakilder. Betalingsmodel: Fastpris.', srv3_tag: 'Fastpris',
+    srv4_title: 'Hjemmesider', srv4_desc: 'Højtydende hjemmesider bygget med moderne frameworks — hurtige, tilgængelige og konverteringsfokuserede. Betalingsmodel: Fastpris.', srv4_tag: 'Fastpris',
+    srv5_title: 'Markedsføring', srv5_desc: 'Automatiserede email-kampagner, social media planlægning og datadrevne marketingstrategier. Revenue share — kun betaling for resultater.', srv5_tag: 'Revenue Share',
+    srv6_title: 'Undervisning', srv6_desc: 'Undervist siden 2019: Matematik & programmering (MentorDanmark) og AI på GXU (2025–). Betalingsmodel: Fastpris.', srv6_tag: 'Fastpris',
+    srv7_title: 'Partnerskab', srv7_desc: 'Har du en idé men ingen kapital? Lad os slå os sammen. Jeg tager X% ejerskab i stedet for betaling. Equity — ejerskab i stedet for honorar.', srv7_tag: 'Equity',
+    srv8_title: 'Marketing Automation', srv8_desc: '📧 email campaigns, social media, automated follow-ups. Automatiser din marketing så du kan fokusere på at vokse din forretning.', srv8_tag: 'Fastpris / Revenue Share',
+    srv9_title: 'Ad Optimization', srv9_desc: '📈 Google Ads, Facebook, reduce wasted spend. Få mere ud af dit annoncebudget med datadrevet optimering.', srv9_tag: 'Revenue Share',
+    srv10_title: 'SEO & Lead Conversion', srv10_desc: '🔎 optimize for search, convert visitors. Få din hjemmeside til at rangere højere og omdanne besøgende til kunder.', srv10_tag: 'Fastpris',
+    cases_label: 'Cases', cases_title: 'Virkelige resultater', cases_subtitle: 'Fra workflow automation til fuld digital tilstedeværelse — her er hvordan vi har hjulpet virksomheder med at transformere deres drift.',
+    case1_tag: 'AI Optimering', case1_title: 'AI Infrastruktur Optimering',    case1_desc: '80-100x reduktion i API-omkostninger for AI-drevet virksomhed gennem intelligent caching, prompt optimering og modeldistillation.',
+    case2_tag: 'Revenue Share', case2_title: 'Lead Generation Pipeline', case2_desc: '340% flere kvalificerede leads via revenue share model. Automated outreach, scoring og CRM-integration.',
+    case3_tag: 'Undervisning · 2019–', case3_title: 'GXU Undervisning', case3_desc: 'Elever bygger AI-projekter efter 12 ugers undervisning på GXU Gladsaxe. Undervist siden 2019: Matematik & programmering (MentorDanmark) og AI på GXU (2025–).',
+    case4_tag: 'Automation', case4_title: 'Quant Data Pipeline', case4_desc: 'Automatiseret finansiel data processing for quant fund. Realtids markedsdata, signalberegning og porteføljeafstemning.',
+    case5_tag: 'AI', case5_title: 'Custom Chatbot — 24/7 Support', case5_desc: '24/7 automatiseret kundesupport med 95% løsningsrate. LLM-drevet chatbot med human eskalering og Slack-integration.',
+    about_label: 'Om', about_title: 'Hej, jeg er Omar', about_subtitle: 'Solo-stifter, Civilingeniørstuderende i Fysik & Nanoteknologi fra DTU, tidligere kvantitativ finans. Jeg kombinerer min baggrund i fysik og nanoteknologi med AI og software engineering for at bygge systemer der virker.',
+    about_text: 'Det er mig, Omar, der står bag Based Node. Jeg bygger automation, AI-agenter, data-dashboards, hjemmesider og digital strategi. Fra kvantemekanik til machine learning — jeg oversætter kompleks videnskab til funktionel software. Hvis jeg kan jonglere alt dette ved hjælp af AI, så tænk på hvad jeg kan gøre for at hjælpe dig med at spare tid, vinde flere kunder og skære omkostninger.',
+    about_role: 'Digital Operations',
+    about_badge_teaching: '👨‍🏫 Undervist siden 2019 · Matematik & programmering (MentorDanmark) og AI på GXU (2025–)',
+    stat_founded: 'Grundlagt', stat_location: 'Lokation', stat_contact: 'Kontakt',
+    contact_label: 'Kontakt', contact_title: 'Lad os arbejde sammen',
+    contact_subtitle: 'Ingen salgssnak — bare en ærlig samtale om hvad der giver mening for din virksomhed. Udfyld formularen og jeg vender tilbage inden for 24 timer.',
+    form_name: 'Navn / Name *', form_email: 'Email *', form_type: 'Type',
+    opt_fixed: 'Fastpris / Fixed Price', opt_revenue: 'Revenue Share', opt_partnership: 'Partnerskab / Partnership',
+    form_message: 'Besked / Message *',    form_submit: 'Send besked',
+    footer_desc: 'Boost din virksomhed med Automation, AI-agenter, Data. Based Node er din digitale operations-partner for soloprenører og små virksomheder.',
+    f_company: 'Virksomhed', f_about: 'Om', f_contact: 'Kontakt', f_privacy: 'Privatliv',
+    f_resources: 'Ressourcer', f_cases: 'Cases', f_services: 'Services',    f_follow: 'Følg os',
+    nav_resources: 'Ressourcer',
+    case1_m1: '80-100x besparelse', case1_m2: 'AI',
+    case2_m1: '+340% leads', case2_m2: 'Revenue Share',
+    case3_m1: '12 uger', case3_m2: 'AI-projekter',
+    case4_m1: 'Realtid', case4_m2: 'Quant',
+    case5_m1: '95% løsningsrate', case5_m2: '24/7',
+    case6_tag: 'Marketing Automation', case6_title: 'Marketing Automation', case6_desc: 'Automated email campaigns increased repeat purchases by 45%. Segmenterede email-sekvenser og automatiserede follow-ups der dobler kundeloyaliteten.',
+    case6_m1: '+45% gentagne køb', case6_m2: 'Email',
+    case7_tag: 'Ad Optimization', case7_title: 'Ad Cost Optimization', case7_desc: 'Reduced Google Ads spend by 60% while maintaining same lead volume. Datadrevet optimering af kampagner der sparer penge uden at miste leads.',
+    case7_m1: '-60% forbrug', case7_m2: 'Google Ads',
+    about_affordable: 'Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.'
+  },
+  en: {
+    nav_services: 'Services', nav_cases: 'Cases', nav_about: 'About', nav_contact: 'Contact',
+    nav_home: 'Home', nav_security: 'Security', nav_contact_page: 'Contact',
+    nav_cta: 'Book Estimate',
+    hero_badge: 'Built for scale',
+    hero_title_prefix: 'Power your business with',
+    hero_subtitle: 'It\'s just me running Based Node — and that\'s the point. If I can handle all this solo, imagine what I can do for your business.',
+    hero_cta1: 'Get Started', hero_cta2: 'View Services',
+    services_label: 'Services', services_title: 'Full-stack digital services',
+    services_subtitle: 'From AI agents to websites — everything you need to operate at the speed of software.',
+    srv1_title: 'Automatisering / Automation', srv1_desc: 'Eliminate repetitive tasks with custom workflow automation. Connect Slack, Notion, CRM, email, and more into seamless pipelines. Payment: Fixed price or revenue share.', srv1_tag: 'Fixed / Revenue Share',
+    srv2_title: 'AI & Agenter / AI & Agents', srv2_desc: 'LLM-powered agents for content generation, data extraction, customer support, and decision support. Payment: Fixed price or revenue share.', srv2_tag: 'Fixed / Revenue Share',
+    srv3_title: 'Dashboards', srv3_desc: 'Real-time analytics dashboards with charts, KPIs, and alerts. Built with modern visualization libraries. Payment: Fixed price.', srv3_tag: 'Fixed Price',
+    srv4_title: 'Hjemmesider / Websites', srv4_desc: 'High-performance websites built with modern frameworks — fast, accessible, and conversion-focused. Payment: Fixed price.', srv4_tag: 'Fixed Price',
+    srv5_title: 'Markedsføring / Marketing', srv5_desc: 'Automated email campaigns, social media scheduling, and data-driven marketing strategies. Revenue share — pay only for results.', srv5_tag: 'Revenue Share',
+    srv6_title: 'Undervisning / Tutoring', srv6_desc: 'Teaching since 2019: Math & programming (MentorDanmark) and AI at GXU (2025–). Payment: Fixed price.', srv6_tag: 'Fixed Price',
+    srv7_title: 'Partnerskab / Partnership',    srv7_desc: 'Have an idea but no capital? Let's join forces. I take X% equity instead of payment. Equity model — ownership instead of fees.',srv7_tag: 'Equity',
+    srv8_title: 'Marketing Automation', srv8_desc: '📧 email campaigns, social media, automated follow-ups. Automate your marketing so you can focus on growing your business. Payment: Fixed price or revenue share.', srv8_tag: 'Fixed / Revenue Share',
+    srv9_title: 'Ad Optimization', srv9_desc: '📈 Google Ads, Facebook, reduce wasted spend. Get more from your ad budget with data-driven optimization. Payment: Revenue share.', srv9_tag: 'Revenue Share',
+    srv10_title: 'SEO & Lead Conversion', srv10_desc: '🔎 optimize for search, convert visitors. Get your website ranking higher and turning visitors into customers. Payment: Fixed price.', srv10_tag: 'Fixed Price',
+    cases_label: 'Case Studies', cases_title: 'Real results, real systems',
+    cases_subtitle: 'From workflow automation to full-stack digital presence — here's how we've helped businesses transform their operations.',
+    case1_tag: 'AI Optimization', case1_title: 'AI Infrastructure Optimization', case1_desc: '80-100x reduction in API costs for an AI-driven company through intelligent caching, prompt optimization, and model distillation. From €10K/month to under €100.',
+    case2_tag: 'Revenue Share', case2_title: 'Lead Generation Pipeline', case2_desc: '340% more qualified leads via revenue share model. Automated outreach, scoring, and CRM integration that turned a cold pipeline into a revenue engine.',
+    case3_tag: 'Teaching · 2019–', case3_title: 'GXU Tutoring', case3_desc: 'Students build AI projects after 12 weeks at GXU Gladsaxe. Teaching since 2019: Math & programming (MentorDanmark) and AI at GXU (2025–).',
+    case4_tag: 'Automation', case4_title: 'Quant Data Pipeline', case4_desc: 'Automated financial data processing for a quant fund. Real-time market data ingestion, signal calculation, and portfolio rebalancing — fully automated pipeline.',
+    case5_tag: 'AI', case5_title: 'Custom Chatbot — 24/7 Support', case5_desc: '24/7 automated customer support with 95% resolution rate. LLM-powered chatbot with human escalation, Slack integration, and continuous learning.',
+    about_label: 'About',    about_title: 'Hi, I\'m Omar',
+    about_subtitle: 'Solo-founder, M.Sc. student in Physics & Nanotechnology at DTU, former quant finance. I combine my background in physics and nanotechnology with AI and software engineering to build systems that work.',
+    about_text: 'It\'s just me, Omar, behind Based Node. I build automation, AI agents, data dashboards, websites and digital strategy from the ground up. From quantum mechanics to machine learning — I translate complex science into functional software. If I can juggle all this with the help of AI, imagine what I can do to help you save time, win more clients, and cut costs.',
+    about_role: 'Digital Operations',
+    about_badge_teaching: '👨‍🏫 Teaching since 2019 · Math & programming (MentorDanmark) and AI at GXU (2025–)',
+    stat_founded: 'Founded', stat_location: 'Location', stat_contact: 'Contact',
+    contact_label: 'Contact', contact_title: 'Let us work together',
+    contact_subtitle: 'No sales pitch — just an honest conversation about what makes sense for your business. Fill out the form and I will get back to you within 24 hours.',
+    form_name: 'Navn / Name *', form_email: 'Email *', form_type: 'Type',
+    opt_fixed: 'Fastpris / Fixed Price', opt_revenue: 'Revenue Share', opt_partnership: 'Partnerskab / Partnership',
+    form_message: 'Besked / Message *', form_submit: 'Send Message',
+    footer_desc: 'Power your business with Automation, AI Agents, Data. Based Node is the digital operations partner for solopreneurs and small businesses who want enterprise-grade systems.',
+    f_company: 'Company', f_about: 'About', f_contact: 'Contact', f_privacy: 'Privacy',
+    f_resources: 'Resources', f_cases: 'Case Studies', f_services: 'Services', f_follow: 'Follow Us',
+    nav_resources: 'Resources',
+    case1_m1: '80-100x cost reduction', case1_m2: 'AI',
+    case2_m1: '+340% leads', case2_m2: 'Revenue Share',
+    case3_m1: '12 weeks', case3_m2: 'AI projects',
+    case4_m1: 'Real-time', case4_m2: 'Quant',
+    case5_m1: '95% resolution', case5_m2: '24/7',
+    case6_tag: 'Marketing Automation', case6_title: 'Marketing Automation', case6_desc: 'Automated email campaigns increased repeat purchases by 45%. Segmented email sequences and automated follow-ups that double customer loyalty.',
+    case6_m1: '+45% repeat purchases', case6_m2: 'Email',
+    case7_tag: 'Ad Optimization', case7_title: 'Ad Cost Optimization', case7_desc: 'Reduced Google Ads spend by 60% while maintaining same lead volume. Data-driven campaign optimization that saves money without losing leads.',
+    case7_m1: '-60% spend', case7_m2: 'Google Ads',
+    about_affordable: 'I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.'
+  }
+};
+
+// ===== LANGUAGE STATE =====
+let currentLang = localStorage.getItem('bn-lang') || 'en';
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('bn-lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (TEXT[lang] && TEXT[lang][key]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = TEXT[lang][key];
+      else el.textContent = TEXT[lang][key];
+    }
+  });
+  document.querySelectorAll('#formType option').forEach((opt, i) => {
+    const keys = ['opt_fixed', 'opt_revenue', 'opt_partnership'];
+    if (TEXT[lang] && TEXT[lang][keys[i]]) opt.textContent = TEXT[lang][keys[i]];
+  });
+  document.getElementById('langToggle').textContent = lang === 'da' ? 'DA | EN' : 'DA | EN';
+  document.getElementById('mobileLangToggle').textContent = lang === 'da' ? 'DA | EN' : 'DA | EN';
+}
+
+// ===== THEME STATE =====
+let currentTheme = localStorage.getItem('bn-theme') || 'dark';
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('bn-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = theme === 'dark' ? '🌙' : '☀️';
+  document.getElementById('themeToggle').textContent = icon;
+  document.getElementById('mobileThemeToggle').textContent = icon;
+}
+
+// ===== INIT =====
+(function init() {
+  // Theme
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const savedTheme = localStorage.getItem('bn-theme');
+  if (savedTheme) currentTheme = savedTheme;
+  else currentTheme = prefersDark ? 'dark' : 'light';
+  setTheme(currentTheme);
+
+  // Language
+  const savedLang = localStorage.getItem('bn-lang');
+  if (savedLang) currentLang = savedLang;
+  setLanguage(currentLang);
+
+  // Toggle buttons
+  document.getElementById('themeToggle').addEventListener('click', () => setTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+  document.getElementById('mobileThemeToggle').addEventListener('click', () => setTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+  document.getElementById('langToggle').addEventListener('click', () => setLanguage(currentLang === 'da' ? 'en' : 'da'));
+  document.getElementById('mobileLangToggle').addEventListener('click', () => setLanguage(currentLang === 'da' ? 'en' : 'da'));
+})();
+
+// ===== MOBILE NAV =====
+var mobileOpen = false, mobileOverlay = document.getElementById('mobileOverlay'), menuBtn = document.getElementById('menuBtn');
+function toggleMobile() {
+  mobileOpen = !mobileOpen;
+  mobileOverlay.classList.toggle('open', mobileOpen);
+  document.body.style.overflow = mobileOpen ? 'hidden' : '';
+  menuBtn.innerHTML = mobileOpen
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+}
+function closeMobile() { if (mobileOpen) toggleMobile(); }
+
+// ===== NAV SCROLL =====
+var navbar = document.getElementById('navbar');
+window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+
+// ===== ROTATING WORDS =====
+var words = ['Automation', 'AI Agents', 'Data', 'Machine Learning'];
+var wordIndex = 0, wordEl = document.getElementById('rotatingWord');
+function rotateWord() {
+  wordIndex = (wordIndex + 1) % words.length;
+  wordEl.style.opacity = '0';
+  wordEl.style.transform = 'translateY(-10px)';
+  setTimeout(function() { wordEl.textContent = words[wordIndex]; wordEl.style.opacity = '1'; wordEl.style.transform = 'translateY(0)'; }, 200);
+}
+if (wordEl) setInterval(rotateWord, 3000);
+
+// ===== INTERSECTION OBSERVER =====
+if (window.IntersectionObserver) {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+} else { document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); }); }
+
+// ===== FAQ ACCORDION =====
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  if (!item) return;
+  var isActive = item.classList.contains('active');
+  // Close all
+  document.querySelectorAll('.faq-item.active').forEach(function(el) { el.classList.remove('active'); });
+  if (!isActive) item.classList.add('active');
+}
+
+// ===== 3D TILT EFFECT =====
+(function() {
+  var cards = document.querySelectorAll('.tilt-card');
+  cards.forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var centerX = rect.width / 2;
+      var centerY = rect.height / 2;
+      var rotateX = ((y - centerY) / centerY) * -8;
+      var rotateY = ((x - centerX) / centerX) * 8;
+      card.style.setProperty('--tilt-x', rotateY + 'deg');
+      card.style.setProperty('--tilt-y', rotateX + 'deg');
+      card.style.setProperty('--glow-x', (x / rect.width) * 100 + '%');
+      card.style.setProperty('--glow-y', (y / rect.height) * 100 + '%');
+    });
+    card.addEventListener('mouseleave', function() {
+      card.style.setProperty('--tilt-x', '0deg');
+      card.style.setProperty('--tilt-y', '0deg');
+    });
+  });
+})();
+
+// ===== STAGGERED SCROLL REVEAL =====
+(function() {
+  var els = document.querySelectorAll('.stagger-reveal');
+  if (!els.length) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  els.forEach(function(el) { observer.observe(el); });
+})();
+</script>
+</body>
+</html>

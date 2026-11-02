@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security & Privacy — BasedNode</title>
+<meta name="description" content="BasedNode security practices and GDPR privacy policy. Zero-trust architecture, encrypted communications, and your data rights.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root, [data-theme="dark"] {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181b24;
+  --bg-tertiary: #1e2230;
+  --bg-card: rgba(24, 27, 36, 0.6);
+  --bg-glass: rgba(15, 17, 23, 0.72);
+  --bg-glass-hover: rgba(24, 27, 36, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #f1f3f5;
+  --text-secondary: #8b95a5;
+  --text-tertiary: #5c6675;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --accent-glow: rgba(167, 139, 250, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --pill-bg: rgba(255,255,255,0.03);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8f5f0;
+  --bg-secondary: #eeebe6;
+  --bg-tertiary: #e5e0d8;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(248, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-dim: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.15);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0,0,0,0.02);
+}
+
+/* ===== STYLE VARIANTS ===== */
+html[data-style="1"] {
+  /* Style 1 (Agency) — matches the default dark theme */
+}
+html[data-style="2"] {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a28;
+  --bg-card: rgba(10, 10, 15, 0.6);
+  --bg-glass: rgba(10, 10, 15, 0.72);
+  --bg-glass-hover: rgba(18, 18, 26, 0.85);
+  --border-subtle: rgba(0, 240, 255, 0.08);
+  --border-hover: rgba(0, 240, 255, 0.2);
+  --text-primary: #e0f0ff;
+  --text-secondary: #8899aa;
+  --text-tertiary: #556677;
+  --accent: #00f0ff;
+  --accent2: #ff00aa;
+  --accent-hover: #66f5ff;
+  --accent-dim: rgba(0, 240, 255, 0.15);
+  --accent-glow: rgba(0, 240, 255, 0.25);
+  --success: #00ff88;
+  --warning: #ffaa00;
+  --error: #ff3355;
+  --pill-bg: rgba(0, 240, 255, 0.05);
+}
+html[data-style="3"] {
+  --bg-primary: #f5f5f0;
+  --bg-secondary: #ecebe4;
+  --bg-tertiary: #e2e0d6;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(245, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #8b7cf6;
+  --accent2: #6b5cf6;
+  --accent-hover: #a99cf9;
+  --accent-dim: rgba(139, 124, 246, 0.12);
+  --accent-glow: rgba(139, 124, 246, 0.18);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0, 0, 0, 0.02);
+}
+html[data-style="4"] {
+  --bg-primary: #0b0d17;
+  --bg-secondary: #13162b;
+  --bg-tertiary: #1a1e3a;
+  --bg-card: rgba(11, 13, 23, 0.6);
+  --bg-glass: rgba(11, 13, 23, 0.72);
+  --bg-glass-hover: rgba(19, 22, 43, 0.85);
+  --border-subtle: rgba(56, 189, 248, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.18);
+  --text-primary: #eef0ff;
+  --text-secondary: #8890b0;
+  --text-tertiary: #5a6090;
+  --accent: #7c5cfc;
+  --accent2: #38bdf8;
+  --accent-hover: #9d7cff;
+  --accent-dim: rgba(124, 92, 252, 0.15);
+  --accent-glow: rgba(124, 92, 252, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --pill-bg: rgba(56, 189, 248, 0.04);
+}
+html[data-style="5"] {
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: rgba(12, 12, 12, 0.6);
+  --bg-glass: rgba(12, 12, 12, 0.72);
+  --bg-glass-hover: rgba(20, 20, 20, 0.85);
+  --border-subtle: rgba(0, 255, 65, 0.1);
+  --border-hover: rgba(0, 255, 65, 0.2);
+  --text-primary: #c0ffc0;
+  --text-secondary: #609960;
+  --text-tertiary: #306030;
+  --accent: #00ff41;
+  --accent-hover: #33ff66;
+  --accent-dim: rgba(0, 255, 65, 0.12);
+  --accent-glow: rgba(0, 255, 65, 0.2);
+  --success: #00ff41;
+  --warning: #ffaa00;
+  --error: #ff3355;
+  --pill-bg: rgba(0, 255, 65, 0.04);
+}
+
+body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+.nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.3); border-bottom-color: rgba(167, 139, 250, 0.15); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
+  text-decoration: none; color: var(--text-primary);
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-logo:hover { opacity: 0.8; }
+.logo-accent { color: var(--accent); }
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none; margin: 0; padding: 0;
+}
+.nav-link {
+  font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; padding: 6px 14px; border-radius: 6px;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--accent-dim); }
+.nav-cta {
+  font-size: 0.8rem; font-weight: 600; color: #fff;
+  background: var(--accent); text-decoration: none;
+  padding: 8px 18px; border-radius: 6px;
+}
+.nav-cta:hover {
+  background: var(--accent-hover); transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.nav-toggle-btn {
+  background: none; border: 1px solid var(--border-subtle);
+  color: var(--text-secondary); cursor: pointer;
+  padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1;
+}
+.nav-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-toggles { display: flex; align-items: center; gap: 6px; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 60vh; display: flex; align-items: center;
+  justify-content: center; position: relative;
+  padding: 120px 0 60px; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 40%, rgba(167, 139, 250, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(167, 139, 250, 0.04) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 500; color: var(--accent);
+  background: var(--accent-dim); padding: 6px 16px;
+  border-radius: 100px; border: 1px solid rgba(167, 139, 250, 0.2);
+  margin-bottom: 24px;
+}
+.hero-title {
+  font-size: 3rem; font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1.1; margin: 0 0 16px; color: var(--text-primary);
+}
+.hero-title .accent-text { color: var(--accent); }
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 600px; margin: 0 auto 8px; line-height: 1.7;
+}
+.hero-meta {
+  font-size: 0.82rem; color: var(--text-tertiary);
+  margin-top: 16px;
+}
+.hero-meta strong { color: var(--text-secondary); }
+
+/* ===== SECTION ===== */
+.section { padding: 60px 0; }
+.section-header { margin-bottom: 40px; }
+.section-label {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 8px;
+}
+.section-title {
+  font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.2; margin: 0 0 12px; color: var(--text-primary);
+}
+.section-subtitle {
+  font-size: 0.95rem; color: var(--text-secondary);
+  line-height: 1.6; margin: 0;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  transition: border-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+}
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(167, 139, 250, 0.1);
+}
+.card-icon {
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; background: var(--accent-dim);
+  border-radius: 10px; margin-bottom: 16px; color: var(--accent);
+}
+.card:hover .card-icon { background: var(--accent); color: #fff; }
+.card-title {
+  font-size: 1.1rem; font-weight: 600; margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.card-desc {
+  font-size: 0.9rem; color: var(--text-secondary);
+  margin: 0 0 8px; line-height: 1.7;
+}
+.card-desc:last-child { margin-bottom: 0; }
+
+/* ===== LIST ===== */
+.info-list { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.info-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+}
+.info-list li::before {
+  content: '';
+  flex-shrink: 0; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--accent);
+  margin-top: 9px; opacity: 0.7;
+}
+
+/* ===== BADGES ===== */
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+.badge {
+  font-size: 0.7rem; font-weight: 500;
+  color: var(--accent); background: var(--accent-dim);
+  border: 1px solid rgba(167,139,250,0.15);
+  padding: 5px 12px; border-radius: 100px;
+}
+
+/* ===== BACK LINK ===== */
+.back-section {
+  text-align: center; padding: 60px 0 80px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 40px;
+}
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; font-weight: 600; color: var(--accent);
+  text-decoration: none; padding: 12px 24px;
+  border: 1px solid var(--border-subtle); border-radius: 8px;
+  transition: all 300ms ease;
+}
+.back-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  transform: translateX(-4px);
+}
+.back-link svg { transition: transform 300ms ease; }
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ===== LANGUAGE BADGE ===== */
+.lang-note {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; color: var(--text-tertiary);
+  background: var(--pill-bg);
+  padding: 4px 12px; border-radius: 100px;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-title { font-size: 2rem; }
+  .section-title { font-size: 1.4rem; }
+  .card { padding: 24px; }
+  .hero { padding: 100px 0 40px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero-title { font-size: 1.7rem; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+::selection { background: var(--accent-dim); color: var(--text-primary); }
+
+/* ===== FOOTER ===== */
+.page-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 24px 0;
+  text-align: center;
+}
+.page-footer p {
+  font-size: 0.78rem; color: var(--text-tertiary); margin: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Based<span class="logo-accent">Node</span></a>
+    <ul class="nav-links">
+      <li class="nav-toggles">
+        <button class="nav-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="nav-toggle-btn" id="langToggle" aria-label="Toggle language">DA | EN</button>
+      </li>
+      <li><a href="index.html" class="nav-cta">← Concepts</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content container" style="padding:0 24px">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+      <span data-i18n="hero_badge">GDPR compliant · Zero-trust</span>
+    </div>
+    <h1 class="hero-title"><span data-i18n="hero_title">Security &amp; Privacy</span></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">
+      How BasedNode handles your data, protects your information, and maintains enterprise-grade security — explained in plain language.
+    </p>
+    <div class="hero-meta">
+      <span data-i18n="hero_cvr">CVR 43750194 · Registered in Denmark</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ===== LANGUAGE NOTE ===== -->
+<div class="lang-note" id="langNote" data-i18n="lang_note">
+  🇩🇰 Dansk version nedenfor / English version below
+</div>
+
+<!-- ===== SECURITY PRACTICES ===== -->
+<section class="section" id="security">
+  <div class="section-header">
+    <span class="section-label" data-i18n="security_label">🔒 Security</span>
+    <h2 class="section-title" data-i18n="security_title">Security Practices</h2>
+    <p class="section-subtitle" data-i18n="security_subtitle">
+      BasedNode is built with security as a foundation — not an afterthought. Every system we deploy follows zero-trust principles and industry best practices.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="sec1_title">Zero-Trust Architecture</h3>
+    <p class="card-desc" data-i18n="sec1_desc">
+      BasedNode operates behind Cloudflare tunnels. There are no open ports, no public IPs exposed, and no direct server access from the internet. Every request is authenticated, encrypted, and inspected before reaching our infrastructure. This means there is no attack surface for common exploits like port scanning, DDoS, or unauthorized access attempts.
+    </p>
+    <div class="badge-row">
+      <span class="badge">Cloudflare Tunnels</span>
+      <span class="badge">No Open Ports</span>
+      <span class="badge">Zero-Trust</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="sec2_title">Encrypted Communications</h3>
+    <p class="card-desc" data-i18n="sec2_desc">
+      All communications with BasedNode services are encrypted using HTTPS/TLS. Whether you are browsing our website, submitting a contact form, or interacting with our APIs, your data is protected with end-to-end encryption in transit. We maintain an A+ SSL/TLS rating and enforce strict security headers (HSTS, CSP, X-Frame-Options).
+    </p>
+    <div class="badge-row">
+      <span class="badge">HTTPS / TLS 1.3</span>
+      <span class="badge">A+ Rating</span>
+      <span class="badge">HSTS</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="sec3_title">API Keys &amp; Credentials</h3>
+    <p class="card-desc" data-i18n="sec3_desc">
+      All API keys, credentials, and secrets are stored server-side only — never in client-side code, environment variables embedded in builds, or exposed in browser bundles. We use encrypted secret management, and no third-party scripts are loaded that could exfiltrate data. Your keys stay your keys.
+    </p>
+    <div class="badge-row">
+      <span class="badge">Server-Side Only</span>
+      <span class="badge">Encrypted Secrets</span>
+      <span class="badge">No Client Exposure</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="sec4_title">Regular Security Audits</h3>
+    <p class="card-desc" data-i18n="sec4_desc">
+      Our infrastructure undergoes regular automated vulnerability scanning and dependency audits. All software dependencies are monitored for CVEs, and updates are applied within 48 hours of critical patch releases. We follow the principle of least privilege — every system component has only the permissions it needs.
+    </p>
+    <div class="badge-row">
+      <span class="badge">Automated Scanning</span>
+      <span class="badge">Dependency Audits</span>
+      <span class="badge">Least Privilege</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="sec5_title">No Third-Party Tracking</h3>
+    <p class="card-desc" data-i18n="sec5_desc">
+      BasedNode does not use any third-party analytics, tracking scripts, or advertising cookies. No Google Analytics, no Facebook Pixel, no social media trackers. Your browsing behavior is not monitored, profiled, or sold. The only data we store locally is your theme preference (dark/light) and language preference, using your browser's localStorage — not cookies.
+    </p>
+    <div class="badge-row">
+      <span class="badge">No Trackers</span>
+      <span class="badge">No Analytics</span>
+      <span class="badge">Privacy First</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRIVACY (GDPR) ===== -->
+<section class="section" id="privacy">
+  <div class="section-header">
+    <span class="section-label" data-i18n="privacy_label">📋 GDPR</span>
+    <h2 class="section-title" data-i18n="privacy_title">Privacy Policy</h2>
+    <p class="section-subtitle" data-i18n="privacy_subtitle">
+      BasedNode ApS (CVR 43750194) is a Danish company registered in Denmark. We take your privacy seriously and are fully compliant with the General Data Protection Regulation (GDPR / Forordning 2016/679).
+    </p>
+  </div>
+
+  <!-- DA Section -->
+  <div class="card" id="privacy-da" lang="da">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="priv_da_title">🇩🇰 Privatlivspolitik — Dansk</h3>
+    <p class="card-desc" data-i18n="priv_da_intro">
+      Hos BasedNode ApS (CVR 43750194) er vi fuldt ud GDPR-kompatible. Her er en overskuelig gennemgang af, hvordan vi håndterer dine personoplysninger.
+    </p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_1">Hvilke data indsamler vi?</h4>
+    <p class="card-desc" data-i18n="priv_da_p1">Når du kontakter os via vores kontaktformular, indsamler vi kun:</p>
+    <ul class="info-list">
+      <li data-i18n="priv_da_d1">Dit navn</li>
+      <li data-i18n="priv_da_d2">Din email-adresse</li>
+      <li data-i18n="priv_da_d3">Din besked (det du skriver til os)</li>
+    </ul>
+    <p class="card-desc" style="margin-top:12px" data-i18n="priv_da_p1b">Vi indsamler <strong>ikke</strong> IP-adresser, browsertype, eller nogen form for sporingsdata.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_2">Hvordan bruger vi dine data?</h4>
+    <p class="card-desc" data-i18n="priv_da_p2">Dine oplysninger bruges <strong>udelukkende</strong> til at svare på din henvendelse. Vi bruger dem ikke til markedsføring, nyhedsbreve, eller profilering. Vi sælger aldrig dine data til tredjeparter — punktum.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_3">Hvor længe gemmer vi dem?</h4>
+    <p class="card-desc" data-i18n="priv_da_p3">Vi opbevarer dine data i maksimalt <strong>12 måneder</strong> efter sidste kontakt, medmindre vi indgår et igangværende projekt — i så fald gemmes de, så længe samarbejdet varer, og slettes derefter inden for 6 måneder.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_4">Dine rettigheder</h4>
+    <p class="card-desc" data-i18n="priv_da_p4">I henhold til GDPR har du ret til:</p>
+    <ul class="info-list">
+      <li data-i18n="priv_da_r1"><strong>Indsigt:</strong> Du kan til enhver tid få at vide, hvilke data vi har om dig</li>
+      <li data-i18n="priv_da_r2"><strong>Berigtigelse:</strong> Du kan få rettet forkerte oplysninger</li>
+      <li data-i18n="priv_da_r3"><strong>Sletning:</strong> Du kan kræve dine data slettet ("retten til at blive glemt")</li>
+      <li data-i18n="priv_da_r4"><strong>Begrænsning:</strong> Du kan få behandlingen af dine data begrænset</li>
+      <li data-i18n="priv_da_r5"><strong>Dataportabilitet:</strong> Du kan få dine data udleveret i et almindeligt format</li>
+    </ul>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_5">Cookies</h4>
+    <p class="card-desc" data-i18n="priv_da_p5">Vores hjemmeside bruger <strong>ikke</strong> cookies til sporing. Vi bruger udelukkende localStorage i din browser til at gemme dine præferencer for tema (mørk/lys) og sprog (DA/EN). Disse data forlader aldrig din browser.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_da_h4_6">Kontakt</h4>
+    <p class="card-desc" data-i18n="priv_da_p6">Hvis du ønsker at udøve dine rettigheder, eller hvis du har spørgsmål om vores databehandling, så kontakt os på:</p>
+    <p class="card-desc" style="font-weight:500;color:var(--accent);font-size:1rem;margin-top:8px">
+      <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none">contact@basednode.xyz</a>
+    </p>
+    <p class="card-desc" style="font-size:0.82rem;color:var(--text-tertiary);margin-top:4px" data-i18n="priv_da_p6b">
+      BasedNode ApS · CVR 43750194 · Denmark
+    </p>
+
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-subtle)">
+      <p class="card-desc" style="font-size:0.8rem;color:var(--text-tertiary)" data-i18n="priv_da_clarification">
+        Vi indsamler aldrig personoplysninger uden dit samtykke. Vi sælger aldrig data til tredjeparter. Vi bruger ikke dine oplysninger til noget andet formål end at hjælpe dig.
+      </p>
+    </div>
+  </div>
+
+  <!-- EN Section -->
+  <div class="card" id="privacy-en" lang="en">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="priv_en_title">🇬🇧 Privacy Policy — English</h3>
+    <p class="card-desc" data-i18n="priv_en_intro">
+      BasedNode ApS (CVR 43750194), registered in Denmark, is fully GDPR-compliant. Here is a clear overview of how we handle your personal data.
+    </p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_1">What data do we collect?</h4>
+    <p class="card-desc" data-i18n="priv_en_p1">When you contact us through our contact form, we collect only:</p>
+    <ul class="info-list">
+      <li data-i18n="priv_en_d1">Your name</li>
+      <li data-i18n="priv_en_d2">Your email address</li>
+      <li data-i18n="priv_en_d3">Your message (what you write to us)</li>
+    </ul>
+    <p class="card-desc" style="margin-top:12px" data-i18n="priv_en_p1b">We do <strong>not</strong> collect IP addresses, browser type, or any form of tracking data.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_2">How do we use your data?</h4>
+    <p class="card-desc" data-i18n="priv_en_p2">Your information is used <strong>solely</strong> to respond to your inquiry. We do not use it for marketing, newsletters, or profiling. We never sell your data to third parties — period.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_3">How long do we keep it?</h4>
+    <p class="card-desc" data-i18n="priv_en_p3">We store your data for a maximum of <strong>12 months</strong> after last contact, unless we enter an ongoing project — in which case it is kept for the duration of the collaboration and deleted within 6 months after.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_4">Your rights</h4>
+    <p class="card-desc" data-i18n="priv_en_p4">Under GDPR, you have the right to:</p>
+    <ul class="info-list">
+      <li data-i18n="priv_en_r1"><strong>Access:</strong> Request to know what data we hold about you at any time</li>
+      <li data-i18n="priv_en_r2"><strong>Rectification:</strong> Have incorrect data corrected</li>
+      <li data-i18n="priv_en_r3"><strong>Erasure:</strong> Request your data be deleted ("right to be forgotten")</li>
+      <li data-i18n="priv_en_r4"><strong>Restriction:</strong> Request processing of your data be restricted</li>
+      <li data-i18n="priv_en_r5"><strong>Portability:</strong> Receive your data in a commonly used format</li>
+    </ul>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_5">Cookies</h4>
+    <p class="card-desc" data-i18n="priv_en_p5">Our website does <strong>not</strong> use tracking cookies. We only use browser localStorage to store your theme preference (dark/light) and language preference (DA/EN). These never leave your browser.</p>
+
+    <h4 style="color:var(--text-primary);font-weight:600;font-size:0.95rem;margin:20px 0 8px" data-i18n="priv_en_h4_6">Contact</h4>
+    <p class="card-desc" data-i18n="priv_en_p6">If you wish to exercise your rights, or if you have any questions about our data processing, please contact us at:</p>
+    <p class="card-desc" style="font-weight:500;color:var(--accent);font-size:1rem;margin-top:8px">
+      <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none">contact@basednode.xyz</a>
+    </p>
+    <p class="card-desc" style="font-size:0.82rem;color:var(--text-tertiary);margin-top:4px" data-i18n="priv_en_p6b">
+      BasedNode ApS · CVR 43750194 · Denmark
+    </p>
+
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-subtle)">
+      <p class="card-desc" style="font-size:0.8rem;color:var(--text-tertiary)" data-i18n="priv_en_clarification">
+        We never collect personal data without your consent. We never sell data to third parties. We do not use your information for any purpose other than helping you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUMMARY ===== -->
+<section class="section" id="summary">
+  <div class="section-header">
+    <span class="section-label" data-i18n="summary_label">✅ Summary</span>
+    <h2 class="section-title" data-i18n="summary_title">In Plain Language</h2>
+    <p class="section-subtitle" data-i18n="summary_subtitle">
+      No fine print. No hidden clauses. Here is what you need to know:
+    </p>
+  </div>
+
+  <div class="card" style="text-align:center">
+    <div class="badge-row" style="justify-content:center">
+      <span class="badge">🔒 Zero-Trust</span>
+      <span class="badge">🔐 Encrypted</span>
+      <span class="badge">📋 GDPR</span>
+      <span class="badge">🚫 No Trackers</span>
+      <span class="badge">🛡️ No Data Selling</span>
+      <span class="badge">🗑️ Auto-Deleted</span>
+    </div>
+    <p class="card-desc" style="margin-top:20px;font-size:0.95rem" data-i18n="summary_text">
+      We built BasedNode the way we would want to be treated ourselves. Your privacy is not a compliance checkbox — it is a fundamental right. If you ever have concerns, questions, or want us to remove your data, just <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none;font-weight:500">email us</a>. We reply within 24 hours.
+    </p>
+  </div>
+</section>
+
+</div>
+
+<!-- ===== BACK LINK ===== -->
+<section class="back-section">
+  <div class="container">
+    <a href="index.html" class="back-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      <span data-i18n="back_link">← Back to BasedNode Concepts</span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  <div class="container">
+    <p><span data-i18n="footer_text">BasedNode ApS · CVR 43750194 · Denmark</span> · <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none">contact@basednode.xyz</a></p>
+  </div>
+</footer>
+
+<script>
+// ===== STYLE VARIANT FROM URL =====
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var style = params.get('style');
+  console.log('[Style Debug] URL style param:', style);
+  if (style && ['2','3','4','5'].includes(style)) {
+    document.documentElement.setAttribute('data-style', style);
+    try { localStorage.setItem('bn-style', style); } catch(e) {}
+    console.log('[Style Debug] Set data-style to:', style);
+  } else {
+    // Fallback: read from localStorage (preserves style across page navigations)
+    var savedStyle = null;
+    try { savedStyle = localStorage.getItem('bn-style'); } catch(e) {}
+    if (savedStyle && ['2','3','4','5'].includes(savedStyle)) {
+      document.documentElement.setAttribute('data-style', savedStyle);
+      console.log('[Style Debug] Restored from localStorage:', savedStyle);
+    }
+  }
+})();
+
+
+// ===== TRANSLATIONS =====
+var TEXT = {
+  da: {
+    hero_badge: 'GDPR-kompatibel · Zero-trust',
+    hero_title: 'Sikkerhed & Privatliv',
+    hero_subtitle: 'Hvordan BasedNode håndterer dine data, beskytter dine oplysninger og opretholder sikkerhed på virksomhedsniveau — forklaret i almindeligt sprog.',
+    hero_cvr: 'CVR 43750194 · Registreret i Danmark',
+    lang_note: '🇩🇰 Dansk version nedenfor / English version below',
+    security_label: '🔒 Sikkerhed',
+    security_title: 'Sikkerhedspraksis',
+    security_subtitle: 'BasedNode er bygget med sikkerhed som fundament — ikke en eftertanke. Hvert system vi implementerer følger zero-trust-principper og bedste praksis i branchen.',
+    sec1_title: 'Zero-Trust Arkitektur',
+    sec1_desc: 'BasedNode kører bag Cloudflare-tunneler. Der er ingen åbne porte, ingen offentlige IP\'er eksponeret og ingen direkte serveradgang fra internettet. Hver anmodning autentificeres, krypteres og inspiceres, før den når vores infrastruktur. Det betyder, at der ikke er nogen angrebsflade for almindelige exploits som portscanning, DDoS eller uautoriserede adgangsforsøg.',
+    sec2_title: 'Krypteret Kommunikation',
+    sec2_desc: 'Al kommunikation med BasedNode-tjenester er krypteret via HTTPS/TLS. Uanset om du browser vores hjemmeside, sender en kontaktformular eller interagerer med vores API\'er, er dine data beskyttet med ende-til-ende-kryptering under transport. Vi opretholder en A+ SSL/TLS-rating og anvender strenge sikkerhedsheadere (HSTS, CSP, X-Frame-Options).',
+    sec3_title: 'API-nøgler & Legitimationsoplysninger',
+    sec3_desc: 'Alle API-nøgler, legitimationsoplysninger og hemmeligheder gemmes kun på serversiden — aldrig i client-side-kode, miljøvariabler i builds eller eksponeret i browserbundter. Vi bruger krypteret hemmelighedsstyring, og ingen tredjepartsscripts indlæses, der kunne eksfiltrere data. Dine nøgler forbliver dine nøgler.',
+    sec4_title: 'Regelmæssige Sikkerhedsrevisioner',
+    sec4_desc: 'Vores infrastruktur gennemgår regelmæssig automatisk sårbarhedsscanning og afhængighedsrevisioner. Alle softwareafhængigheder overvåges for CVE\'er, og opdateringer anvendes inden for 48 timer efter kritiske patch-udgivelser. Vi følger princippet om mindste privilegium — hver systemkomponent har kun de tilladelser, den har brug for.',
+    sec5_title: 'Ingen Tredjepartssporing',
+    sec5_desc: 'BasedNode bruger ikke nogen tredjepartsanalyse-, sporingsscripts eller reklamecookies. Ingen Google Analytics, ingen Facebook Pixel, ingen sociale medie-trackere. Din browseradfærd overvåges, profileres eller sælges ikke. De eneste data, vi gemmer lokalt, er dine temapræferencer (mørk/lys) og sprogpræference, der bruger din browsers localStorage — ikke cookies.',
+    privacy_label: '📋 GDPR',
+    privacy_title: 'Privatlivspolitik',
+    privacy_subtitle: 'BasedNode ApS (CVR 43750194) er en dansk virksomhed registreret i Danmark. Vi tager dit privatliv alvorligt og er fuldt ud kompatible med den generelle databeskyttelsesforordning (GDPR / Forordning 2016/679).',
+    priv_da_title: '🇩🇰 Privatlivspolitik — Dansk',
+    priv_da_intro: 'Hos BasedNode ApS (CVR 43750194) er vi fuldt ud GDPR-kompatible. Her er en overskuelig gennemgang af, hvordan vi håndterer dine personoplysninger.',
+    priv_da_h4_1: 'Hvilke data indsamler vi?',
+    priv_da_p1: 'Når du kontakter os via vores kontaktformular, indsamler vi kun:',
+    priv_da_d1: 'Dit navn',
+    priv_da_d2: 'Din email-adresse',
+    priv_da_d3: 'Din besked (det du skriver til os)',
+    priv_da_p1b: 'Vi indsamler <strong>ikke</strong> IP-adresser, browsertype, eller nogen form for sporingsdata.',
+    priv_da_h4_2: 'Hvordan bruger vi dine data?',
+    priv_da_p2: 'Dine oplysninger bruges <strong>udelukkende</strong> til at svare på din henvendelse. Vi bruger dem ikke til markedsføring, nyhedsbreve, eller profilering. Vi sælger aldrig dine data til tredjeparter — punktum.',
+    priv_da_h4_3: 'Hvor længe gemmer vi dem?',
+    priv_da_p3: 'Vi opbevarer dine data i maksimalt <strong>12 måneder</strong> efter sidste kontakt, medmindre vi indgår et igangværende projekt — i så fald gemmes de, så længe samarbejdet varer, og slettes derefter inden for 6 måneder.',
+    priv_da_h4_4: 'Dine rettigheder',
+    priv_da_p4: 'I henhold til GDPR har du ret til:',
+    priv_da_r1: '<strong>Indsigt:</strong> Du kan til enhver tid få at vide, hvilke data vi har om dig',
+    priv_da_r2: '<strong>Berigtigelse:</strong> Du kan få rettet forkerte oplysninger',
+    priv_da_r3: '<strong>Sletning:</strong> Du kan kræve dine data slettet ("retten til at blive glemt")',
+    priv_da_r4: '<strong>Begrænsning:</strong> Du kan få behandlingen af dine data begrænset',
+    priv_da_r5: '<strong>Dataportabilitet:</strong> Du kan få dine data udleveret i et almindeligt format',
+    priv_da_h4_5: 'Cookies',
+    priv_da_p5: 'Vores hjemmeside bruger <strong>ikke</strong> cookies til sporing. Vi bruger udelukkende localStorage i din browser til at gemme dine præferencer for tema (mørk/lys) og sprog (DA/EN). Disse data forlader aldrig din browser.',
+    priv_da_h4_6: 'Kontakt',
+    priv_da_p6: 'Hvis du ønsker at udøve dine rettigheder, eller hvis du har spørgsmål om vores databehandling, så kontakt os på:',
+    priv_da_p6b: 'BasedNode ApS · CVR 43750194 · Denmark',
+    priv_da_clarification: 'Vi indsamler aldrig personoplysninger uden dit samtykke. Vi sælger aldrig data til tredjeparter. Vi bruger ikke dine oplysninger til noget andet formål end at hjælpe dig.',
+    priv_en_title: '🇬🇧 Privatlivspolitik — Engelsk',
+    priv_en_intro: 'BasedNode ApS (CVR 43750194), registreret i Danmark, er fuldt GDPR-kompatibel. Her er et klart overblik over, hvordan vi håndterer dine personoplysninger.',
+    priv_en_h4_1: 'Hvilke data indsamler vi?',
+    priv_en_p1: 'Når du kontakter os via vores kontaktformular, indsamler vi kun:',
+    priv_en_d1: 'Dit navn',
+    priv_en_d2: 'Din email-adresse',
+    priv_en_d3: 'Din besked (det du skriver til os)',
+    priv_en_p1b: 'Vi indsamler <strong>ikke</strong> IP-adresser, browsertype eller sporingsdata.',
+    priv_en_h4_2: 'Hvordan bruger vi dine data?',
+    priv_en_p2: 'Dine oplysninger bruges <strong>udelukkende</strong> til at besvare din henvendelse. Vi sælger aldrig dine data til tredjeparter.',
+    priv_en_h4_3: 'Hvor længe gemmer vi dem?',
+    priv_en_p3: 'Vi gemmer dine data i maksimalt <strong>12 måneder</strong> efter sidste kontakt, medmindre vi indgår et projekt — så gemmes de i projektets varighed og slettes inden for 6 måneder efter.',
+    priv_en_h4_4: 'Dine rettigheder',
+    priv_en_p4: 'Under GDPR har du ret til:',
+    priv_en_r1: '<strong>Indsigt:</strong> Anmod om at få at vide, hvilke data vi har om dig',
+    priv_en_r2: '<strong>Berigtigelse:</strong> Få forkerte data rettet',
+    priv_en_r3: '<strong>Sletning:</strong> Anmod om at få dine data slettet',
+    priv_en_r4: '<strong>Begrænsning:</strong> Anmod om begrænset behandling',
+    priv_en_r5: '<strong>Portabilitet:</strong> Modtag dine data i et standardformat',
+    priv_en_h4_5: 'Cookies',
+    priv_en_p5: 'Vores hjemmeside bruger <strong>ikke</strong> sporingscookies. Kun localStorage til tema- og sprogpræferencer.',
+    priv_en_h4_6: 'Kontakt',
+    priv_en_p6: 'Hvis du vil udøve dine rettigheder, eller har spørgsmål, kontakt os på:',
+    priv_en_p6b: 'BasedNode ApS · CVR 43750194 · Denmark',
+    priv_en_clarification: 'Vi indsamler aldrig personoplysninger uden samtykke. Vi sælger aldrig data. Vi bruger ikke dine oplysninger til andet end at hjælpe dig.',
+    summary_label: '✅ Opsummering',
+    summary_title: 'På almindeligt dansk',
+    summary_subtitle: 'Ingen fin skrift. Ingen skjulte klausuler. Her er hvad du skal vide:',
+    summary_text: 'Vi byggede BasedNode, som vi selv ville behandles. Dit privatliv er ikke en compliance-tjekboks — det er en grundlæggende rettighed. Hvis du nogensinde har bekymringer, spørgsmål eller vil have dine data slettet, så <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none;font-weight:500">skriv til os</a>. Vi svarer inden for 24 timer.',
+    back_link: '← Tilbage til BasedNode Concepts',
+    footer_text: 'BasedNode ApS · CVR 43750194 · Denmark'
+  },
+  en: {
+    hero_badge: 'GDPR compliant · Zero-trust',
+    hero_title: 'Security & Privacy',
+    hero_subtitle: 'How BasedNode handles your data, protects your information, and maintains enterprise-grade security — explained in plain language.',
+    hero_cvr: 'CVR 43750194 · Registered in Denmark',
+    lang_note: '🇩🇰 Dansk version nedenfor / English version below',
+    security_label: '🔒 Security',
+    security_title: 'Security Practices',
+    security_subtitle: 'BasedNode is built with security as a foundation — not an afterthought. Every system we deploy follows zero-trust principles and industry best practices.',
+    sec1_title: 'Zero-Trust Architecture',
+    sec1_desc: 'BasedNode operates behind Cloudflare tunnels. There are no open ports, no public IPs exposed, and no direct server access from the internet. Every request is authenticated, encrypted, and inspected before reaching our infrastructure. This means there is no attack surface for common exploits like port scanning, DDoS, or unauthorized access attempts.',
+    sec2_title: 'Encrypted Communications',
+    sec2_desc: 'All communications with BasedNode services are encrypted using HTTPS/TLS. Whether you are browsing our website, submitting a contact form, or interacting with our APIs, your data is protected with end-to-end encryption in transit. We maintain an A+ SSL/TLS rating and enforce strict security headers (HSTS, CSP, X-Frame-Options).',
+    sec3_title: 'API Keys & Credentials',
+    sec3_desc: 'All API keys, credentials, and secrets are stored server-side only — never in client-side code, environment variables embedded in builds, or exposed in browser bundles. We use encrypted secret management, and no third-party scripts are loaded that could exfiltrate data. Your keys stay your keys.',
+    sec4_title: 'Regular Security Audits',
+    sec4_desc: 'Our infrastructure undergoes regular automated vulnerability scanning and dependency audits. All software dependencies are monitored for CVEs, and updates are applied within 48 hours of critical patch releases. We follow the principle of least privilege — every system component has only the permissions it needs.',
+    sec5_title: 'No Third-Party Tracking',
+    sec5_desc: 'BasedNode does not use any third-party analytics, tracking scripts, or advertising cookies. No Google Analytics, no Facebook Pixel, no social media trackers. Your browsing behavior is not monitored, profiled, or sold. The only data we store locally is your theme preference (dark/light) and language preference, using your browser\'s localStorage — not cookies.',
+    privacy_label: '📋 GDPR',
+    privacy_title: 'Privacy Policy',
+    privacy_subtitle: 'BasedNode ApS (CVR 43750194) is a Danish company registered in Denmark. We take your privacy seriously and are fully compliant with the General Data Protection Regulation (GDPR / Regulation 2016/679).',
+    priv_da_title: '🇩🇰 Privacy Policy — Danish',
+    priv_da_intro: 'At BasedNode ApS (CVR 43750194), we are fully GDPR-compliant. Here is a clear overview of how we handle your personal data.',
+    priv_da_h4_1: 'What data do we collect?',
+    priv_da_p1: 'When you contact us via our contact form, we collect only:',
+    priv_da_d1: 'Your name',
+    priv_da_d2: 'Your email address',
+    priv_da_d3: 'Your message (what you write to us)',
+    priv_da_p1b: 'We do <strong>not</strong> collect IP addresses, browser type, or any tracking data.',
+    priv_da_h4_2: 'How do we use your data?',
+    priv_da_p2: 'Your information is used <strong>solely</strong> to respond to your inquiry. We do not use it for marketing, newsletters, or profiling. We never sell your data to third parties — period.',
+    priv_da_h4_3: 'How long do we keep it?',
+    priv_da_p3: 'We store your data for a maximum of <strong>12 months</strong> after last contact, unless we enter an ongoing project — in which case it is kept for the duration of the collaboration and deleted within 6 months after.',
+    priv_da_h4_4: 'Your rights',
+    priv_da_p4: 'Under GDPR, you have the right to:',
+    priv_da_r1: '<strong>Access:</strong> Request to know what data we hold about you at any time',
+    priv_da_r2: '<strong>Rectification:</strong> Have incorrect data corrected',
+    priv_da_r3: '<strong>Erasure:</strong> Request your data be deleted ("right to be forgotten")',
+    priv_da_r4: '<strong>Restriction:</strong> Request processing of your data be restricted',
+    priv_da_r5: '<strong>Portability:</strong> Receive your data in a commonly used format',
+    priv_da_h4_5: 'Cookies',
+    priv_da_p5: 'Our website does <strong>not</strong> use tracking cookies. We only use browser localStorage to store your theme preference (dark/light) and language preference (DA/EN). These never leave your browser.',
+    priv_da_h4_6: 'Contact',
+    priv_da_p6: 'If you wish to exercise your rights, or if you have any questions about our data processing, please contact us at:',
+    priv_da_p6b: 'BasedNode ApS · CVR 43750194 · Denmark',
+    priv_da_clarification: 'We never collect personal data without your consent. We never sell data to third parties. We do not use your information for any purpose other than helping you.',
+    priv_en_title: '🇬🇧 Privacy Policy — English',
+    priv_en_intro: 'BasedNode ApS (CVR 43750194), registered in Denmark, is fully GDPR-compliant. Here is a clear overview of how we handle your personal data.',
+    priv_en_h4_1: 'What data do we collect?',
+    priv_en_p1: 'When you contact us through our contact form, we collect only:',
+    priv_en_d1: 'Your name',
+    priv_en_d2: 'Your email address',
+    priv_en_d3: 'Your message (what you write to us)',
+    priv_en_p1b: 'We do <strong>not</strong> collect IP addresses, browser type, or any form of tracking data.',
+    priv_en_h4_2: 'How do we use your data?',
+    priv_en_p2: 'Your information is used <strong>solely</strong> to respond to your inquiry. We do not use it for marketing, newsletters, or profiling. We never sell your data to third parties — period.',
+    priv_en_h4_3: 'How long do we keep it?',
+    priv_en_p3: 'We store your data for a maximum of <strong>12 months</strong> after last contact, unless we enter an ongoing project — in which case it is kept for the duration of the collaboration and deleted within 6 months after.',
+    priv_en_h4_4: 'Your rights',
+    priv_en_p4: 'Under GDPR, you have the right to:',
+    priv_en_r1: '<strong>Access:</strong> Request to know what data we hold about you at any time',
+    priv_en_r2: '<strong>Rectification:</strong> Have incorrect data corrected',
+    priv_en_r3: '<strong>Erasure:</strong> Request your data be deleted ("right to be forgotten")',
+    priv_en_r4: '<strong>Restriction:</strong> Request processing of your data be restricted',
+    priv_en_r5: '<strong>Portability:</strong> Receive your data in a commonly used format',
+    priv_en_h4_5: 'Cookies',
+    priv_en_p5: 'Our website does <strong>not</strong> use tracking cookies. We only use browser localStorage to store your theme preference (dark/light) and language preference (DA/EN). These never leave your browser.',
+    priv_en_h4_6: 'Contact',
+    priv_en_p6: 'If you wish to exercise your rights, or if you have any questions about our data processing, please contact us at:',
+    priv_en_p6b: 'BasedNode ApS · CVR 43750194 · Denmark',
+    priv_en_clarification: 'We never collect personal data without your consent. We never sell data to third parties. We do not use your information for any purpose other than helping you.',
+    summary_label: '✅ Summary',
+    summary_title: 'In Plain Language',
+    summary_subtitle: 'No fine print. No hidden clauses. Here is what you need to know:',
+    summary_text: 'We built BasedNode the way we would want to be treated ourselves. Your privacy is not a compliance checkbox — it is a fundamental right. If you ever have concerns, questions, or want us to remove your data, just <a href="mailto:contact@basednode.xyz" style="color:var(--accent);text-decoration:none;font-weight:500">email us</a>. We reply within 24 hours.',
+    back_link: '← Back to BasedNode Concepts',
+    footer_text: 'BasedNode ApS · CVR 43750194 · Denmark'
+  }
+};
+
+// ===== LANGUAGE STATE =====
+var currentLang = localStorage.getItem('bn-lang') || 'da';
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('bn-lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.dataset.i18n;
+    if (TEXT[lang] && TEXT[lang][key]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = TEXT[lang][key];
+      else el.innerHTML = TEXT[lang][key];
+    }
+  });
+  document.getElementById('langToggle').textContent = 'DA | EN';
+  // Show/hide language-specific sections
+  var daCards = document.querySelectorAll('#privacy-da');
+  var enCards = document.querySelectorAll('#privacy-en');
+  daCards.forEach(function(c) { c.style.display = lang === 'da' ? '' : 'none'; });
+  enCards.forEach(function(c) { c.style.display = lang === 'en' ? '' : 'none'; });
+}
+
+// ===== THEME STATE =====
+var currentTheme = localStorage.getItem('bn-theme') || 'dark';
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('bn-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  var icon = theme === 'dark' ? '🌙' : '☀️';
+  document.getElementById('themeToggle').textContent = icon;
+}
+
+// ===== INIT =====
+(function init() {
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var savedTheme = localStorage.getItem('bn-theme');
+  if (savedTheme) currentTheme = savedTheme;
+  else currentTheme = prefersDark ? 'dark' : 'light';
+  setTheme(currentTheme);
+
+  var savedLang = localStorage.getItem('bn-lang');
+  if (savedLang) currentLang = savedLang;
+  setLanguage(currentLang);
+
+  document.getElementById('themeToggle').addEventListener('click', function() { setTheme(currentTheme === 'dark' ? 'light' : 'dark'); });
+  document.getElementById('langToggle').addEventListener('click', function() { setLanguage(currentLang === 'da' ? 'en' : 'da'); });
+
+  // Nav scroll
+  var navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+})();
+</script>
+</body>
+</html>

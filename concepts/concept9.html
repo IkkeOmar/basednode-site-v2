@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode · Omar — Warm & Playful</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Nunito',sans-serif;background:#FFFAF0;color:#3d2c2c;line-height:1.7;transition:background 0.5s cubic-bezier(0.34,1.56,0.64,1),color 0.5s cubic-bezier(0.34,1.56,0.64,1);overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] body{background:#2d1f1f;color:#f5ebe0}
+[data-theme="dark"] .card{background:#3d2a2a;box-shadow:0 8px 30px rgba(0,0,0,0.25)}
+[data-theme="dark"] .badge{background:#4a3434;color:#f5ebe0}
+[data-theme="dark"] .service-card{background:#3d2a2a}
+[data-theme="dark"] .case-card{background:#3d2a2a}
+[data-theme="dark"] .pricing-card{background:#3d2a2a;border-color:#4a3434}
+[data-theme="dark"] .faq-q{background:#3d2a2a}
+[data-theme="dark"] .testimonial-card{background:#3d2a2a}
+[data-theme="dark"] .contact-form input,
+[data-theme="dark"] .contact-form textarea,
+[data-theme="dark"] .contact-form select{background:#4a3434;color:#f5ebe0;border-color:#5a4444}
+[data-theme="dark"] .partnership-card{background:#3d2a2a}
+[data-theme="dark"] .hero-bg-circle{background:rgba(255,107,107,0.08)}
+[data-theme="dark"] .hero-bg-circle-2{background:rgba(78,205,196,0.08)}
+
+/* ===== DECORATIVE ELEMENTS ===== */
+.bg-decoration{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.bg-circle{position:absolute;border-radius:50%;opacity:0.5}
+.bg-circle-1{width:600px;height:600px;background:rgba(255,107,107,0.06);top:-200px;right:-150px}
+.bg-circle-2{width:400px;height:400px;background:rgba(78,205,196,0.06);bottom:-100px;left:-100px}
+.bg-circle-3{width:300px;height:300px;background:rgba(255,107,107,0.04);bottom:40%;left:60%}
+.bg-circle-4{width:200px;height:200px;background:rgba(78,205,196,0.05);top:50%;left:10%}
+
+/* ===== NAVBAR ===== */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);background:transparent}
+.navbar.scrolled{background:rgba(255,250,240,0.92);backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,0.06);padding:10px 0}
+[data-theme="dark"] .navbar.scrolled{background:rgba(45,31,31,0.92);backdrop-filter:blur(12px)}
+.navbar .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.3rem;font-weight:800;color:#FF6B6B}
+.nav-logo span{color:#4ECDC4}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-weight:600;font-size:0.9rem;padding:6px 14px;border-radius:20px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);color:inherit}
+.nav-links a:hover{background:rgba(255,107,107,0.12);color:#FF6B6B}
+.lang-toggle,.theme-toggle{background:none;border:none;cursor:pointer;font-size:1.1rem;padding:6px;border-radius:50%;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);display:flex;align-items:center;gap:4px}
+.lang-toggle:hover,.theme-toggle:hover{background:rgba(255,107,107,0.12);transform:scale(1.1)}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;border-radius:12px;padding:4px 8px;transition:all 0.3s ease}
+.mobile-menu-btn:hover{background:rgba(255,107,107,0.12)}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;z-index:1;padding-top:80px}
+.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-content h1{font-size:3.2rem;font-weight:800;line-height:1.2;margin-bottom:16px}
+.hero-content h1 .highlight{background:linear-gradient(135deg,#FF6B6B,#4ECDC4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-content .tagline{font-size:1.2rem;font-weight:600;color:#FF6B6B;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.hero-content p{font-size:1.1rem;opacity:0.8;margin-bottom:28px;max-width:520px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:30px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);font-family:'Nunito',sans-serif}
+.btn-primary{background:#FF6B6B;color:#fff}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 32px rgba(255,107,107,0.35)}
+.btn-secondary{background:transparent;color:#FF6B6B;border:2px solid #FF6B6B}
+.btn-secondary:hover{background:#FF6B6B;color:#fff;transform:translateY(-3px)}
+.btn-teal{background:#4ECDC4;color:#fff}
+.btn-teal:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 32px rgba(78,205,196,0.35)}
+.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.hero-emoji-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.hero-emoji-item{width:100px;height:100px;background:rgba(255,107,107,0.08);border-radius:30px;display:flex;align-items:center;justify-content:center;font-size:3rem;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 30px rgba(0,0,0,0.04)}
+.hero-emoji-item:hover{transform:translateY(-8px) scale(1.05);background:rgba(255,107,107,0.15);box-shadow:0 16px 40px rgba(255,107,107,0.15)}
+.hero-emoji-item:nth-child(2){background:rgba(78,205,196,0.1)}
+.hero-emoji-item:nth-child(4){background:rgba(78,205,196,0.1)}
+.hero-emoji-item:nth-child(6){background:rgba(78,205,196,0.1)}
+
+/* ===== SECTION COMMON ===== */
+.section{padding:100px 0;position:relative;z-index:1}
+.section-label{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,107,0.1);color:#FF6B6B;padding:6px 18px;border-radius:20px;font-weight:700;font-size:0.85rem;margin-bottom:12px}
+.section-title{font-size:2.6rem;font-weight:800;margin-bottom:12px;line-height:1.2}
+.section-title .highlight{background:linear-gradient(135deg,#FF6B6B,#4ECDC4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{font-size:1.1rem;opacity:0.7;max-width:600px;margin-bottom:48px}
+.text-center{text-align:center}
+.text-center .section-sub{margin-left:auto;margin-right:auto}
+
+/* ===== BADGES ===== */
+.badges-ribbon{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:20px;background:rgba(255,107,107,0.08);font-weight:600;font-size:0.85rem;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 2px 10px rgba(0,0,0,0.03)}
+.badge:hover{transform:translateY(-2px);background:rgba(255,107,107,0.15);box-shadow:0 6px 20px rgba(255,107,107,0.1)}
+.badge-teal{background:rgba(78,205,196,0.1)}
+.badge-teal:hover{background:rgba(78,205,196,0.2);box-shadow:0 6px 20px rgba(78,205,196,0.12)}
+
+/* ===== SERVICES ===== */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.service-card{background:#fff;border-radius:28px;padding:32px 28px;box-shadow:0 8px 30px rgba(0,0,0,0.05);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);border:2px solid transparent}
+.service-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.15)}
+.service-card .icon{font-size:3rem;margin-bottom:16px;display:block}
+.service-card h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#FF6B6B}
+.service-card p{font-size:0.95rem;opacity:0.7}
+.service-card .tag{display:inline-block;margin-top:12px;padding:4px 14px;border-radius:14px;background:rgba(78,205,196,0.1);color:#4ECDC4;font-weight:600;font-size:0.8rem}
+
+/* ===== CASES ===== */
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.case-card{background:#fff;border-radius:28px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,0.05);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);display:flex;flex-direction:column}
+.case-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(78,205,196,0.1)}
+.case-card .icon{font-size:2.6rem;margin-bottom:12px}
+.case-card h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.case-card .metric{display:inline-block;padding:4px 16px;border-radius:16px;background:#FF6B6B;color:#fff;font-weight:800;font-size:0.85rem;margin-bottom:10px;align-self:flex-start}
+.case-card p{font-size:0.92rem;opacity:0.7;flex:1}
+.case-card .case-tag{font-size:0.8rem;color:#4ECDC4;font-weight:600;margin-top:10px}
+
+/* ===== PRICING ===== */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start}
+.pricing-card{background:#fff;border-radius:28px;padding:36px 28px;box-shadow:0 8px 30px rgba(0,0,0,0.05);border:2px solid transparent;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);text-align:center}
+.pricing-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.08)}
+.pricing-card.featured{border-color:#FF6B6B;position:relative}
+.pricing-card.featured::before{content:var(--featured-tag,"⭐ Mest populær");position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#FF6B6B;color:#fff;padding:4px 18px;border-radius:14px;font-weight:700;font-size:0.8rem}
+.pricing-card .emoji{font-size:3rem;margin-bottom:12px;display:block}
+.pricing-card h3{font-size:1.3rem;font-weight:800;margin-bottom:8px}
+.pricing-card .price{font-size:2.4rem;font-weight:800;color:#FF6B6B;margin-bottom:4px}
+.pricing-card .price-sub{font-size:0.9rem;opacity:0.6;margin-bottom:20px}
+.pricing-card ul{text-align:left;margin-bottom:24px}
+.pricing-card ul li{padding:8px 0;font-size:0.92rem;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,0,0,0.04)}
+[data-theme="dark"] .pricing-card ul li{border-color:rgba(255,255,255,0.05)}
+.pricing-card ul li:last-child{border:none}
+
+/* ===== PARTNERSHIP ===== */
+.partnership-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.partnership-card{background:#fff;border-radius:28px;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,0.05);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);text-align:center}
+.partnership-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(78,205,196,0.1)}
+.partnership-card .icon{font-size:3.5rem;margin-bottom:16px;display:block}
+.partnership-card h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#FF6B6B}
+.partnership-card p{font-size:0.95rem;opacity:0.7;margin-bottom:16px}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.testimonial-card{background:#fff;border-radius:28px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,0.05);transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.testimonial-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.06)}
+.testimonial-card .stars{font-size:1.1rem;margin-bottom:10px}
+.testimonial-card blockquote{font-size:0.98rem;font-style:italic;opacity:0.85;margin-bottom:14px;line-height:1.6}
+.testimonial-card .author{display:flex;align-items:center;gap:10px}
+.testimonial-card .author-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF6B6B,#4ECDC4);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;font-weight:700}
+.testimonial-card .author-info strong{font-size:0.9rem;display:block}
+.testimonial-card .author-info span{font-size:0.8rem;opacity:0.6}
+
+/* ===== FAQ ===== */
+.faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.faq-item{border-radius:24px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04);transition:all 0.3s ease}
+.faq-q{width:100%;background:#fff;border:none;padding:20px 24px;font-size:1.05rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font-family:'Nunito',sans-serif;color:inherit;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.faq-q:hover{background:rgba(255,107,107,0.04)}
+.faq-q .arrow{font-size:1.2rem;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0}
+.faq-item.active .faq-q .arrow{transform:rotate(180deg)}
+.faq-a{padding:0 24px;max-height:0;overflow:hidden;transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);font-size:0.95rem;opacity:0.8;line-height:1.7}
+.faq-item.active .faq-a{padding:0 24px 20px;max-height:300px}
+
+/* ===== CONTACT ===== */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-info-card{background:#fff;border-radius:28px;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,0.05)}
+.contact-info-card h3{font-size:1.4rem;font-weight:800;margin-bottom:16px;color:#FF6B6B}
+.contact-info-card .info-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.04)}
+[data-theme="dark"] .contact-info-card .info-item{border-color:rgba(255,255,255,0.05)}
+.contact-info-card .info-item:last-child{border:none}
+.contact-info-card .info-item .label{font-size:0.85rem;font-weight:700;min-width:80px}
+.contact-info-card .info-item .value{font-size:0.92rem;opacity:0.8;word-break:break-all}
+.contact-info-card .social-links{display:flex;gap:12px;margin-top:20px}
+.contact-info-card .social-link{width:44px;height:44px;border-radius:50%;background:rgba(255,107,107,0.08);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+.contact-info-card .social-link:hover{background:#FF6B6B;color:#fff;transform:translateY(-3px) scale(1.1);box-shadow:0 8px 24px rgba(255,107,107,0.25)}
+.contact-form{background:#fff;border-radius:28px;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,0.05)}
+.contact-form h3{font-size:1.4rem;font-weight:800;margin-bottom:20px}
+.contact-form .form-group{margin-bottom:16px}
+.contact-form label{display:block;font-weight:700;font-size:0.9rem;margin-bottom:6px}
+.contact-form input,
+.contact-form textarea,
+.contact-form select{width:100%;padding:14px 18px;border:2px solid rgba(0,0,0,0.08);border-radius:18px;font-size:0.95rem;font-family:'Nunito',sans-serif;background:#FFFAF0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);outline:none;color:inherit}
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus{border-color:#FF6B6B;box-shadow:0 0 0 4px rgba(255,107,107,0.1)}
+.contact-form textarea{resize:vertical;min-height:100px}
+.contact-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.contact-form .btn{width:100%;justify-content:center;font-size:1.05rem;padding:16px}
+
+/* ===== FOOTER ===== */
+footer{background:#fff;border-radius:40px 40px 0 0;padding:48px 0 24px;position:relative;z-index:1;margin-top:40px;box-shadow:0 -4px 30px rgba(0,0,0,0.03)}
+[data-theme="dark"] footer{background:#3d2a2a}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+footer h4{font-size:1rem;font-weight:800;margin-bottom:16px;color:#FF6B6B}
+footer p{font-size:0.9rem;opacity:0.7;max-width:320px}
+footer ul li{margin-bottom:8px}
+footer ul li a{font-size:0.9rem;opacity:0.7;transition:all 0.3s ease;display:flex;align-items:center;gap:6px}
+footer ul li a:hover{opacity:1;color:#FF6B6B;transform:translateX(4px)}
+.footer-bottom{padding-top:20px;border-top:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:0.85rem;opacity:0.6}
+[data-theme="dark"] .footer-bottom{border-color:rgba(255,255,255,0.06)}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(40px) scale(0.98);transition:all 0.8s cubic-bezier(0.34,1.56,0.64,1)}
+.reveal.visible{opacity:1;transform:translateY(0) scale(1)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+.reveal-delay-5{transition-delay:0.5s}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:30px;right:30px;padding:16px 28px;border-radius:24px;font-weight:700;font-size:0.95rem;box-shadow:0 12px 40px rgba(0,0,0,0.15);z-index:9999;transform:translateY(120px);opacity:0;transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-success{background:#4ECDC4;color:#fff}
+.toast-error{background:#FF6B6B;color:#fff}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media(max-width:968px){
+  .hero .container{grid-template-columns:1fr;gap:40px;text-align:center}
+  .hero-content p{margin-left:auto;margin-right:auto}
+  .hero-cta{justify-content:center}
+  .badges-ribbon{justify-content:center}
+  .contact-wrap{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .hero-content h1{font-size:2.4rem}
+  .section-title{font-size:2rem}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .mobile-menu-btn{display:flex}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(255,250,240,0.98);backdrop-filter:blur(12px);padding:20px 24px;border-radius:0 0 28px 28px;box-shadow:0 12px 40px rgba(0,0,0,0.08);gap:8px}
+  [data-theme="dark"] .nav-links.open{background:rgba(45,31,31,0.98)}
+  .nav-links.open a{padding:12px 16px;border-radius:16px}
+  .nav-links.open .lang-toggle,.nav-links.open .theme-toggle{padding:12px 16px;width:100%;justify-content:center;border-radius:16px}
+  .hero-emoji-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .hero-emoji-item{width:80px;height:80px;font-size:2.2rem}
+  .services-grid{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;max-width:380px;margin-left:auto;margin-right:auto}
+  .testimonials-grid{grid-template-columns:1fr}
+  .partnership-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;text-align:center}
+  footer p{margin:0 auto}
+  footer ul li a{justify-content:center}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .section{padding:60px 0}
+  .hero-content h1{font-size:2rem}
+  .section-title{font-size:1.7rem}
+  .contact-form .form-row{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .hero-emoji-item{width:70px;height:70px;font-size:1.8rem}
+  .hero-content h1{font-size:1.7rem}
+  .btn{padding:12px 24px;font-size:0.9rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== BACKGROUND DECORATION ===== -->
+<div class="bg-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-circle bg-circle-4"></div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast" class="toast"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">Based<span>Node</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#services" data-en="Services" data-da="Services">Services</a>
+      <a href="#cases" data-en="Cases" data-da="Cases">Cases</a>
+      <a href="#pricing" data-en="Pricing" data-da="Priser">Pricing</a>
+      <a href="#partnership" data-en="Partner" data-da="Partnerskab">Partner</a>
+      <a href="#testimonials" data-en="Reviews" data-da="Anmeldelser">Reviews</a>
+      <a href="#faq" data-en="FAQ" data-da="FAQ">FAQ</a>
+      <a href="#contact" class="btn btn-primary" style="padding:10px 22px;font-size:0.85rem" data-en="Contact" data-da="Kontakt">Contact</a>
+      <button class="lang-toggle" id="langToggle" title="Toggle language">🇩🇰 DA</button>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-content reveal">
+      <div class="tagline">👋 Hej, I'm <span class="highlight">Omar</span></div>
+      <h1 data-en="Building digital <span class='highlight'>magic</span><br> just for you" data-da="Digital <span class='highlight'>magic</span><br> — kun for dig">Building digital <span class="highlight">magic</span><br> just for you</h1>
+      <p data-en="Just me — one passionate engineer with a soft spot for AI, automation, and beautiful interfaces. BasedNode is my playground, and you're invited." data-da="Bare mig — én passioneret ingeniør med en kærlighed til AI, automatisering og smukke interfaces. BasedNode er min legeplads, og du er inviteret.">Just me — one passionate engineer with a soft spot for AI, automation, and beautiful interfaces. BasedNode is my playground, and you're invited.</p>
+      <div class="badges-ribbon">
+        <span class="badge">🎓 Civilingeniør · Fysik & Nanoteknologi (DTU)</span>
+        <span class="badge badge-teal">📊 Quant Finance</span>
+        <span class="badge">🌟 MentorDanmark (2019)</span>
+        <span class="badge badge-teal">🚀 GXU (2025)</span>
+        <span class="badge">💻 Software since 2020</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">✨ Let's create something</a>
+        <a href="#cases" class="btn btn-secondary">📂 See my work</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-emoji-grid">
+        <div class="hero-emoji-item">🤖</div>
+        <div class="hero-emoji-item">📊</div>
+        <div class="hero-emoji-item">⚡</div>
+        <div class="hero-emoji-item">🎨</div>
+        <div class="hero-emoji-item">🔧</div>
+        <div class="hero-emoji-item">🚀</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section" id="services">
+  <div class="container text-center">
+    <div class="section-label reveal">🧰 What I do</div>
+    <h2 class="section-title reveal reveal-delay-1" data-en="Services I <span class='highlight'>love</span>" data-da="Services jeg <span class='highlight'>elsker</span>">Services I <span class="highlight">love</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="From automation wizardry to beautiful websites — here's how I can help you." data-da="Fra automatisering til smukke hjemmesider — her er hvordan jeg kan hjælpe dig.">From automation wizardry to beautiful websites — here's how I can help you.</p>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <span class="icon">⚙️</span>
+        <h3 data-en="Automation" data-da="Automatisering">Automatisering</h3>
+        <p data-en="Stop doing the same thing twice. Let robots handle the boring stuff." data-da="Stop med at gøre det samme to gange. Lad robotterne klare det kedelige.">Stop doing the same thing twice. Let robots handle the boring stuff.</p>
+        <span class="tag">Workflow Automation</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="icon">🤖</span>
+        <h3 data-en="AI &amp; Agents" data-da="AI &amp; Agenter">AI &amp; Agenter</h3>
+        <p data-en="Smart agents that think, learn, and get things done — on your terms." data-da="Smarte agenter der tænker, lærer og får ting gjort — på dine præmisser.">Smart agents that think, learn, and get things done — on your terms.</p>
+        <span class="tag">LLM · RAG · Agents</span>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <span class="icon">📈</span>
+        <h3 data-en="Dashboards" data-da="Dashboards">Dashboards</h3>
+        <p data-en="Beautiful, real-time dashboards that make your data sing." data-da="Smukke, realtids-dashboards der får dine data til at synge.">Beautiful, real-time dashboards that make your data sing.</p>
+        <span class="tag">Data Viz · BI</span>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <span class="icon">🌐</span>
+        <h3 data-en="Websites" data-da="Hjemmesider">Hjemmesider</h3>
+        <p data-en="Fast, playful, mobile-first websites that actually convert." data-da="Hurtige, legende, mobil-first hjemmesider der faktisk konverterer.">Fast, playful, mobile-first websites that actually convert.</p>
+        <span class="tag">Web Dev · UX</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <span class="icon">📣</span>
+        <h3 data-en="Marketing" data-da="Markedsføring">Markedsføring</h3>
+        <p data-en="Data-driven marketing that doesn't feel like marketing." data-da="Data-drevet markedsføring der ikke føles som markedsføring.">Data-driven marketing that doesn't feel like marketing.</p>
+        <span class="tag">Growth · Analytics</span>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <span class="icon">📚</span>
+        <h3 data-en="Teaching (side)" data-da="Undervisning (side)">Undervisning (side)</h3>
+        <p data-en="Teaching is my side thing — and I love it. AI, code, and clarity for everyone." data-da="Undervisning er mit sideprojekt — og jeg elsker det. AI, kode og klarhed for alle.">Teaching is my side thing — and I love it. AI, code, and clarity for everyone.</p>
+        <span class="tag">Side Project· Mentor</span>
+      </div>
+      <div class="service-card reveal reveal-delay-4" style="grid-column: 2;">
+        <span class="icon">🤝</span>
+        <h3 data-en="Partnership" data-da="Partnerskab">Partnerskab</h3>
+        <p data-en="Let's team up. Partnerships built on trust, transparency, and great vibes." data-da="Lad os slå os sammen. Partnerskaber bygget på tillid, transparens og gode vibes.">Let's team up. Partnerships built on trust, transparency, and great vibes.</p>
+        <span class="tag">Collaboration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASES ===== -->
+<section class="section" id="cases" style="background:rgba(78,205,196,0.04);border-radius:60px 60px 0 0;">
+  <div class="container text-center">
+    <div class="section-label reveal">🏆 Recent wins</div>
+    <h2 class="section-title reveal reveal-delay-1" data-en="Cases that made me <span class='highlight'>grin</span>" data-da="Cases der fik mig til at <span class='highlight'>grine</span>">Cases that made me <span class="highlight">grin</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="Real results from real projects. No fluff, just impact." data-da="Ægte resultater fra ægte projekter. Uden filter.">Real results from real projects. No fluff, just impact.</p>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <span class="icon">⚡</span>
+        <span class="metric">80-100x</span>
+        <h3 data-en="AI Infrastructure" data-da="AI Infrastructure">AI Infrastructure</h3>
+        <p data-en="Scaled inference pipeline from 10 req/s to 1000+ req/s. Custom CUDA-optimized routing." data-da="Skalerede inferens pipeline fra 10 req/s til 1000+ req/s. Custom CUDA-optimeret routing.">Scaled inference pipeline from 10 req/s to 1000+ req/s. Custom CUDA-optimized routing.</p>
+        <span class="case-tag">#infra #AI</span>
+      </div>
+      <div class="case-card reveal reveal-delay-1">
+        <span class="icon">📈</span>
+        <span class="metric">+340%</span>
+        <h3 data-en="Lead Gen" data-da="Lead Gen">Lead Gen</h3>
+        <p data-en="Automated multi-channel lead generation pipeline. 340% increase in qualified leads in 2 months." data-da="Automatiseret multi-channel lead generation pipeline. 340% stigning i kvalificerede leads på 2 måneder.">Automated multi-channel lead generation pipeline. 340% increase in qualified leads in 2 months.</p>
+        <span class="case-tag">#growth #automation</span>
+      </div>
+      <div class="case-card reveal reveal-delay-2">
+        <span class="icon">🏫</span>
+        <span class="metric">12-week AI</span>
+        <h3 data-en="GXU 12-week AI Sprint" data-da="GXU 12-ugers AI Sprint">GXU 12-week AI Sprint</h3>
+        <p data-en="Designed and delivered a full AI curriculum at GXU. From zero to deployed agents in 12 weeks." data-da="Designet og leveret et fuldt AI-curriculum hos GXU. Fra nul til deployerede agenter på 12 uger.">Designed and delivered a full AI curriculum at GXU. From zero to deployed agents in 12 weeks.</p>
+        <span class="case-tag">#education #AI</span>
+      </div>
+      <div class="case-card reveal reveal-delay-3">
+        <span class="icon">💰</span>
+        <span class="metric">Quant Pipeline</span>
+        <h3 data-en="Quant Pipeline" data-da="Quant Pipeline">Quant Pipeline</h3>
+        <p data-en="Real-time quantitative data pipeline with ML-driven signal detection and risk modeling." data-da="Real-time kvantitativ data pipeline med ML-drevet signaldetektion og risiko-modellering.">Real-time quantitative data pipeline with ML-driven signal detection and risk modeling.</p>
+        <span class="case-tag">#quant #finance</span>
+      </div>
+      <div class="case-card reveal reveal-delay-4">
+        <span class="icon">💬</span>
+        <span class="metric">95%</span>
+        <h3 data-en="Chatbot 95%" data-da="Chatbot 95%">Chatbot 95%</h3>
+        <p data-en="Customer support chatbot handling 95% of queries autonomously. Human handoff for the tricky 5%." data-da="Kundesupport chatbot der håndterer 95% af forespørgsler selvstændigt. Menneskelig håndoff for de tricky 5%.">Customer support chatbot handling 95% of queries autonomously. Human handoff for the tricky 5%.</p>
+        <span class="case-tag">#chatbot #AI</span>
+      </div>
+      <div class="case-card reveal reveal-delay-5">
+        <span class="icon">📊</span>
+        <span class="metric">Custom</span>
+        <h3 data-en="Custom Dashboard" data-da="Custom Dashboard">Custom Dashboard</h3>
+        <p data-en="Fully bespoke analytics dashboard with real-time streaming, custom widgets, and dark mode." data-da="Fuldt skræddersyet analytics dashboard med real-time streaming, custom widgets og dark mode.">Fully bespoke analytics dashboard with real-time streaming, custom widgets, and dark mode.</p>
+        <span class="case-tag">#dashboard #ux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing">
+  <div class="container text-center">
+    <div class="section-label reveal">🏷️ Fair & transparent</div>
+    <h2 class="section-title reveal reveal-delay-1" data-en="Pricing that <span class='highlight'>makes sense</span>" data-da="Priser der <span class='highlight'>giver mening</span>">Pricing that <span class="highlight">makes sense</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="No hidden fees, no corporate nonsense. Just straightforward pricing built around you." data-da="Ingen skjulte gebyrer, intet corporate fis. Bare ligetil priser bygget omkring dig.">No hidden fees, no corporate nonsense. Just straightforward pricing built around you.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <span class="emoji">🚀</span>
+        <h3 data-en="Quick Fix" data-da="Quick Fix">Quick Fix</h3>
+        <div class="price">500 kr</div>
+        <div class="price-sub" data-en="/hour — pay-as-you-go" data-da="/time — betal per time">/hour — pay-as-you-go</div>
+        <ul>
+          <li>✅ <span data-en="1-hour minimum" data-da="1 times minimum">1-hour minimum</span></li>
+          <li>✅ <span data-en="Quick automations & fixes" data-da="Hurtige automatiseringer & fixes">Quick automations & fixes</span></li>
+          <li>✅ <span data-en="Email support (48h)" data-da="Email support (48t)">Email support (48h)</span></li>
+          <li>✅ <span data-en="Cancel anytime" data-da="Opsig når som helst">Cancel anytime</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-secondary" style="width:100%;justify-content:center">Get started</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-2">
+        <span class="emoji">🔥</span>
+        <h3 data-en="The Works" data-da="The Works">The Works</h3>
+        <div class="price">8.000 kr</div>
+        <div class="price-sub" data-en="/month — best value" data-da="/måned — bedst værdi">/month — best value</div>
+        <ul>
+          <li>✅ <span data-en="20 hours/month" data-da="20 timer/måned">20 hours/month</span></li>
+          <li>✅ <span data-en="Custom AI agents & dashboards" data-da="Custom AI-agenter & dashboards">Custom AI agents & dashboards</span></li>
+          <li>✅ <span data-en="Priority support (12h)" data-da="Prioritetssupport (12t)">Priority support (12h)</span></li>
+          <li>✅ <span data-en="Monthly strategy call" data-da="Månedligt strategimøde">Monthly strategy call</span></li>
+          <li>✅ <span data-en="Dedicated Slack channel" data-da="Dedikeret Slack-kanal">Dedicated Slack channel</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center">Let's go!</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-4">
+        <span class="emoji">💎</span>
+        <h3 data-en="Full Partnership" data-da="Fuldt Partnerskab">Full Partnership</h3>
+        <div class="price" data-en="Let's talk" data-da="Lad os snakke">Let's talk</div>
+        <div class="price-sub" data-en="— custom scope" data-da="— custom scope">— custom scope</div>
+        <ul>
+          <li>✅ <span data-en="Dedicated retainer" data-da="Dedikeret retainer">Dedicated retainer</span></li>
+          <li>✅ <span data-en="Full-stack solutions" data-da="Full-stack løsninger">Full-stack solutions</span></li>
+          <li>✅ <span data-en="White-label options" data-da="White-label muligheder">White-label options</span></li>
+          <li>✅ <span data-en="Ongoing R&D" data-da="Løbende R&D">Ongoing R&D</span></li>
+          <li>✅ <span data-en="Revenue share possible" data-da="Revenue share muligt">Revenue share possible</span></li>
+        </ul>
+        <a href="#contact" class="btn btn-secondary" style="width:100%;justify-content:center">Let's chat</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNERSHIP ===== -->
+<section class="section" id="partnership" style="background:rgba(255,107,107,0.03);border-radius:60px;">
+  <div class="container text-center">
+    <div class="section-label reveal">🤝 Team up</div>
+    <h2 class="section-title reveal reveal-delay-1" data-en="Let's build <span class='highlight'>together</span>" data-da="Lad os bygge <span class='highlight'>sammen</span>">Let's build <span class="highlight">together</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="I believe the best things happen when good people work together. Whether you're an agency needing extra firepower or a founder looking for a tech partner — I'm your guy." data-da="Jeg tror de bedste ting sker når gode mennesker arbejder sammen. Om du er et bureau der mangler ekstra kræfter eller en founder der søger en tech-partner — jeg er din fyr.">I believe the best things happen when good people work together. Whether you're an agency needing extra firepower or a founder looking for a tech partner — I'm your guy.</p>
+    <div class="partnership-grid">
+      <div class="partnership-card reveal">
+        <span class="icon">🤝</span>
+        <h3 data-en="Agency Partnership" data-da="Bureau-partnerskab">Agency Partnership</h3>
+        <p data-en="White-label development, AI integration, or overflow capacity. I've got your back." data-da="White-label udvikling, AI-integration eller overflow-kapacitet. Jeg dækker dig.">White-label development, AI integration, or overflow capacity. I've got your back.</p>
+        <a href="mailto:partner@basednode.xyz" class="btn btn-teal" style="font-size:0.85rem;padding:10px 24px">✉️ partner@basednode.xyz</a>
+      </div>
+      <div class="partnership-card reveal reveal-delay-2">
+        <span class="icon">🚀</span>
+        <h3 data-en="Startup Collaboration" data-da="Startup-samarbejde">Startup Collaboration</h3>
+        <p data-en="Early-stage? Let's build your MVP, automate your ops, or design your AI strategy from scratch." data-da="Early-stage? Lad os bygge din MVP, automatisere din drift eller designe din AI-strategi fra bunden.">Early-stage? Let's build your MVP, automate your ops, or design your AI strategy from scratch.</p>
+        <a href="mailto:contact@basednode.xyz" class="btn btn-teal" style="font-size:0.85rem;padding:10px 24px">✉️ contact@basednode.xyz</a>
+      </div>
+      <div class="partnership-card reveal reveal-delay-3">
+        <span class="icon">🎓</span>
+        <h3 data-en="Education & Mentoring" data-da="Uddannelse & Mentoring">Education & Mentoring</h3>
+        <p data-en="Side project or full curriculum — I teach AI, code, and critical thinking. MentorDanmark & GXU alumnus." data-da="Sideprojekt eller fuldt curriculum — jeg underviser i AI, kode og kritisk tænkning. MentorDanmark & GXU alumnus.">Side project or full curriculum — I teach AI, code, and critical thinking. MentorDanmark & GXU alumnus.</p>
+        <span class="badge" style="margin-top:8px">🌟 Mentor since 2019</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section" id="testimonials">
+  <div class="container text-center">
+    <div class="section-label reveal">💬 Kind words</div>
+    <h2 class="section-title reveal reveal-delay-1" data-en="What people <span class='highlight'>say</span>" data-da="Hvad folk <span class='highlight'>siger</span>">What people <span class="highlight">say</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="Real feedback from real humans — I don't make this stuff up." data-da="Ægte feedback fra ægte mennesker — jeg finder ikke på det her.">Real feedback from real humans — I don't make this stuff up.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <blockquote data-en="\"Omar transformed our AI pipeline completely. The 80-100x speedup wasn't just a number — it changed how we operate.\"" data-da="\"Omar transformerede vores AI pipeline fuldstændigt. 80-100x speedup var ikke bare et tal — det ændrede vores måde at arbejde på.\"">"Omar transformed our AI pipeline completely. The 80-100x speedup wasn't just a number — it changed how we operate."</blockquote>
+        <div class="author">
+          <div class="author-avatar">M</div>
+          <div class="author-info">
+            <strong>Mikkel</strong>
+            <span data-en="CTO, TechScale" data-da="CTO, TechScale">CTO, TechScale</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <blockquote data-en="\"Working with Omar on the GXU AI sprint was incredible. His energy and clarity made complex topics accessible to everyone.\"" data-da="\"At arbejde med Omar på GXU AI-sprinten var utroligt. Hans energi og klarhed gjorde komplekse emner tilgængelige for alle.\"">"Working with Omar on the GXU AI sprint was incredible. His energy and clarity made complex topics accessible to everyone."</blockquote>
+        <div class="author">
+          <div class="author-avatar">S</div>
+          <div class="author-info">
+            <strong>Signe</strong>
+            <span data-en="Program Lead, GXU" data-da="Programleder, GXU">Program Lead, GXU</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-4">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <blockquote data-en="\"Our lead gen went up 340% in two months. Omar's systems thinking and automation skills are next level.\"" data-da="\"Vores lead gen gik op med 340% på to måneder. Omars systemtænkning og automatiseringsevner er next level.\"">"Our lead gen went up 340% in two months. Omar's systems thinking and automation skills are next level."</blockquote>
+        <div class="author">
+          <div class="author-avatar">J</div>
+          <div class="author-info">
+            <strong>Julie</strong>
+            <span data-en="Head of Growth, Nordik" data-da="Head of Growth, Nordik">Head of Growth, Nordik</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq" style="background:rgba(78,205,196,0.04);border-radius:60px 60px 0 0;">
+  <div class="container text-center">
+    <div class="section-label reveal">❓ Got questions?</div>
+data-en="Frequently <span class='highlight'>Asked</span>" data-da="Ofte <span class='highlight'>stillede spørgsmål</span>">Frequently <span class="highlight">Asked</span></h2>
+    <p class="section-sub reveal reveal-delay-2" data-en="Everything you're wondering (and probably some stuff you aren't)." data-da="Alt du mon undrer dig over (og sikkert også noget du ikke gør).">Everything you're wondering (and probably some stuff you aren't).</p>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q">
+          <span data-en="What kind of projects do you take?" data-da="Hvilke slags projekter tager du?">What kind of projects do you take?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Anything from a quick Python script to a full AI agent system. I love variety — automation, dashboards, websites, chatbots, you name it. If it involves code and creativity, I'm in." data-da="Alt fra et hurtigt Python-script til et fuldt AI-agent system. Jeg elsker variation — automatisering, dashboards, hjemmesider, chatbots, you name it. Hvis det involverer kode og kreativitet, er jeg med.">Anything from a quick Python script to a full AI agent system. I love variety — automation, dashboards, websites, chatbots, you name it. If it involves code and creativity, I'm in.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q">
+          <span data-en="How fast do you work?" data-da="Hvor hurtigt arbejder du?">How fast do you work?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Depends on scope. Small automations? 24-48 hours. Full dashboard or AI agent? 1-3 weeks. I'm transparent about timelines and over-communicate every step." data-da="Afhænger af scope. Små automatiseringer? 24-48 timer. Fuld dashboard eller AI agent? 1-3 uger. Jeg er transparent omkring tidslinjer og overkommunikerer hvert skridt.">Depends on scope. Small automations? 24-48 hours. Full dashboard or AI agent? 1-3 weeks. I'm transparent about timelines and over-communicate every step.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <button class="faq-q">
+          <span data-en="Can you work with my existing team?" data-da="Kan du arbejde med mit eksisterende team?">Can you work with my existing team?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Absolutely. I slip into existing workflows, Slack channels, and codebases like I've been there for years. I adapt to your stack — not the other way around." data-da="Absolut. Jeg glider ind i eksisterende workflows, Slack-kanaler og kodebaser som om jeg har været der i årevis. Jeg tilpasser mig dit stack — ikke omvendt.">Absolutely. I slip into existing workflows, Slack channels, and codebases like I've been there for years. I adapt to your stack — not the other way around.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <button class="faq-q">
+          <span data-en="What's the deal with 'Undervisning (side)'?" data-da="Hvad er det med 'Undervisning (side)'?">What's the deal with 'Undervisning (side)'?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Teaching is my passion project. I've been a mentor since 2019 (MentorDanmark) and recently ran a 6-week AI sprint at GXU. I teach AI, programming, and critical thinking — because sharing knowledge is the best thing we can do." data-da="Undervisning er mit passion project. Jeg har været mentor siden 2019 (MentorDanmark) og for nylig kørt en 6-ugers AI sprint hos GXU. Jeg underviser i AI, programmering og kritisk tænkning — fordi at dele viden er det bedste vi kan gøre.">Teaching is my passion project. I've been a mentor since 2019 (MentorDanmark) and recently ran a 6-week AI sprint at GXU. I teach AI, programming, and critical thinking — because sharing knowledge is the best thing we can do.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-4">
+        <button class="faq-q">
+          <span data-en="Do you do hourly or fixed-price?" data-da="Arbejder du time- eller fastpris?">Do you do hourly or fixed-price?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Both. Quick fixes are hourly (500 kr/h). Larger projects get a fixed price after we scope it together. The 'Works' monthly plan is the sweet spot for ongoing needs." data-da="Begge. Quick fixes er timebaseret (500 kr/t). Større projekter får en fastpris efter vi har scoped det sammen. 'The Works' månedsplan er sweet spot for løbende behov.">Both. Quick fixes are hourly (500 kr/h). Larger projects get a fixed price after we scope it together. The 'Works' monthly plan is the sweet spot for ongoing needs.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-5">
+        <button class="faq-q">
+          <span data-en="Can I cancel anytime?" data-da="Kan jeg opsige når som helst?">Can I cancel anytime?</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a" data-en="Yes. No lock-in, no hard feelings. I want you to stick around because I deliver value — not because of a contract." data-da="Ja. Ingen binding, ingen sure miner. Jeg vil have dig til at blive fordi jeg leverer værdi — ikke på grund af en kontrakt.">Yes. No lock-in, no hard feelings. I want you to stick around because I deliver value — not because of a contract.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="text-center">
+      <div class="section-label reveal">📬 Let's talk</div>
+      <h2 class="section-title reveal reveal-delay-1" data-en="Say <span class='highlight'>hello</span>" data-da="Sig <span class='highlight'>hello</span>">Say <span class="highlight">hello</span></h2>
+      <p class="section-sub reveal reveal-delay-2" data-en="Got a project, a question, or just want to geek out? I'm all ears." data-da="Har du et projekt, et spørgsmål, eller bare lyst til at nørde? Jeg lytter.">Got a project, a question, or just want to geek out? I'm all ears.</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-info-card reveal">
+        <h3>📇 BasedNode · Omar</h3>
+        <div class="info-item">
+          <span class="label">🏢</span>
+          <span class="value">BasedNode · Omar, CVR 43750194</span>
+        </div>
+        <div class="info-item">
+          <span class="label">📧</span>
+          <span class="value">
+            <a href="mailto:contact@basednode.xyz" style="color:#FF6B6B">contact@basednode.xyz</a><br>
+            <a href="mailto:partner@basednode.xyz" style="color:#4ECDC4">partner@basednode.xyz</a>
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="label">🔗</span>
+          <span class="value"><a href="#" style="color:#4ECDC4">LinkedIn</a></span>
+        </div>
+        <div class="info-item">
+          <span class="label">✈️</span>
+          <span class="value"><a href="https://t.me/IkkeOmar" target="_blank" style="color:#FF6B6B">@IkkeOmar</a></span>
+        </div>
+        <div class="social-links">
+          <a href="#" class="social-link">💼</a>
+          <a href="https://t.me/IkkeOmar" target="_blank" class="social-link">✈️</a>
+          <a href="mailto:contact@basednode.xyz" class="social-link">📧</a>
+        </div>
+      </div>
+      <form class="contact-form reveal reveal-delay-2" id="contactForm">
+        <h3 data-en="Send me a message 💌" data-da="Send mig en besked 💌">Send me a message 💌</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="formName" data-en="Your name" data-da="Dit navn">Your name</label>
+            <input type="text" id="formName" required placeholder="e.g. Sofie">
+          </div>
+          <div class="form-group">
+            <label for="formEmail" data-en="Your email" data-da="Din email">Your email</label>
+            <input type="email" id="formEmail" required placeholder="e.g. sofie@example.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="formService" data-en="What do you need?" data-da="Hvad har du brug for?">What do you need?</label>
+          <select id="formService">
+            <option value="" data-en="Select a service..." data-da="Vælg en service...">Select a service...</option>
+            <option value="automatisering">Automatisering</option>
+            <option value="ai">AI & Agenter</option>
+            <option value="dashboard">Dashboards</option>
+            <option value="website">Hjemmesider</option>
+            <option value="marketing">Markedsføring</option>
+            <option value="teaching">Undervisning</option>
+            <option value="partnership">Partnerskab</option>
+            <option value="other" data-en="Something else..." data-da="Noget andet...">Something else...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="formMessage" data-en="Your message" data-da="Din besked">Your message</label>
+          <textarea id="formMessage" required placeholder="Tell me about your project! What are you building? What's the dream?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">🚀 Send message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AFFORDABLE HELP ===== -->
+<section style="padding:48px 0;background:rgba(255,107,107,0.05)">
+  <div class="container" style="text-align:center;max-width:700px">
+    <p style="font-size:1.05rem;color:var(--text-secondary);line-height:1.7;font-weight:500" data-en="I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects." data-da="Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p>
+  </div>
+</section>
+
+<!-- ===== RESOURCES PROMO ===== -->
+<section style="padding:40px 0;background:rgba(78,205,196,0.06)">
+  <div class="container" style="text-align:center">
+    <div style="background:#fff;border-radius:28px;padding:32px;box-shadow:0 8px 30px rgba(0,0,0,0.05);max-width:600px;margin:0 auto" class="card">
+      <p style="font-size:1.1rem;font-weight:700;margin-bottom:4px;color:#FF6B6B">📚 <span data-en="Check out my free resources" data-da="Tjek mine gratis ressourcer">Check out my free resources</span></p>
+      <p style="font-size:0.9rem;opacity:0.7;margin-bottom:16px" data-en="Guides, tools, and templates for AI, automation, and digital growth. Free." data-da="Guides, tools og værktøjer til AI, automatisering og digital vækst. Gratis.">Guides, tools, and templates for AI, automation, and digital growth. Free.</p>
+      <a href="./resources.html?style=9" class="btn btn-primary" style="font-size:0.9rem;padding:12px 28px">📖 <span data-en="Browse Resources" data-da="Gå til Ressourcer">Browse Resources</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Based<span style="color:#4ECDC4">Node</span></h4>
+        <p data-en="Just me — Omar. One passionate engineer building digital magic. Based in Denmark, working worldwide. CVR 43750194." data-da="Bare mig — Omar. En passioneret ingeniør der bygger digital magic. Baseret i Danmark, arbejder globalt. CVR 43750194.">Just me — Omar. One passionate engineer building digital magic. Based in Denmark, working worldwide. CVR 43750194.</p>
+      </div>
+      <div>
+        <h4 data-en="Services" data-da="Services">Services</h4>
+        <ul>
+          <li><a href="#services">⚙️ <span data-en="Automatisering" data-da="Automatisering">Automatisering</span></a></li>
+          <li><a href="#services">🤖 <span data-en="AI & Agents" data-da="AI & Agenter">AI & Agents</span></a></li>
+          <li><a href="#services">📈 <span data-en="Dashboards" data-da="Dashboards">Dashboards</span></a></li>
+          <li><a href="#services">🌐 <span data-en="Websites" data-da="Hjemmesider">Websites</span></a></li>
+          <li><a href="#services">📣 <span data-en="Marketing" data-da="Markedsføring">Marketing</span></a></li>
+          <li><a href="#services">📚 <span data-en="Teaching" data-da="Undervisning">Teaching</span></a></li>
+          <li><a href="#services">🤝 <span data-en="Partnership" data-da="Partnerskab">Partnership</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-en="Quick links" data-da="Hurtige links">Quick links</h4>
+        <ul>
+          <li><a href="#cases">🏆 <span data-en="Cases" data-da="Cases">Cases</span></a></li>
+          <li><a href="#pricing">🏷️ <span data-en="Pricing" data-da="Priser">Pricing</span></a></li>
+          <li><a href="#testimonials">💬 <span data-en="Testimonials" data-da="Anmeldelser">Testimonials</span></a></li>
+          <li><a href="#faq">❓ FAQ</a></li>
+          <li><a href="#partnership">🤝 <span data-en="Partnership" data-da="Partnerskab">Partnership</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-en="Connect" data-da="Kontakt">Connect</h4>
+        <ul>
+          <li><a href="mailto:contact@basednode.xyz">📧 contact@basednode.xyz</a></li>
+          <li><a href="mailto:partner@basednode.xyz">🤝 partner@basednode.xyz</a></li>
+          <li><a href="#">💼 LinkedIn</a></li>
+          <li><a href="https://t.me/IkkeOmar" target="_blank">✈️ @IkkeOmar</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 BasedNode · Omar — CVR 43750194</span>
+      <span data-en="Made with ❤️ and lots of ☕" data-da="Lavet med ❤️ og masser af ☕">Made with ❤️ and lots of ☕</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+(function() {
+'use strict';
+
+// ===== NAVBAR SCROLL =====
+const navbar = document.getElementById('navbar');
+let lastScroll = 0;
+window.addEventListener('scroll', function() {
+  const current = window.pageYOffset;
+  if (current > 80) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+  lastScroll = current;
+}, { passive: true });
+
+// ===== MOBILE MENU =====
+const mobileBtn = document.getElementById('mobileMenuBtn');
+const navLinks = document.getElementById('navLinks');
+mobileBtn.addEventListener('click', function() {
+  navLinks.classList.toggle('open');
+  mobileBtn.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+});
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    navLinks.classList.remove('open');
+    mobileBtn.textContent = '☰';
+  });
+});
+
+// ===== THEME TOGGLE =====
+const themeToggle = document.getElementById('themeToggle');
+let dark = false;
+themeToggle.addEventListener('click', function() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeToggle.textContent = dark ? '☀️' : '🌙';
+});
+
+// ===== LANGUAGE TOGGLE =====
+const langToggle = document.getElementById('langToggle');
+let lang = 'en';
+function applyLanguage(l) {
+  lang = l;
+  langToggle.textContent = l === 'da' ? '🇬🇧 EN' : '🇩🇰 DA';
+  document.documentElement.style.setProperty('--featured-tag', l === 'da' ? '"⭐ Mest populær"' : '"⭐ Most popular"');
+  document.querySelectorAll('[data-en]').forEach(function(el) {
+    if (l === 'da' && el.getAttribute('data-da')) {
+      el.innerHTML = el.getAttribute('data-da');
+    } else if (l === 'en') {
+      el.innerHTML = el.getAttribute('data-en');
+    }
+  });
+  // Update select placeholder
+  const sel = document.getElementById('formService');
+  const opts = sel.querySelectorAll('option');
+  opts.forEach(function(opt) {
+    if (l === 'da' && opt.getAttribute('data-da')) {
+      opt.textContent = opt.getAttribute('data-da');
+    } else if (l === 'en' && opt.getAttribute('data-en')) {
+      opt.textContent = opt.getAttribute('data-en');
+    }
+  });
+}
+langToggle.addEventListener('click', function() {
+  applyLanguage(lang === 'da' ? 'en' : 'da');
+});
+
+// ===== SCROLL REVEAL =====
+function isInView(el) {
+  const rect = el.getBoundingClientRect();
+  const threshold = 0.15;
+  const h = window.innerHeight;
+  return rect.top < h * (1 - threshold) && rect.bottom > threshold * h;
+}
+function checkReveals() {
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    if (isInView(el)) el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', checkReveals, { passive: true });
+window.addEventListener('resize', checkReveals, { passive: true });
+checkReveals();
+
+// ===== FAQ ACCORDION =====
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const item = this.closest('.faq-item');
+    const isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item.active').forEach(function(i) {
+      i.classList.remove('active');
+    });
+    if (!isActive) item.classList.add('active');
+  });
+});
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type === 'success' ? 'toast-success' : 'toast-error') + ' show';
+  setTimeout(function() {
+    t.classList.remove('show');
+  }, 4000);
+}
+
+// ===== CONTACT FORM =====
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('formName').value.trim();
+  const email = document.getElementById('formEmail').value.trim();
+  const service = document.getElementById('formService').value;
+  const msg = document.getElementById('formMessage').value.trim();
+  
+  if (!name || !email || !msg) {
+    showToast(lang === 'da' ? 'Udfyld venligst alle felter 🙏' : 'Please fill in all fields 🙏', 'error');
+    return;
+  }
+  
+  const mailto = 'contact@basednode.xyz';
+  const subject = encodeURIComponent('[BasedNode] ' + (lang === 'da' ? 'Ny forespørgsel fra ' : 'New inquiry from ') + name);
+  const body = encodeURIComponent(
+    (lang === 'da' ? 'Navn' : 'Name') + ': ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    (lang === 'da' ? 'Service' : 'Service') + ': ' + service + '\n\n' +
+    (lang === 'da' ? 'Besked' : 'Message') + ':\n' + msg
+  );
+  
+  window.location.href = 'mailto:' + mailto + '?subject=' + subject + '&body=' + body;
+  showToast(lang === 'da' ? '📨 Åbner din mailklient...' : '📨 Opening your email client...', 'success');
+  this.reset();
+});
+
+// ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+})();
+</script>
+</body>
+</html>

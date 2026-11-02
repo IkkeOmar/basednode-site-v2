@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode — Dashboard</title>
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--teal);opacity:0.25;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--teal);opacity:0.5}
+
+/* ============================================================
+   THEME VARIABLES — Dark #0d1117 + Teal #00d2ff
+   ============================================================ */
+:root{
+  --bg-primary:#0d1117;
+  --bg-secondary:#161b22;
+  --bg-tertiary:#21262d;
+  --bg-card:rgba(22,27,34,0.85);
+  --teal:#00d2ff;
+  --teal-dim:#00a8cc;
+  --teal-dark:#003344;
+  --teal-glow:rgba(0,210,255,0.1);
+  --teal-light:rgba(0,210,255,0.2);
+  --green-metric:#00e676;
+  --orange-metric:#ff9100;
+  --red-metric:#ff1744;
+  --text-primary:#e6edf3;
+  --text-secondary:#8b949e;
+  --text-dim:#484f58;
+  --border-light:rgba(48,54,61,0.6);
+  --font-mono:'JetBrains Mono','Fira Code','Courier New',monospace;
+  --font-main:'Inter',-apple-system,sans-serif;
+  --nav-bg:rgba(13,17,23,0.92);
+  --badge-bg:rgba(0,210,255,0.06);
+  --badge-border:rgba(0,210,255,0.15);
+  --shadow-card:0 4px 24px rgba(0,0,0,0.5);
+  --hover-lift:translateY(-3px);
+  --card-radius:8px;
+}
+
+[data-theme="light"]{
+  --bg-primary:#f0f4f8;
+  --bg-secondary:#e4e8ee;
+  --bg-tertiary:#d8dce4;
+  --bg-card:rgba(255,255,255,0.9);
+  --teal:#006699;
+  --teal-dim:#005580;
+  --teal-dark:#00334d;
+  --teal-glow:rgba(0,102,153,0.06);
+  --teal-light:rgba(0,102,153,0.12);
+  --green-metric:#008744;
+  --orange-metric:#cc6600;
+  --red-metric:#cc1133;
+  --text-primary:#1a1f28;
+  --text-secondary:#4a5058;
+  --text-dim:#8a9098;
+  --border-light:rgba(200,204,210,0.5);
+  --nav-bg:rgba(240,244,248,0.92);
+  --badge-bg:rgba(0,102,153,0.06);
+  --badge-border:rgba(0,102,153,0.15);
+  --shadow-card:0 4px 24px rgba(0,0,0,0.06);
+}
+
+*{transition:background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease}
+
+body{
+  font-family:var(--font-main);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100dvh;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:var(--nav-bg);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-light);
+  padding:0 24px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nav-logo{
+  font-size:1rem;font-weight:700;
+  color:var(--teal);text-decoration:none;
+  display:flex;align-items:center;gap:6px;
+  letter-spacing:-0.5px;
+}
+.nav-logo span{color:var(--text-primary);font-weight:400}
+
+.metric-badge{
+  display:flex;align-items:center;gap:6px;
+  background:var(--bg-tertiary);border:1px solid var(--border-light);
+  padding:4px 12px;border-radius:6px;
+  font-size:0.75rem;font-family:var(--font-mono);
+  color:var(--green-metric);font-weight:600;
+}
+
+.nav-links{display:flex;align-items:center;gap:12px;list-style:none}
+.nav-links a{
+  color:var(--text-dim);text-decoration:none;
+  font-size:0.8rem;font-weight:500;
+  padding:6px 10px;border-radius:4px;
+  transition:all 0.2s;letter-spacing:0.3px;
+}
+.nav-links a:hover{color:var(--teal);background:var(--teal-glow)}
+.toggle-group{
+  display:flex;align-items:center;gap:3px;
+  background:var(--bg-tertiary);border-radius:6px;padding:2px;
+  border:1px solid var(--border-light);
+}
+.toggle-btn{
+  background:none;border:none;color:var(--text-dim);
+  cursor:pointer;padding:3px 7px;border-radius:4px;
+  font-size:0.75rem;font-weight:600;transition:all 0.2s;
+}
+.toggle-btn.active{background:var(--teal);color:var(--bg-primary)}
+
+/* Hamburger */
+.hamburger{
+  display:none;flex-direction:column;gap:3px;
+  background:none;border:none;cursor:pointer;padding:5px;
+}
+.hamburger span{
+  width:20px;height:2px;background:var(--text-primary);
+  border-radius:2px;transition:all 0.3s;
+}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+.mobile-menu{
+  display:none;position:fixed;top:56px;left:0;right:0;
+  background:var(--nav-bg);backdrop-filter:blur(16px);
+  padding:20px;border-bottom:1px solid var(--border-light);
+  z-index:999;height:calc(100dvh - 56px);overflow-y:auto;
+}
+.mobile-menu.open{display:flex;flex-direction:column;gap:10px}
+.mobile-menu a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:1rem;font-weight:500;
+  padding:10px 14px;border-radius:6px;
+  border-bottom:1px solid var(--border-light);
+}
+.mobile-menu a:hover{color:var(--teal);background:var(--teal-glow)}
+
+/* ============================================================
+   HERO — Live Metrics
+   ============================================================ */
+.hero{
+  padding:120px 0 60px;
+  background:var(--bg-primary);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-30%;left:-10%;
+  width:500px;height:500px;
+  background:radial-gradient(circle,var(--teal-glow) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;position:relative;z-index:1}
+.hero-left{flex:1}
+.hero-left h1{
+  font-size:2.6rem;font-weight:800;line-height:1.1;margin-bottom:16px;
+  letter-spacing:-1px;
+}
+.hero-left .sub{
+  color:var(--text-secondary);font-size:1rem;margin-bottom:24px;
+  max-width:500px;line-height:1.6;
+}
+.hero-credentials{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;
+}
+.hero-credentials .badge{
+  background:var(--badge-bg);border:1px solid var(--badge-border);
+  padding:4px 12px;border-radius:4px;
+  font-size:0.7rem;color:var(--teal);font-weight:500;
+  font-family:var(--font-mono);
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+  min-width:320px;
+}
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:16px;
+  text-align:center;backdrop-filter:blur(8px);
+}
+.stat-card .num{font-size:2rem;font-weight:800;font-family:var(--font-mono)}
+.stat-card .num.green{color:var(--green-metric)}
+.stat-card .num.teal{color:var(--teal)}
+.stat-card .num.orange{color:var(--orange-metric)}
+.stat-card .label{font-size:0.7rem;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section{padding:64px 0}
+.section-header{margin-bottom:32px}
+.section-header .code-label{
+  font-size:0.7rem;font-family:var(--font-mono);color:var(--teal);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;
+}
+.section-header h2{
+  font-size:1.6rem;font-weight:700;letter-spacing:-0.5px;
+}
+.section-header .meta{
+  font-size:0.8rem;color:var(--text-dim);margin-top:6px;
+  font-family:var(--font-mono);
+}
+
+/* ============================================================
+   HOW I THINK — Quant Approach
+   ============================================================ */
+.quant-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.quant-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:20px;
+  text-align:center;transition:all 0.3s;
+}
+.quant-card:hover{transform:var(--hover-lift);border-color:var(--teal)}
+.quant-card .icon{font-size:1.6rem;margin-bottom:8px}
+.quant-card h4{font-size:0.85rem;font-weight:600;margin-bottom:6px;color:var(--teal)}
+.quant-card p{font-size:0.7rem;color:var(--text-dim);line-height:1.5;font-family:var(--font-mono)}
+
+/* ============================================================
+   SVG CHARTS SECTION
+   ============================================================ */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:20px;
+}
+.chart-card h4{
+  font-size:0.8rem;font-weight:600;margin-bottom:12px;
+  font-family:var(--font-mono);color:var(--text-secondary);
+}
+.chart-card svg{width:100%;height:auto;display:block}
+
+/* ============================================================
+   CASES AS DATA REPORTS
+   ============================================================ */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.data-report{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);overflow:hidden;
+  transition:all 0.3s;
+}
+.data-report:hover{transform:var(--hover-lift);border-color:var(--teal);box-shadow:var(--shadow-card)}
+.data-report .report-header{
+  padding:14px 16px;border-bottom:1px solid var(--border-light);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.data-report .report-header .tag{
+  font-size:0.6rem;font-family:var(--font-mono);
+  color:var(--teal);background:var(--teal-glow);
+  padding:2px 8px;border-radius:3px;font-weight:600;
+}
+.data-report .report-header .date{
+  font-size:0.6rem;color:var(--text-dim);font-family:var(--font-mono);
+}
+.data-report .report-body{padding:16px}
+.data-report .kpi-row{
+  display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid var(--border-light);
+  font-size:0.8rem;
+}
+.data-report .kpi-row:last-child{border:none}
+.data-report .kpi-row .kpi-label{color:var(--text-dim)}
+.data-report .kpi-row .kpi-val{color:var(--green-metric);font-weight:700;font-family:var(--font-mono)}
+.data-report .kpi-row .kpi-val.teal{color:var(--teal)}
+.data-report .kpi-row .kpi-val.orange{color:var(--orange-metric)}
+.data-report .report-title{
+  font-size:0.85rem;font-weight:600;margin-bottom:10px;
+}
+
+/* ============================================================
+   CREDENTIALS SECTION
+   ============================================================ */
+.creds-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.cred-item{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:14px;
+  text-align:center;font-size:0.7rem;line-height:1.4;
+}
+.cred-item .c-icon{font-size:1.4rem;margin-bottom:6px}
+.cred-item .c-title{font-weight:600;color:var(--text-primary);margin-bottom:2px}
+.cred-item .c-sub{color:var(--text-dim);font-size:0.65rem}
+
+/* ============================================================
+   CONTACT FORM (minimal)
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-metrics p{
+  font-size:0.85rem;color:var(--text-secondary);margin-bottom:8px;
+  font-family:var(--font-mono);
+}
+.contact-metrics a{color:var(--teal);text-decoration:none}
+.contact-metrics a:hover{text-decoration:underline}
+.contact-socials{display:flex;gap:10px;margin-top:16px}
+.contact-socials a{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border-radius:6px;border:1px solid var(--border-light);
+  color:var(--text-secondary);text-decoration:none;font-size:1rem;
+  transition:all 0.2s;
+}
+.contact-socials a:hover{border-color:var(--teal);color:var(--teal)}
+.form-group{margin-bottom:14px}
+.form-group label{
+  display:block;font-size:0.75rem;font-weight:600;
+  color:var(--text-dim);margin-bottom:4px;font-family:var(--font-mono);
+  text-transform:uppercase;letter-spacing:0.3px;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:10px 14px;border-radius:6px;
+  background:var(--bg-secondary);border:1px solid var(--border-light);
+  color:var(--text-primary);font-size:0.85rem;font-family:var(--font-mono);
+  transition:border-color 0.2s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  outline:none;border-color:var(--teal);
+}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-btn{
+  width:100%;padding:12px;border-radius:6px;
+  background:var(--teal);color:var(--bg-primary);
+  font-weight:700;font-size:0.85rem;font-family:var(--font-mono);
+  border:none;cursor:pointer;transition:all 0.2s;
+}
+.form-btn:hover{background:var(--teal-dim)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  padding:32px 0;border-top:1px solid var(--border-light);
+  text-align:center;color:var(--text-dim);font-size:0.75rem;
+  font-family:var(--font-mono);
+}
+footer a{color:var(--teal);text-decoration:none}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(20px);transition:all 0.5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ============================================================
+   PRICING TABLE
+   ============================================================ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pricing-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:28px 20px;backdrop-filter:blur(8px);
+  transition:all 0.4s;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.pricing-card:hover{transform:var(--hover-lift);border-color:var(--teal);box-shadow:0 12px 40px rgba(0,210,255,0.1)}
+.pricing-card.featured{
+  border-color:var(--teal);box-shadow:0 0 0 1px var(--teal),0 8px 24px rgba(0,210,255,0.08);
+  transform:scale(1.02);
+}
+.pricing-card.featured:hover{transform:scale(1.02) var(--hover-lift)}
+.pricing-card .popular-tag{
+  position:absolute;top:10px;right:-30px;
+  background:var(--teal);color:var(--bg-primary);
+  font-size:0.6rem;font-weight:700;text-transform:uppercase;
+  padding:3px 36px;transform:rotate(45deg);letter-spacing:1px;font-family:var(--font-mono);
+}
+.pricing-card .plan-name{font-size:0.85rem;font-weight:600;color:var(--text-dim);margin-bottom:4px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.5px}
+.pricing-card .plan-price{font-size:2rem;font-weight:800;color:var(--teal);margin-bottom:4px;font-family:var(--font-mono)}
+.pricing-card .plan-desc{font-size:0.75rem;color:var(--text-dim);margin-bottom:16px;line-height:1.5;font-family:var(--font-mono)}
+.pricing-card .plan-features{list-style:none;padding:0;flex:1}
+.pricing-card .plan-features li{
+  padding:6px 0;border-bottom:1px solid var(--border-light);
+  font-size:0.75rem;color:var(--text-secondary);
+  display:flex;align-items:center;gap:8px;font-family:var(--font-mono);
+}
+.pricing-card .plan-features li::before{content:'▸';color:var(--teal);font-weight:700}
+.pricing-card .pricing-btn{
+  margin-top:16px;width:100%;padding:10px;border-radius:6px;
+  background:var(--teal);color:var(--bg-primary);border:none;
+  font-weight:700;font-size:0.8rem;font-family:var(--font-mono);cursor:pointer;
+  text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all 0.2s;
+}
+.pricing-card .pricing-btn:hover{background:var(--teal-dim)}
+.pricing-card .pricing-btn.outline{background:transparent;color:var(--teal);border:1px solid var(--teal)}
+.pricing-card .pricing-btn.outline:hover{background:var(--teal-glow)}
+
+/* ============================================================
+   HOW I WORK — Process
+   ============================================================ */
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative}
+.process-steps::before{
+  content:'';position:absolute;top:38px;left:10%;right:10%;
+  height:1px;background:linear-gradient(90deg,var(--teal),var(--teal-dim));
+  opacity:0.25;z-index:0;
+}
+.process-step{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:24px 16px;text-align:center;
+  transition:all 0.4s;position:relative;z-index:1;
+}
+.process-step:hover{transform:var(--hover-lift);border-color:var(--teal);box-shadow:0 8px 24px var(--teal-glow)}
+.process-step .step-num{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--teal);color:var(--bg-primary);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.8rem;margin:0 auto 14px;font-family:var(--font-mono);
+}
+.process-step .step-icon{font-size:1.6rem;margin-bottom:10px}
+.process-step h4{font-size:0.85rem;font-weight:700;color:var(--teal);margin-bottom:4px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.5px}
+.process-step p{font-size:0.7rem;color:var(--text-dim);line-height:1.5;font-family:var(--font-mono)}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.testimonial-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);padding:24px;transition:all 0.4s;
+  position:relative;
+}
+.testimonial-card::before{
+  content:'//';position:absolute;top:10px;left:14px;
+  font-size:2rem;color:var(--teal);opacity:0.12;
+  font-family:var(--font-mono);font-weight:700;line-height:1;
+}
+.testimonial-card:hover{transform:var(--hover-lift);border-color:var(--teal);box-shadow:var(--shadow-card)}
+.testimonial-card .quote{font-size:0.8rem;color:var(--text-secondary);line-height:1.7;margin-bottom:14px;font-style:italic;font-family:var(--font-mono)}
+.testimonial-card .author{display:flex;align-items:center;gap:10px}
+.testimonial-card .author .avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--teal-glow);border:1px solid var(--badge-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.8rem;color:var(--teal);font-family:var(--font-mono);font-weight:700;
+}
+.testimonial-card .author .name{font-weight:600;font-size:0.8rem;color:var(--text-primary)}
+.testimonial-card .author .role{font-size:0.65rem;color:var(--text-dim);font-family:var(--font-mono)}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.faq-list{max-width:680px;margin:0 auto}
+.faq-item{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:var(--card-radius);margin-bottom:8px;overflow:hidden;
+  transition:all 0.3s;
+}
+.faq-item:hover{border-color:var(--teal)}
+.faq-question{
+  width:100%;padding:14px 18px;background:none;border:none;
+  color:var(--text-primary);font-size:0.85rem;font-weight:600;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  text-align:left;font-family:var(--font-mono);transition:color 0.2s;
+}
+.faq-question:hover{color:var(--teal)}
+.faq-question .faq-icon{
+  font-size:1rem;color:var(--teal);transition:transform 0.3s;
+  flex-shrink:0;font-family:var(--font-mono);
+}
+.faq-item.open .faq-question .faq-icon{transform:rotate(45deg)}
+.faq-answer{
+  max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;
+  padding:0 18px;
+}
+.faq-item.open .faq-answer{
+  max-height:300px;padding:0 18px 14px;
+}
+.faq-answer p{
+  font-size:0.78rem;color:var(--text-secondary);line-height:1.7;font-family:var(--font-mono);
+}
+
+/* ============================================================
+   STAGGERED REVEAL
+   ============================================================ */
+.reveal-stagger{opacity:0;transform:translateY(20px)}
+.reveal-stagger.visible{opacity:1;transform:translateY(0)}
+.reveal-stagger:nth-child(1){transition:all 0.5s ease 0s}
+.reveal-stagger:nth-child(2){transition:all 0.5s ease 0.1s}
+.reveal-stagger:nth-child(3){transition:all 0.5s ease 0.2s}
+.reveal-stagger:nth-child(4){transition:all 0.5s ease 0.3s}
+.reveal-stagger:nth-child(5){transition:all 0.5s ease 0.4s}
+.reveal-stagger:nth-child(6){transition:all 0.5s ease 0.5s}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1000px){
+  .hero-top{flex-direction:column}
+  .hero-stats{min-width:100%}
+  .quant-grid{grid-template-columns:repeat(2,1fr)}
+  .charts-grid{grid-template-columns:1fr}
+  .cred-item:last-child{grid-column:span 5}
+  .pricing-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+  .pricing-card.featured{transform:none}
+  .pricing-card.featured:hover{transform:var(--hover-lift)}
+  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .process-steps::before{display:none}
+  .testimonials-grid{grid-template-columns:1fr}
+}
+@media(max-width:800px){
+  .cases-grid{grid-template-columns:repeat(2,1fr)}
+  .contact-grid{grid-template-columns:1fr}
+  .creds-grid{grid-template-columns:repeat(3,1fr)}
+  .cred-item:last-child{grid-column:span 3}
+}
+@media(max-width:700px){
+  .nav-links .nav-item{display:none}
+  .hamburger{display:flex}
+  .hero-left h1{font-size:1.8rem}
+  .stat-card .num{font-size:1.5rem}
+  .cases-grid{grid-template-columns:1fr}
+  .quant-grid{grid-template-columns:1fr}
+  .creds-grid{grid-template-columns:1fr 1fr}
+  .cred-item:last-child{grid-column:span 2}
+}
+@media(max-width:480px){
+  .hero{padding:100px 0 40px}
+  .hero-stats{grid-template-columns:1fr}
+  .creds-grid{grid-template-columns:1fr}
+  .cred-item:last-child{grid-column:span 1}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav>
+  <a href="#" class="nav-logo">◆ Based<span>Node</span></a>
+  <div class="metric-badge">
+    <span>⏱</span>
+    <span id="liveUptime">99.7%</span>
+    <span style="color:var(--text-dim)">uptime</span>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li class="nav-item"><a href="#metrics" data-da="Data" data-en="Metrics">Metrics</a></li>
+    <li class="nav-item"><a href="#cases" data-da="Rapporter" data-en="Reports">Reports</a></li>
+    <li class="nav-item"><a href="#contact" data-da="Kontakt" data-en="Contact">Contact</a></li>
+    <li class="nav-item">
+      <div class="toggle-group">
+        <button class="toggle-btn lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="toggle-btn lang-btn" data-lang="da" onclick="setLang('da')">DA</button>
+      </div>
+    </li>
+    <li class="nav-item">
+      <button class="toggle-btn" onclick="toggleTheme()" id="themeToggle" style="font-size:0.9rem;background:none;border:none;cursor:pointer;color:var(--teal)">☀️</button>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#metrics" onclick="toggleMobile()" data-da="Data" data-en="Metrics">Metrics</a>
+  <a href="#cases" onclick="toggleMobile()" data-da="Rapporter" data-en="Reports">Reports</a>
+  <a href="#contact" onclick="toggleMobile()" data-da="Kontakt" data-en="Contact">Contact</a>
+  <div class="toggle-group">
+    <button class="toggle-btn lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="toggle-btn lang-btn" data-lang="da" onclick="setLang('da')">DA</button>
+  </div>
+  <button class="toggle-btn" onclick="toggleTheme()" style="font-size:0.9rem;background:none;border:none;cursor:pointer;color:var(--teal);padding:10px 14px;text-align:left">☀️ <span data-da="Tema" data-en="Theme">Theme</span></button>
+</div>
+
+<!-- ============================================================
+     HERO — Live Metrics Dashboard
+     ============================================================ -->
+<section class="hero" id="metrics">
+  <div class="container">
+    <div class="hero-top reveal">
+      <div class="hero-left">
+        <div class="hero-credentials">
+          <span class="badge">🎓 DTU · Fysik & Nanoteknologi</span>
+          <span class="badge">📊 Quant Finance</span>
+          <span class="badge">🤖 AI Agents</span>
+          <span class="badge">🧑‍🏫 Side: MentorDanmark/GXU</span>
+        </div>
+        <h1 data-da="Data drevet. AI bygget. Jeg viser dig tallene." data-en="Data driven. AI built. I show you the numbers.">Data driven. AI built. I show you the numbers.</h1>
+        <p class="sub" data-da="Jeg er Omar — Civilingeniør i Fysik &amp; Nanoteknologi fra DTU. Jeg bygger AI-infrastruktur med en quant finance tilgang: mål alt, optimér konstant, vis resultaterne." data-en="I'm Omar — M.Sc. in Physics &amp; Nanotechnology from DTU. I build AI infrastructure with a quant finance approach: measure everything, optimize constantly, show the results.">I'm Omar — M.Sc. in Physics &amp; Nanotechnology from DTU. I build AI infrastructure with a quant finance approach: measure everything, optimize constantly, show the results.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="#cases" class="btn" style="background:var(--teal);color:var(--bg-primary);padding:10px 20px;border-radius:6px;font-weight:600;font-size:0.85rem;text-decoration:none;font-family:var(--font-mono)">📊 <span data-da="Se rapporter" data-en="View reports">View reports</span></a>
+          <a href="#contact" class="btn" style="background:transparent;color:var(--teal);border:1px solid var(--teal);padding:10px 20px;border-radius:6px;font-weight:600;font-size:0.85rem;text-decoration:none;font-family:var(--font-mono)">✉️ <span data-da="Kontakt" data-en="Contact">Contact</span></a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="num green" id="counter1">80-100x</div>
+          <div class="label" data-da="Omkostningsreduktion" data-en="Cost reduction">Cost reduction</div>
+        </div>
+        <div class="stat-card">
+          <div class="num teal" id="counter2">340%</div>
+          <div class="label" data-da="Lead-stigning" data-en="Lead increase">Lead increase</div>
+        </div>
+        <div class="stat-card">
+          <div class="num orange" id="counter3">95%</div>
+          <div class="label" data-da="Løsningsrate" data-en="Resolution rate">Resolution rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="num teal" id="counter4">99.7%</div>
+          <div class="label" data-da="Systemets oppetid" data-en="System uptime">System uptime</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW I THINK — Quant Approach
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="code-label">// approach</div>
+      <h2 data-da="Sådan tænker jeg" data-en="How I think">How I think</h2>
+      <p class="meta" data-da="Quant finance mindset anvendt på AI infrastruktur" data-en="Quant finance mindset applied to AI infrastructure">Quant finance mindset applied to AI infrastructure</p>
+    </div>
+    <div class="quant-grid reveal">
+      <div class="quant-card">
+        <div class="icon">📐</div>
+        <h4 data-da="Mål alt" data-en="Measure everything">Measure everything</h4>
+        <p data-da="Før optimering kommer data. Alt jeg bygger har metrics fra dag ét." data-en="Before optimization comes data. Everything I build has metrics from day one.">Before optimization comes data. Everything I build has metrics from day one.</p>
+      </div>
+      <div class="quant-card">
+        <div class="icon">⚡</div>
+        <h4 data-da="Lav-latency" data-en="Low latency">Low latency</h4>
+        <p data-da="Millisekunder tæller. Fra API routing til model inference — hver ms optimeret." data-en="Milliseconds matter. From API routing to model inference — every ms optimized.">Milliseconds matter. From API routing to model inference — every ms optimized.</p>
+      </div>
+      <div class="quant-card">
+        <div class="icon">📊</div>
+        <h4 data-da="Statistisk signifikans" data-en="Statistical significance">Statistical significance</h4>
+        <p data-da="A/B test alt. Random variation er støj — jeg finder signalet." data-en="A/B test everything. Random variation is noise — I find the signal.">A/B test everything. Random variation is noise — I find the signal.</p>
+      </div>
+      <div class="quant-card">
+        <div class="icon">🔄</div>
+        <h4 data-da="Iterér hurtigt" data-en="Iterate fast">Iterate fast</h4>
+        <p data-da="Ship → Mål → Optimer → gentag. Ugentlige cycles, ikke kvartalsvise." data-en="Ship → Measure → Optimize → repeat. Weekly cycles, not quarterly.">Ship → Measure → Optimize → repeat. Weekly cycles, not quarterly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SVG CHARTS
+     ============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="code-label">// visualizations</div>
+      <h2 data-da="Live data" data-en="Live data">Live data</h2>
+      <p class="meta" data-da="Real-time metrics fra mine systemer" data-en="Real-time metrics from my systems">Real-time metrics from my systems</p>
+    </div>
+    <div class="charts-grid reveal">
+      <div class="chart-card">
+        <h4>Cost Reduction (x factor)</h4>
+        <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="barGrad1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--teal)" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="var(--teal)" stop-opacity="0.1"/>
+            </linearGradient>
+          </defs>
+          <rect x="20" y="100" width="36" height="60" rx="3" fill="var(--teal)" opacity="0.4"/>
+          <rect x="66" y="80" width="36" height="80" rx="3" fill="var(--teal)" opacity="0.4"/>
+          <rect x="112" y="40" width="36" height="120" rx="3" fill="var(--teal)" opacity="0.5"/>
+          <rect x="158" y="30" width="36" height="130" rx="3" fill="var(--teal)" opacity="0.5"/>
+          <rect x="204" y="20" width="36" height="140" rx="3" fill="var(--teal)" opacity="0.6"/>
+          <rect x="250" y="10" width="36" height="150" rx="3" fill="var(--teal)" opacity="0.7"/>
+          <rect x="296" y="15" width="36" height="145" rx="3" fill="var(--teal)" opacity="0.7"/>
+          <rect x="342" y="5" width="36" height="155" rx="3" fill="var(--teal)" opacity="0.9"/>
+          <text x="20" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W1</text>
+          <text x="66" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W2</text>
+          <text x="112" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W3</text>
+          <text x="158" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W4</text>
+          <text x="204" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W5</text>
+          <text x="250" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W6</text>
+          <text x="296" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W7</text>
+          <text x="342" y="175" fill="var(--text-dim)" font-size="8" font-family="var(--font-mono)">W8</text>
+          <text x="0" y="100" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">50x</text>
+          <text x="0" y="40" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">100x</text>
+          <line x1="0" y1="100" x2="400" y2="100" stroke="var(--border-light)" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="0" y1="40" x2="400" y2="40" stroke="var(--border-light)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        </svg>
+      </div>
+      <div class="chart-card">
+        <h4>Lead Growth (%)</h4>
+        <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lineGrad1" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="var(--green-metric)"/>
+              <stop offset="100%" stop-color="var(--teal)"/>
+            </linearGradient>
+          </defs>
+          <polyline points="20,150 68,130 116,100 164,75 212,50 260,30 308,25 356,22 380,20" fill="none" stroke="url(#lineGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="20" cy="150" r="3" fill="var(--green-metric)"/>
+          <circle cx="68" cy="130" r="3" fill="var(--green-metric)"/>
+          <circle cx="116" cy="100" r="3" fill="var(--teal)"/>
+          <circle cx="164" cy="75" r="3" fill="var(--teal)"/>
+          <circle cx="212" cy="50" r="3" fill="var(--teal)"/>
+          <circle cx="260" cy="30" r="3" fill="var(--teal)"/>
+          <circle cx="308" cy="25" r="3" fill="var(--teal)"/>
+          <circle cx="356" cy="22" r="3" fill="var(--teal)"/>
+          <text x="20" y="165" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">Jan</text>
+          <text x="68" y="165" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">Feb</text>
+          <text x="116" y="165" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">Mar</text>
+          <text x="260" y="165" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">Jun</text>
+          <text x="356" y="165" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">Aug</text>
+          <text x="0" y="150" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">0%</text>
+          <text x="0" y="100" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">100%</text>
+          <text x="0" y="50" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">200%</text>
+          <text x="0" y="20" fill="var(--text-dim)" font-size="7" font-family="var(--font-mono)">340%</text>
+          <line x1="0" y1="150" x2="400" y2="150" stroke="var(--border-light)" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="0" y1="100" x2="400" y2="100" stroke="var(--border-light)" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="0" y1="50" x2="400" y2="50" stroke="var(--border-light)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CASES — Data Reports
+     ============================================================ -->
+<section class="section" id="cases" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="code-label">// data_reports</div>
+      <h2 data-da="Case rapporter" data-en="Case reports">Case reports</h2>
+      <p class="meta" data-da="6 gennemførte projekter med målbare resultater" data-en="6 completed projects with measurable results">6 completed projects with measurable results</p>
+    </div>
+    <div class="cases-grid reveal">
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">AI_INFRA</span>
+          <span class="date">2024-Q4</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="AI Infrastructure Pipeline" data-en="AI Infrastructure Pipeline">AI Infrastructure Pipeline</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Omkostningsreduktion" data-en="Cost reduction">Cost reduction</span><span class="kpi-val">80-100x</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Latency forbedring" data-en="Latency improvement">Latency improvement</span><span class="kpi-val teal">94%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Model throughput" data-en="Model throughput">Model throughput</span><span class="kpi-val teal">1.2k req/s</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Uptime" data-en="Uptime">Uptime</span><span class="kpi-val">99.7%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Setup tid" data-en="Setup time">Setup time</span><span class="kpi-val orange">3 dage</span></div>
+        </div>
+      </div>
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">LEAD_GEN</span>
+          <span class="date">2024-Q3</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="Automated Lead Gen" data-en="Automated Lead Gen">Automated Lead Gen</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Lead stigning" data-en="Lead increase">Lead increase</span><span class="kpi-val">340%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Cost per lead" data-en="Cost per lead">Cost per lead</span><span class="kpi-val teal">-72%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Agenter i swarm" data-en="Agents in swarm">Agents in swarm</span><span class="kpi-val teal">7</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Automation rate" data-en="Automation rate">Automation rate</span><span class="kpi-val">91%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Response tid" data-en="Response time">Response time</span><span class="kpi-val orange">24ms</span></div>
+        </div>
+      </div>
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">EDUCATION</span>
+          <span class="date">2025-Q1</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="GXU 12-ugers AI Forløb" data-en="GXU 12-week AI Course">GXU 12-week AI Course</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Varighed" data-en="Duration">Duration</span><span class="kpi-val teal">12 uger</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Studerende" data-en="Students">Students</span><span class="kpi-val">24</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Gennemførelse" data-en="Completion">Completion</span><span class="kpi-val">88%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Side project" data-en="Side project">Side project</span><span class="kpi-val orange">✓</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Tools bygget" data-en="Tools built">Tools built</span><span class="kpi-val teal">12</span></div>
+        </div>
+      </div>
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">QUANT</span>
+          <span class="date">2024-Q2</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="Quant Pipeline" data-en="Quant Pipeline">Quant Pipeline</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Data throughput" data-en="Data throughput">Data throughput</span><span class="kpi-val teal">50k msg/s</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Latency (p99)" data-en="Latency (p99)">Latency (p99)</span><span class="kpi-val">12ms</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Uptime (YTD)" data-en="Uptime (YTD)">Uptime (YTD)</span><span class="kpi-val">99.97%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Hedging auto" data-en="Auto hedging">Auto hedging</span><span class="kpi-val teal">✓</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Risk models" data-en="Risk models">Risk models</span><span class="kpi-val orange">3</span></div>
+        </div>
+      </div>
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">CHATBOT</span>
+          <span class="date">2024-Q4</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="AI Chatbot RAG" data-en="AI Chatbot RAG">AI Chatbot RAG</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Resolution rate" data-en="Resolution rate">Resolution rate</span><span class="kpi-val">95%</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Vector DB" data-en="Vector DB">Vector DB</span><span class="kpi-val teal">Chroma 1M+</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Search latency" data-en="Search latency">Search latency</span><span class="kpi-val">45ms</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Embedding model" data-en="Embedding model">Embedding model</span><span class="kpi-val orange">all-MiniLM-L6-v2</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Auto-reply rate" data-en="Auto-reply rate">Auto-reply rate</span><span class="kpi-val">87%</span></div>
+        </div>
+      </div>
+      <div class="data-report">
+        <div class="report-header">
+          <span class="tag">DASHBOARD</span>
+          <span class="date">2025-Q1</span>
+        </div>
+        <div class="report-body">
+          <div class="report-title" data-da="Custom Dashboard SPA" data-en="Custom Dashboard SPA">Custom Dashboard SPA</div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Live metrics streams" data-en="Live metric streams">Live metric streams</span><span class="kpi-val teal">14</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Auth system" data-en="Auth system">Auth system</span><span class="kpi-val">Zero-trust</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Agent oversight" data-en="Agent oversight">Agent oversight</span><span class="kpi-val teal">Real-time</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Charts rendered" data-en="Charts rendered">Charts rendered</span><span class="kpi-val orange">24/7</span></div>
+          <div class="kpi-row"><span class="kpi-label" data-da="Log retention" data-en="Log retention">Log retention</span><span class="kpi-val">90 dage</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CREDENTIALS
+     ============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center">
+      <div class="code-label">// credentials</div>
+      <h2 data-da="Bag tallene" data-en="Behind the numbers">Behind the numbers</h2>
+    </div>
+    <div class="creds-grid reveal">
+      <div class="cred-item">
+        <div class="c-icon">🎓</div>
+        <div class="c-title" data-da="Civilingeniør i Fysik &amp; Nanoteknologi" data-en="M.Sc. Physics &amp; Nanotechnology">M.Sc. Physics &amp; Nanotechnology</div>
+        <div class="c-sub">DTU</div>
+      </div>
+      <div class="cred-item">
+        <div class="c-icon">📊</div>
+        <div class="c-title">Quant Finance</div>
+        <div class="c-sub" data-da="Data-drevet beslutningstagning" data-en="Data-driven decision making">Data-driven decision making</div>
+      </div>
+      <div class="cred-item">
+        <div class="c-icon">🧑‍🏫</div>
+        <div class="c-title" data-da="Underviser ved siden af" data-en="Side project: Teaching">Side project: Teaching</div>
+        <div class="c-sub">MentorDanmark · GXU (2019-)</div>
+      </div>
+      <div class="cred-item">
+        <div class="c-icon">🤖</div>
+        <div class="c-title">AI Agent Systems</div>
+        <div class="c-sub" data-da="Multi-agent swarms, RAG, automation" data-en="Multi-agent swarms, RAG, automation">Multi-agent swarms, RAG, automation</div>
+      </div>
+      <div class="cred-item">
+        <div class="c-icon">💰</div>
+        <div class="c-title" data-da="Revenue Share" data-en="Revenue Share">Revenue Share</div>
+        <div class="c-sub" data-da="Automatisering, AI &amp; Agenter, Markedsføring" data-en="Automation, AI &amp; Agents, Marketing">Automation, AI &amp; Agents, Marketing</div>
+      </div>
+      <div class="cred-item" style="border-color:var(--teal);background:var(--teal-glow)">
+        <div class="c-icon">💡</div>
+        <div class="c-title" data-da="Overkommelig tech-hjælp" data-en="Affordable tech help">Affordable tech help</div>
+        <div class="c-sub" data-da="Små virksomheder — start fra 500 kr" data-en="Small businesses — starting from 500 kr">Small businesses — starting from 500 kr</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AFFORDABLE HELP
+     ============================================================ -->
+<section class="section" style="padding:40px 0">
+  <div class="container" style="text-align:center;max-width:700px">
+    <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;font-family:var(--font-mono)" data-da="Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter." data-en="I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESOURCES PROMO
+     ============================================================ -->
+<section class="section" style="padding:40px 0;background:var(--teal-glow)">
+  <div class="container" style="text-align:center">
+    <div style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--card-radius);padding:28px">
+      <p style="font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--teal);font-family:var(--font-mono)">📚 <span data-da="Tjek mine gratis ressourcer" data-en="Check out my free resources">Check out my free resources</span></p>
+      <p style="font-size:0.8rem;color:var(--text-dim);margin-bottom:16px;font-family:var(--font-mono)" data-da="Guides, tools og værktøjer til AI, automatisering og digital vækst. Gratis." data-en="Guides, tools, and templates for AI, automation, and digital growth. Free.">Guides, tools, and templates for AI, automation, and digital growth. Free.</p>
+      <a href="./resources.html?style=7" class="pricing-btn" style="display:inline-flex;width:auto;padding:10px 24px">📖 <span data-da="Gå til Ressourcer" data-en="Browse Resources">Browse Resources</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNERSHIP SECTION (minimal data style)
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary);padding:48px 0">
+  <div class="container">
+    <div class="reveal" style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--card-radius);padding:28px;text-align:center">
+      <div style="font-size:1.2rem;margin-bottom:8px">🤝</div>
+      <h3 style="font-size:1.2rem;font-weight:600;margin-bottom:8px" data-da="Partnerskab" data-en="Partnership">Partnership</h3>
+      <p style="font-size:0.8rem;color:var(--text-dim);max-width:500px;margin:0 auto 16px;font-family:var(--font-mono);line-height:1.6" data-da="Jeg tilbyder 6 partnerskabstyper: Referral (20% commission), Technology Integration, Automation Services, Reseller (30% margin), Joint Venture (50/50 equity), Strategic Alliance (custom). Revenue share er standard for Automatisering, AI &amp; Agenter og Markedsføring." data-en="I offer 6 partnership types: Referral (20% commission), Technology Integration, Automation Services, Reseller (30% margin), Joint Venture (50/50 equity), Strategic Alliance (custom). Revenue share is standard on Automation, AI &amp; Agents, and Marketing.">I offer 6 partnership types: Referral (20% commission), Technology Integration, Automation Services, Reseller (30% margin), Joint Venture (50/50 equity), Strategic Alliance (custom). Revenue share is standard on Automation, AI &amp; Agents, and Marketing.</p>
+      <a href="mailto:partner@basednode.xyz" style="color:var(--teal);text-decoration:none;font-family:var(--font-mono);font-size:0.8rem">partner@basednode.xyz →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center">
+      <div class="code-label">// pricing</div>
+      <h2 data-da="Priser" data-en="Pricing">Pricing</h2>
+      <p class="meta" data-da="Vælg den model der passer til dit projekt" data-en="Choose the model that fits your project">Choose the model that fits your project</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="plan-name" data-da="Starter" data-en="Starter">Starter</div>
+        <div class="plan-price">5.000 kr</div>
+        <div class="plan-desc" data-da="Engangsbetaling til små automationsprojekter" data-en="One-time fee for small automation projects">One-time fee for small automation projects</div>
+        <ul class="plan-features">
+          <li data-da="1 AI agent / workflow" data-en="1 AI agent / workflow">1 AI agent / workflow</li>
+          <li data-da="Op til 2 ugers udvikling" data-en="Up to 2 weeks dev">Up to 2 weeks dev</li>
+          <li data-da="Standard integrationer" data-en="Standard integrations">Standard integrations</li>
+          <li data-da="Email support" data-en="Email support">Email support</li>
+          <li data-da="1 md. drift inkl." data-en="1 mo. ops included">1 mo. ops included</li>
+        </ul>
+        <a href="#contact" class="pricing-btn" data-da="Kom i gang" data-en="Get started">▶ Get started</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-tag" data-da="Populær" data-en="Popular">Popular</div>
+        <div class="plan-name" data-da="Growth" data-en="Growth">Growth</div>
+        <div class="plan-price">Revenue Share</div>
+        <div class="plan-desc" data-da="Løbende revenue split — optimal til marketing &amp; AI" data-en="Ongoing revenue split — optimal for marketing &amp; AI">Ongoing revenue split — optimal for marketing &amp; AI</div>
+        <ul class="plan-features">
+          <li data-da="Multi-agent systemer" data-en="Multi-agent systems">Multi-agent systems</li>
+          <li data-da="Op til 8 ugers udvikling" data-en="Up to 8 weeks dev">Up to 8 weeks dev</li>
+          <li data-da="Custom integrationer" data-en="Custom integrations">Custom integrations</li>
+          <li data-da="24/7 drift &amp; monitorering" data-en="24/7 ops &amp; monitoring">24/7 ops &amp; monitoring</li>
+          <li data-da="Prioritetssupport (Telegram)" data-en="Priority support (Telegram)">Priority support (Telegram)</li>
+          <li data-da="Løbende optimering" data-en="Ongoing optimization">Ongoing optimization</li>
+        </ul>
+        <a href="#contact" class="pricing-btn" data-da="Forespørg om revenue share" data-en="Inquire about RS">▶ Inquire about RS</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name" data-da="Enterprise" data-en="Enterprise">Enterprise</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-desc" data-da="Joint ventures, strategic alliances, white-label" data-en="Joint ventures, strategic alliances, white-label">Joint ventures, strategic alliances, white-label</div>
+        <ul class="plan-features">
+          <li data-da="Fuld AI infrastruktur" data-en="Full AI infrastructure">Full AI infrastructure</li>
+          <li data-da="Dedikeret udvikling" data-en="Dedicated development">Dedicated development</li>
+          <li data-da="White-label mulighed" data-en="White-label option">White-label option</li>
+          <li data-da="Co-branding &amp; JV" data-en="Co-branding &amp; JV">Co-branding &amp; JV</li>
+          <li data-da="Døgnsupport" data-en="24/7 support">24/7 support</li>
+          <li data-da="Equity split mulighed" data-en="Equity split option">Equity split option</li>
+        </ul>
+        <a href="#contact" class="pricing-btn outline" data-da="Kontakt mig" data-en="Contact me">▶ Contact me</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW I WORK — Process
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center">
+      <div class="code-label">// process</div>
+      <h2 data-da="Sådan arbejder jeg" data-en="How I Work">How I Work</h2>
+      <p class="meta" data-da="Fra idé til impact. En 4-trins proces der sikrer klarhed, kvalitet og resultater." data-en="From Idea to Impact. A proven 4-step process that ensures clarity, quality, and results.">From Idea to Impact. A proven 4-step process that ensures clarity, quality, and results.</p>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <h4 data-da="🔍 Discovery" data-en="🔍 Discovery">🔍 Discovery</h4>
+        <p data-da="Forstå din forretning, dine mål og dine kunder." data-en="Understand your business, your goals, and your customers.">Understand your business, your goals, and your customers.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🧩</div>
+        <h4 data-da="🧩 Design" data-en="🧩 Design">🧩 Design</h4>
+        <p data-da="Tegn løsningen der passer præcist til dit behov." data-en="Design the solution that fits your exact needs.">Design the solution that fits your exact needs.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏗️</div>
+        <h4 data-da="🏗️ Build" data-en="🏗️ Build">🏗️ Build</h4>
+        <p data-da="Byg systemet med løbende feedback og iteration." data-en="Build the system with continuous feedback and iteration.">Build the system with continuous feedback and iteration.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <div class="step-icon">🚀</div>
+        <h4 data-da="🚀 Deploy &amp; Scale" data-en="🚀 Deploy &amp; Scale">🚀 Deploy &amp; Scale</h4>
+        <p data-da="Sæt i drift, mål resultater og skaler op." data-en="Launch, measure results, and scale up.">Launch, measure results, and scale up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center">
+      <div class="code-label">// faq</div>
+      <h2 data-da="FAQ" data-en="FAQ">FAQ</h2>
+      <p class="meta" data-da="5 ofte stillede spørgsmål om BasedNode" data-en="5 frequently asked questions about BasedNode">5 frequently asked questions about BasedNode</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvad er BasedNode?" data-en="What is BasedNode?">What is BasedNode?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="BasedNode er mit solo-operated AI infrastructure og automation bureau. Jeg bygger AI agenter, pipelines og automationsløsninger med en quant finance tilgang: mål alt, optimér konstant. Jeg tilbyder fastpris, revenue share og partnerskaber." data-en="BasedNode is my solo-operated AI infrastructure and automation bureau. I build AI agents, pipelines, and automation solutions with a quant finance approach: measure everything, optimize constantly. I offer fixed-price, revenue share, and partnerships.">BasedNode is my solo-operated AI infrastructure and automation bureau. I build AI agents, pipelines, and automation solutions with a quant finance approach: measure everything, optimize constantly. I offer fixed-price, revenue share, and partnerships.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvordan fungerer revenue share?" data-en="How does revenue share work?">How does revenue share work?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="I stedet for en stor upfront betaling, betaler du en procentdel af den ekstra revenue eller besparelse systemet genererer. Typisk 20-30%. Lavere risiko — du betaler kun når der er resultater. Alle metrics trackes automatisk og er fuldt transparente." data-en="Instead of a large upfront payment, you pay a percentage of the additional revenue or savings the system generates. Typically 20-30%. Lower risk — you only pay when there are results. All metrics tracked automatically and fully transparent.">Instead of a large upfront payment, you pay a percentage of the additional revenue or savings the system generates. Typically 20-30%. Lower risk — you only pay when there are results. All metrics tracked automatically and fully transparent.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvad er din baggrund?" data-en="What is your background?">What is your background?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Civilingeniør i Fysik &amp; Nanoteknologi fra DTU, quant finance baggrund. Software siden 2020, undervist i matematik, prog &amp; AI siden 2019. Min tilgang: teknisk dybde + datadrevet quant mindset." data-en="M.Sc. Physics &amp; Nanotechnology from DTU, quant finance background. Software since 2020, teaching math, prog &amp; AI since 2019. My approach: technical depth + data-driven quant mindset.">M.Sc. Physics &amp; Nanotechnology from DTU, quant finance background. Software since 2020, teaching math, prog &amp; AI since 2019. My approach: technical depth + data-driven quant mindset.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvor lang tid tager et typisk projekt?" data-en="How long does a typical project take?">How long does a typical project take?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Simpelt workflow: 1-2 uger. Multi-agent systemer: 4-8 uger. Iterativ udvikling med ugentlige demoer — du ser løbende fremskridt, ikke kun ved levering." data-en="Simple workflow: 1-2 weeks. Multi-agent systems: 4-8 weeks. Iterative development with weekly demos — you see continuous progress, not just at delivery.">Simple workflow: 1-2 weeks. Multi-agent systems: 4-8 weeks. Iterative development with weekly demos — you see continuous progress, not just at delivery.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Kan jeg blive partner uden teknisk baggrund?" data-en="Can I become a partner without tech background?">Can I become a partner without tech background?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Ja! Mange partnere er sælgere og konsulenter uden tekniske skills. Jeg håndterer al tech — du fokuserer på kunderelationer og salg. Referral partner-modellen kræver ingen tekniske forudsætninger." data-en="Yes! Many partners are salespeople and consultants without technical skills. I handle all the tech — you focus on client relationships and sales. The referral model requires no technical prerequisites.">Yes! Many partners are salespeople and consultants without technical skills. I handle all the tech — you focus on client relationships and sales. The referral model requires no technical prerequisites.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT (minimal)
+     ============================================================ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="code-label">// contact</div>
+      <h2 data-da="Kontakt" data-en="Contact">Contact</h2>
+    </div>
+    <div class="contact-grid reveal" style="grid-template-columns:1fr;max-width:500px;margin:0 auto;text-align:center">
+      <div>
+        <p style="margin-bottom:20px;color:var(--text-secondary);font-size:0.9rem;font-family:var(--font-mono)" data-da="Klar til at tage næste skridt?" data-en="Ready to take the next step?">Ready to take the next step?</p>
+        <a href="./contact.html?style=7" class="pricing-btn" style="display:inline-flex;width:auto;padding:12px 32px">✉️ <span data-da="Kontakt mig" data-en="Contact me">Contact me</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <p>© 2025 Based Node. All rights reserved. CVR: 43750194</p>
+    <p style="margin-top:4px">
+      <a href="mailto:contact@basednode.xyz">contact@basednode.xyz</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// --- Theme ---
+function toggleTheme(){
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('basednode-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = isDark ? '☀️' : '🌙';
+}
+(function(){
+  const saved = localStorage.getItem('basednode-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  const btn = document.getElementById('themeToggle');
+  if(btn) btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+})();
+
+// --- Language ---
+let currentLang = localStorage.getItem('basednode-lang') || 'en';
+
+function setLang(lang){
+  currentLang = lang;
+  localStorage.setItem('basednode-lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if(el.getAttribute('data-' + lang)){
+      el.textContent = el.getAttribute('data-' + lang);
+    }
+  });
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.hasAttribute('data-' + lang)){
+      el.placeholder = el.getAttribute('data-' + lang);
+    }
+  });
+}
+setLang(currentLang);
+
+// --- Mobile Menu ---
+function toggleMobile(){
+  const menu = document.getElementById('mobileMenu');
+  const ham = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  ham.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// --- Scroll Reveal ---
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+// --- Staggered Scroll Reveal ---
+const staggerObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const items = entry.target.querySelectorAll('.reveal-stagger');
+      items.forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 100);
+      });
+      staggerObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.stagger-grid').forEach(el => staggerObserver.observe(el));
+});
+
+// --- FAQ Accordion ---
+function toggleFaq(btn){
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  // Toggle this one
+  if(!isOpen) item.classList.add('open');
+}
+
+// --- Live uptime counter ticker ---
+let uptime = 99.7;
+setInterval(() => {
+  uptime = 99.5 + Math.random() * 0.5;
+  document.getElementById('liveUptime').textContent = uptime.toFixed(1) + '%';
+}, 3000);
+</script>
+</body>
+</html>

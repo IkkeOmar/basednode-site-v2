@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode · Omar — Zen Minimal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ===== VARIABLES ===== */
+:root{
+  --bg:#FFFFFF;
+  --bg-alt:#F8F8F6;
+  --text:#2C2C2C;
+  --text-light:#6B6B6B;
+  --text-muted:#9A9A9A;
+  --accent:#E63946;
+  --accent-hover:#C62D39;
+  --border:#D8D8D6;
+  --card-bg:#FFFFFF;
+  --card-shadow:0 2px 24px rgba(44,44,44,0.04);
+  --hr-color:#2C2C2C;
+  --input-bg:#FFFFFF;
+  --focus-ring:0 0 0 2px rgba(230,57,70,0.2);
+  --font-serif:'Noto Serif JP', 'Times New Roman', Georgia, serif;
+  --font-sans:'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+  --max-w:1080px;
+  --space-sm:1rem;
+  --space-md:2rem;
+  --space-lg:4rem;
+  --space-xl:7rem;
+  --radius:0;
+}
+[data-theme="dark"]{
+  --bg:#1A1A1A;
+  --bg-alt:#222222;
+  --text:#F0F0EE;
+  --text-light:#B0B0AC;
+  --text-muted:#7A7A78;
+  --accent:#E63946;
+  --accent-hover:#FF4D5A;
+  --border:#3A3A38;
+  --card-bg:#222222;
+  --card-shadow:0 2px 24px rgba(0,0,0,0.2);
+  --hr-color:#E63946;
+  --input-bg:#2A2A28;
+  --focus-ring:0 0 0 2px rgba(230,57,70,0.35);
+}
+
+/* ===== BASE ===== */
+body{
+  font-family:var(--font-sans);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  font-weight:300;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease, color .4s ease;
+}
+::selection{background:var(--accent);color:#fff}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.7}
+
+/* ===== UTILITY ===== */
+.container{max-width:var(--max-w);margin:0 auto;padding:0 1.5rem}
+.hr-zen{
+  border:none;
+  height:1px;
+  background:var(--border);
+  margin:var(--space-lg) 0;
+  position:relative;
+}
+.hr-zen--thin{
+  height:1px;
+  background:var(--border);
+  margin:var(--space-md) 0;
+}
+.hr-zen--accent{
+  height:2px;
+  width:40px;
+  background:var(--accent);
+  margin:var(--space-sm) 0;
+}
+.section{padding:var(--space-xl) 0}
+.section--alt{background:var(--bg-alt)}
+.section-title{
+  font-family:var(--font-serif);
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:600;
+  letter-spacing:0.06em;
+  margin-bottom:0.5rem;
+}
+.section-sub{
+  font-size:0.85rem;
+  color:var(--text-light);
+  text-transform:uppercase;
+  letter-spacing:0.15em;
+  margin-bottom:var(--space-md);
+  font-weight:400;
+}
+.fade-in{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* ===== HEADER ===== */
+.site-header{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  transition:background .4s ease;
+  padding:0.8rem 0;
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  max-width:var(--max-w);
+  margin:0 auto;
+  padding:0 1.5rem;
+}
+.logo-text{
+  font-family:var(--font-serif);
+  font-size:1.1rem;
+  font-weight:600;
+  letter-spacing:0.1em;
+}
+.logo-text span{color:var(--accent)}
+.header-controls{display:flex;align-items:center;gap:0.4rem}
+.toggle-btn{
+  background:none;border:1px solid var(--border);
+  cursor:pointer;padding:0.4rem 0.7rem;
+  font-size:0.72rem;font-family:var(--font-sans);
+  color:var(--text);border-radius:0;
+  transition:all .2s;
+  line-height:1;
+  letter-spacing:0.05em;
+}
+.toggle-btn:hover{border-color:var(--accent);color:var(--accent)}
+.toggle-btn--active{border-color:var(--accent);background:var(--accent);color:#fff}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  padding-top:80px;
+  position:relative;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-lg);
+  align-items:center;
+}
+.hero-left{padding-right:2rem}
+.hero-kicker{
+  font-size:0.75rem;
+  color:var(--text-light);
+  text-transform:uppercase;
+  letter-spacing:0.2em;
+  margin-bottom:1rem;
+  font-weight:400;
+}
+.hero-title{
+  font-family:var(--font-serif);
+  font-size:clamp(2.4rem,5vw,3.8rem);
+  font-weight:600;
+  line-height:1.2;
+  letter-spacing:0.04em;
+  margin-bottom:1.2rem;
+}
+.hero-title .accent{color:var(--accent)}
+.hero-desc{
+  font-size:1rem;
+  color:var(--text-light);
+  line-height:1.9;
+  max-width:480px;
+  margin-bottom:2rem;
+  font-weight:300;
+}
+.hero-badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+  margin-bottom:2rem;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:0.35rem;
+  border:1px solid var(--border);
+  padding:0.3rem 0.8rem;
+  font-size:0.7rem;
+  letter-spacing:0.04em;
+  font-weight:400;
+  color:var(--text-light);
+  line-height:1.4;
+}
+.badge--accent{border-color:var(--accent);color:var(--accent)}
+.hero-cta{
+  display:flex;gap:1rem;flex-wrap:wrap;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.7rem 1.6rem;
+  font-family:var(--font-sans);
+  font-size:0.8rem;
+  font-weight:500;
+  letter-spacing:0.05em;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--text);
+  cursor:pointer;
+  transition:all .25s;
+  text-transform:uppercase;
+}
+.btn:hover{opacity:1;border-color:var(--accent);color:var(--accent)}
+.btn--primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+.btn--primary:hover{background:var(--accent-hover);color:#fff}
+.hero-right{position:relative}
+.hero-visual{
+  aspect-ratio:1/1.2;
+  max-width:380px;
+  margin-left:auto;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-visual-inner{
+  text-align:center;
+  padding:2rem;
+}
+.hero-visual-inner .en{
+  font-family:var(--font-serif);
+  font-size:3rem;
+  font-weight:600;
+  color:var(--accent);
+  letter-spacing:0.15em;
+  line-height:1;
+}
+.hero-visual-inner .jp{
+  font-family:var(--font-serif);
+  font-size:1rem;
+  color:var(--text-light);
+  margin-top:0.5rem;
+  letter-spacing:0.2em;
+}
+.hero-visual::after{
+  content:'';
+  position:absolute;
+  bottom:0;right:0;
+  width:40%;height:1px;
+  background:var(--accent);
+}
+
+/* ===== ABOUT ===== */
+.about-grid{
+  display:grid;
+  grid-template-columns:1.2fr 0.8fr;
+  gap:var(--space-lg);
+  align-items:start;
+}
+.about-text p{
+  margin-bottom:1.2rem;
+  color:var(--text-light);
+  font-weight:300;
+  max-width:560px;
+}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-meta{border:1px solid var(--border);padding:1.5rem}
+.meta-item{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:0.6rem 0;
+  border-bottom:1px solid var(--border);
+  font-size:0.8rem;
+}
+.meta-item:last-child{border-bottom:none}
+.meta-label{color:var(--text-muted);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em}
+.meta-value{text-align:right;font-weight:400}
+
+/* ===== SERVICES ===== */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.service-card{
+  background:var(--card-bg);
+  padding:1.8rem 1.5rem;
+  transition:all .3s;
+  position:relative;
+}
+.service-card:hover{background:var(--bg-alt)}
+.service-card-num{
+  font-family:var(--font-serif);
+  font-size:0.7rem;
+  color:var(--accent);
+  letter-spacing:0.1em;
+  margin-bottom:0.6rem;
+  font-weight:500;
+}
+.service-card-title{
+  font-family:var(--font-serif);
+  font-size:1rem;
+  font-weight:600;
+  margin-bottom:0.3rem;
+  letter-spacing:0.03em;
+}
+.service-card-sub{
+  font-size:0.75rem;
+  color:var(--text-light);
+  font-weight:300;
+}
+
+/* ===== CASES ===== */
+.cases-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+}
+.case-card{
+  background:var(--card-bg);
+  padding:2rem 1.5rem;
+  transition:all .3s;
+}
+.case-card:hover{background:var(--bg-alt)}
+.case-metric{
+  font-family:var(--font-serif);
+  font-size:2rem;
+  font-weight:600;
+  color:var(--accent);
+  line-height:1;
+  margin-bottom:0.3rem;
+}
+.case-title{
+  font-size:0.95rem;
+  font-weight:500;
+  margin-bottom:0.2rem;
+}
+.case-desc{
+  font-size:0.78rem;
+  color:var(--text-light);
+  font-weight:300;
+}
+
+/* ===== CONTACT ===== */
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:var(--space-lg);
+}
+.contact-info{}
+.contact-info-item{
+  display:flex;
+  gap:1rem;
+  margin-bottom:1.2rem;
+  align-items:flex-start;
+}
+.contact-info-icon{
+  width:28px;height:28px;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-size:0.65rem;
+  color:var(--text-light);
+}
+.contact-info-content{font-size:0.85rem;font-weight:300}
+.contact-info-content strong{font-weight:500;display:block;margin-bottom:0.1rem;color:var(--text)}
+.contact-form{position:relative}
+.form-group{margin-bottom:1rem}
+.form-group label{
+  display:block;
+  font-size:0.72rem;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--text-light);
+  margin-bottom:0.3rem;
+  font-weight:400;
+}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;
+  padding:0.6rem 0.8rem;
+  border:1px solid var(--border);
+  background:var(--input-bg);
+  color:var(--text);
+  font-family:var(--font-sans);
+  font-size:0.85rem;
+  font-weight:300;
+  transition:border .2s;
+  border-radius:0;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  outline:none;
+  border-color:var(--accent);
+  box-shadow:var(--focus-ring);
+}
+.form-group textarea{min-height:100px;resize:vertical}
+
+/* ===== PARTNERSHIP ===== */
+.partnership-block{
+  border:1px solid var(--border);
+  padding:2.5rem;
+  position:relative;
+}
+.partnership-block::before{
+  content:'';
+  position:absolute;
+  top:-1px;left:2rem;right:2rem;
+  height:2px;
+  background:var(--accent);
+}
+.partnership-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+}
+.partnership-title{
+  font-family:var(--font-serif);
+  font-size:1.4rem;
+  font-weight:600;
+  margin-bottom:0.8rem;
+}
+.partnership-text p{font-size:0.88rem;color:var(--text-light);margin-bottom:1rem;font-weight:300;line-height:1.9}
+
+/* ===== SOCIAL ===== */
+.social-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-top:2rem;
+}
+.social-link{
+  flex:1;
+  min-width:140px;
+  background:var(--card-bg);
+  padding:1.5rem;
+  text-align:center;
+  transition:all .3s;
+  font-size:0.85rem;
+  font-weight:400;
+  letter-spacing:0.04em;
+}
+.social-link:hover{background:var(--bg-alt);color:var(--accent)}
+.social-link-label{
+  font-size:0.65rem;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  margin-bottom:0.2rem;
+}
+
+/* ===== FOOTER ===== */
+.site-footer{
+  border-top:1px solid var(--border);
+  padding:var(--space-lg) 0;
+  margin-top:var(--space-lg);
+}
+.footer-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.footer-brand{font-family:var(--font-serif);font-size:0.9rem;font-weight:500}
+.footer-meta{font-size:0.72rem;color:var(--text-muted);text-align:right;line-height:1.7}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;gap:var(--space-md)}
+  .hero-left{padding-right:0}
+  .hero-visual{max-width:100%;margin-left:0}
+  .hero-desc{max-width:100%}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .partnership-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .section{padding:var(--space-lg) 0}
+  .services-grid{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:1fr}
+  .header-inner{padding:0 1rem}
+  .hero{min-height:auto;padding-top:80px;padding-bottom:3rem}
+  .partnership-block{padding:1.5rem}
+  .footer-inner{flex-direction:column;align-items:flex-start}
+  .footer-meta{text-align:left}
+  .social-link{min-width:100px;padding:1rem}
+}
+
+/* ===== TRANSITION OVERRIDES ===== */
+.lang-visible{display:block}
+.lang-hidden{display:none}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border)}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<!-- ======== HEADER ======== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo-text">Based<span>Node</span></a>
+    <div class="header-controls">
+      <button class="toggle-btn" id="langToggle" onclick="toggleLang()">DA</button>
+      <button class="toggle-btn" id="themeToggle" onclick="toggleTheme()">🌙</button>
+    </div>
+  </div>
+</header>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-left fade-in">
+        <div class="hero-kicker">— BasedNode · Omar</div>
+        <h1 class="hero-title">
+          <span class="lang-en">Building Systems<br>that <span class="accent">Scale</span></span>
+          <span class="lang-da">Systemer der<br><span class="accent">skalerer</span></span>
+        </h1>
+        <p class="hero-desc lang-en">I'm Omar — a physicist, quant developer, and builder. BasedNode is just me: no agency, no overhead. I build automation, AI infrastructure, and dashboards that move the needle.</p>
+        <p class="hero-desc lang-da">Jeg er Omar — fysiker, quant-udvikler og bygger. BasedNode er bare mig: intet bureau, ingen overhead. Jeg bygger automatisering, AI-infrastruktur og dashboards der rykker.</p>
+        <div class="hero-badge-row">
+          <span class="badge badge--accent">DTU · Fysik & Nanoteknologi</span>
+          <span class="badge">Quant Finance</span>
+          <span class="badge">MentorDanmark 2019</span>
+          <span class="badge">GXU 2025</span>
+          <span class="badge">Software since 2020</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn--primary lang-en">Contact</a>
+          <a href="#contact" class="btn btn--primary lang-da">Kontakt</a>
+          <a href="#services" class="btn lang-en">Services</a>
+          <a href="#services" class="btn lang-da">Services</a>
+        </div>
+      </div>
+      <div class="hero-right fade-in">
+        <div class="hero-visual">
+          <div class="hero-visual-inner">
+            <div class="en">空</div>
+            <div class="jp">KU · EMPTINESS</div>
+            <hr class="hr-zen--accent" style="margin:1rem auto;">
+            <div style="font-size:0.7rem;color:var(--text-muted);letter-spacing:0.1em;line-height:1.6;font-weight:300">
+              CVR 43750194
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== ABOUT ======== -->
+<section class="section section--alt" id="about">
+  <div class="container">
+    <hr class="hr-zen">
+    <div class="section-sub fade-in">— 0.1 · About</div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p class="lang-en"><strong>Just me.</strong> M.Sc. in Physics & Nanotechnology from DTU. Quant finance background. MentorDanmark (2019) and GXU (2025). Software since 2020.</p>
+        <p class="lang-da"><strong>Bare mig.</strong> Civilingeniør i Fysik & Nanoteknologi fra DTU. Quant finance-baggrund. MentorDanmark (2019) og GXU (2025). Software siden 2020.</p>
+        <p class="lang-en">Teaching is a side project — I believe the best way to deepen your own understanding is to help others grow. BasedNode is my vehicle for building, teaching, and partnering with people who care about craft.</p>
+        <p class="lang-da">Undervisning er et sideprojekt — jeg tror den bedste måde at uddybe sin egen forståelse på er at hjælpe andre med at vokse. BasedNode er min måde at bygge, undervise og indgå partnerskaber med folk der går op i håndværk.</p>
+        <p class="lang-en" style="margin-top:1rem"><strong>💡</strong> I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p>
+        <p class="lang-da" style="margin-top:1rem"><strong>💡</strong> Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.</p>
+      </div>
+      <div class="about-meta fade-in">
+        <div class="meta-item"><span class="meta-label">Company</span><span class="meta-value">BasedNode · Omar</span></div>
+        <div class="meta-item"><span class="meta-label">CVR</span><span class="meta-value">43750194</span></div>
+        <div class="meta-item"><span class="meta-label">Contact</span><span class="meta-value">contact@basednode.xyz</span></div>
+        <div class="meta-item"><span class="meta-label">Partner</span><span class="meta-value">partner@basednode.xyz</span></div>
+        <div class="meta-item"><span class="meta-label">Since</span><span class="meta-value">2020</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== RESOURCES PROMO ======== -->
+<section style="padding:32px 0;background:var(--bg-alt);border-bottom:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div style="max-width:500px;margin:0 auto">
+      <p style="font-size:0.9rem;font-weight:500;letter-spacing:0.05em;color:var(--text);margin-bottom:4px">📚 <span class="lang-en">Free Resources</span><span class="lang-da">Gratis Ressourcer</span></p>
+      <p style="font-size:0.78rem;color:var(--text-light);font-weight:300;margin-bottom:12px" class="lang-en">Guides, tools, and templates for AI, automation, and digital growth.</p>
+      <p style="font-size:0.78rem;color:var(--text-light);font-weight:300;margin-bottom:12px" class="lang-da">Guides, tools og værktøjer til AI, automatisering og digital vækst.</p>
+      <a href="./resources.html?style=10" class="btn" style="font-size:0.75rem;padding:0.6rem 1.2rem">📖 <span class="lang-en">Browse Resources</span><span class="lang-da">Gå til Ressourcer</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SERVICES ======== -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="section-sub fade-in">— 0.2 · Services</div>
+    <h2 class="section-title fade-in lang-en">What I Build</h2>
+    <h2 class="section-title fade-in lang-da">Hvad jeg bygger</h2>
+    <div class="services-grid fade-in" style="margin-top:var(--space-md)">
+      <div class="service-card">
+        <div class="service-card-num">01</div>
+        <div class="service-card-title lang-en">Automation</div>
+        <div class="service-card-title lang-da">Automatisering</div>
+        <div class="service-card-sub lang-en">Workflow automation, data pipelines, process optimization</div>
+        <div class="service-card-sub lang-da">Workflow-automatisering, data pipelines, procesoptimering</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-num">02</div>
+        <div class="service-card-title">AI & Agenter</div>
+        <div class="service-card-sub lang-en">Custom AI agents, LLM integrations, intelligent systems</div>
+        <div class="service-card-sub lang-da">Custom AI-agenter, LLM-integrationer, intelligente systemer</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-num">03</div>
+        <div class="service-card-title">Dashboards</div>
+        <div class="service-card-sub lang-en">Real-time monitoring, analytics, custom reporting</div>
+        <div class="service-card-sub lang-da">Realtidsovervågning, analyser, skræddersyet rapportering</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-num">04</div>
+        <div class="service-card-title lang-en">Websites</div>
+        <div class="service-card-title lang-da">Hjemmesider</div>
+        <div class="service-card-sub lang-en">Fast, minimal, conversion-focused web presences</div>
+        <div class="service-card-sub lang-da">Hurtige, minimale, konverteringsfokuserede hjemmesider</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-num">05</div>
+        <div class="service-card-title lang-en">Marketing</div>
+        <div class="service-card-title lang-da">Markedsføring</div>
+        <div class="service-card-sub lang-en">Lead generation, automated outreach, analytics</div>
+        <div class="service-card-sub lang-da">Leadgenerering, automatiseret outreach, analyser</div>
+      </div>
+      <div class="service-card">
+        <div class="service-card-num">06</div>
+        <div class="service-card-title lang-en">Teaching</div>
+        <div class="service-card-title lang-da">Undervisning <span style="font-size:0.6rem;color:var(--text-muted)">(side)</span></div>
+        <div class="service-card-sub lang-en">Side project — mentoring, workshops, curriculum</div>
+        <div class="service-card-sub lang-da">Sideprojekt — mentoring, workshops, pensum</div>
+      </div>
+      <div class="service-card" style="grid-column:1/-1;border-top:1px solid var(--border)">
+        <div class="service-card-num">07</div>
+        <div class="service-card-title lang-en">Partnership</div>
+        <div class="service-card-title lang-da">Partnerskab</div>
+        <div class="service-card-sub lang-en">Strategic collaborations, white-label, technical co-founding</div>
+        <div class="service-card-sub lang-da">Strategiske samarbejder, white-label, teknisk medstifter</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CASES ======== -->
+<section class="section section--alt" id="cases">
+  <div class="container">
+    <hr class="hr-zen">
+    <div class="section-sub fade-in">— 0.3 · Selected Work</div>
+    <h2 class="section-title fade-in lang-en">Cases</h2>
+    <h2 class="section-title fade-in lang-da">Projekter</h2>
+    <div class="cases-grid fade-in" style="margin-top:var(--space-md)">
+      <div class="case-card">
+        <div class="case-metric">80–100×</div>
+        <div class="case-title">AI Infrastructure</div>
+        <div class="case-desc lang-en">Optimized GPU inference pipeline, 80-100x throughput improvement over baseline</div>
+        <div class="case-desc lang-da">Optimeret GPU-inference pipeline, 80-100× gennemløb i forhold til baseline</div>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">340%</div>
+        <div class="case-title">Lead Gen</div>
+        <div class="case-desc lang-en">Automated outreach system generating 340% increase in qualified leads</div>
+        <div class="case-desc lang-da">Automatiseret outreach-system med 340% stigning i kvalificerede leads</div>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">6 wk</div>
+        <div class="case-title">GXU · AI Program</div>
+        <div class="case-desc lang-en">Designed and delivered a 6-week AI curriculum for GXU (2025)</div>
+        <div class="case-desc lang-da">Designet og afholdt et 6-ugers AI-pensum for GXU (2025)</div>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">Quant</div>
+        <div class="case-title">Pipeline</div>
+        <div class="case-desc lang-en">Real-time quantitative data pipeline for financial signal processing</div>
+        <div class="case-desc lang-da">Realtids kvantitativ data-pipeline til finansiel signalbehandling</div>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">95%</div>
+        <div class="case-title">Chatbot</div>
+        <div class="case-desc lang-en">Custom chatbot with 95% intent accuracy, deployed across multiple channels</div>
+        <div class="case-desc lang-da">Custom chatbot med 95% intent-nøjagtighed, udrullet på tværs af flere kanaler</div>
+      </div>
+      <div class="case-card">
+        <div class="case-metric">Dash</div>
+        <div class="case-title">Custom Dashboard</div>
+        <div class="case-desc lang-en">Real-time operational dashboard for data-driven decision making</div>
+        <div class="case-desc lang-da">Realtids operationelt dashboard til datadrevet beslutningstagning</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== PARTNERSHIP ======== -->
+<section class="section" id="partnership">
+  <div class="container">
+    <div class="section-sub fade-in">— 0.4 · Collaborate</div>
+    <div class="partnership-block fade-in">
+      <div class="partnership-grid">
+        <div>
+          <h3 class="partnership-title lang-en">Let's Build Together</h3>
+          <h3 class="partnership-title lang-da">Lad Os Bygge Sammen</h3>
+          <div class="partnership-text lang-en">
+            <p>I work best in partnership — whether as a technical co-founder, a white-label builder, or a strategic collaborator. No egos, no unnecessary process. Just clear communication and solid delivery.</p>
+            <p>Teaching runs alongside everything I do. If you're looking for someone who can both build and explain, we should talk.</p>
+          </div>
+          <div class="partnership-text lang-da">
+            <p>Jeg arbejder bedst i partnerskab — hvad enten som teknisk medstifter, white-label bygger eller strategisk samarbejdspartner. Intet ego, ingen unødig process. Bare klar kommunikation og solid levering.</p>
+            <p>Undervisning løber parallelt med alt jeg gør. Hvis du leder efter nogen der både kan bygge og forklare, bør vi tale sammen.</p>
+          </div>
+          <a href="#contact" class="btn btn--primary lang-en" style="margin-top:0.5rem">Get in Touch</a>
+          <a href="#contact" class="btn btn--primary lang-da" style="margin-top:0.5rem">Kontakt Mig</a>
+        </div>
+        <div>
+          <div style="border:1px solid var(--border);padding:1.5rem">
+            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.8rem" class="lang-en">Why Partner?</div>
+            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:0.8rem" class="lang-da">Hvorfor Partnerskab?</div>
+            <div style="display:flex;flex-direction:column;gap:0.8rem">
+              <div style="display:flex;gap:0.8rem;align-items:flex-start">
+                <span style="color:var(--accent);font-family:var(--font-serif);font-weight:600">01</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-en">Technical depth across AI, quant, and full-stack</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-da">Teknisk dybde på tværs af AI, quant og full-stack</span>
+              </div>
+              <div style="display:flex;gap:0.8rem;align-items:flex-start">
+                <span style="color:var(--accent);font-family:var(--font-serif);font-weight:600">02</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-en">Direct communication — no account managers</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-da">Direkte kommunikation — ingen account managers</span>
+              </div>
+              <div style="display:flex;gap:0.8rem;align-items:flex-start">
+                <span style="color:var(--accent);font-family:var(--font-serif);font-weight:600">03</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-en">Built by someone who teaches — clarity baked in</span>
+                <span style="font-size:0.82rem;color:var(--text-light);font-weight:300" class="lang-da">Bygget af en der underviser — klarhed indbygget</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CONTACT ======== -->
+<section class="section section--alt" id="contact">
+  <div class="container">
+    <hr class="hr-zen">
+    <div class="section-sub fade-in">— 0.5 · Contact</div>
+    <h2 class="section-title fade-in lang-en">Reach Out</h2>
+    <h2 class="section-title fade-in lang-da">Kontakt</h2>
+    <div class="contact-grid" style="margin-top:var(--space-md)">
+      <div class="contact-info fade-in">
+        <div class="contact-info-item">
+          <div class="contact-info-icon">@</div>
+          <div class="contact-info-content">
+            <strong class="lang-en">General</strong><strong class="lang-da">Generel</strong>
+            <span>contact@basednode.xyz</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">+</div>
+          <div class="contact-info-content">
+            <strong class="lang-en">Partnerships</strong><strong class="lang-da">Partnerskab</strong>
+            <span>partner@basednode.xyz</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">in</div>
+          <div class="contact-info-content">
+            <strong>LinkedIn</strong>
+            <span>BasedNode</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">T</div>
+          <div class="contact-info-content">
+            <strong>Telegram</strong>
+            <span>@IkkeOmar</span>
+          </div>
+        </div>
+        <div class="social-row" style="margin-top:1.5rem">
+          <a href="#" target="_blank" rel="noopener" class="social-link">
+            <div class="social-link-label">LinkedIn</div>
+            BasedNode
+          </a>
+          <a href="#" target="_blank" rel="noopener" class="social-link">
+            <div class="social-link-label">Telegram</div>
+            @IkkeOmar
+          </a>
+        </div>
+      </div>
+      <div class="contact-form fade-in">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label for="name" class="lang-en">Name</label>
+            <label for="name" class="lang-da">Navn</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="type" class="lang-en">Type</label>
+            <label for="type" class="lang-da">Type</label>
+            <select id="type" name="type">
+              <option value="general" class="lang-en">General inquiry</option>
+              <option value="general" class="lang-da">Generel henvendelse</option>
+              <option value="partnership" class="lang-en">Partnership</option>
+              <option value="partnership" class="lang-da">Partnerskab</option>
+              <option value="project" class="lang-en">Project</option>
+              <option value="project" class="lang-da">Projekt</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message" class="lang-en">Message</label>
+            <label for="message" class="lang-da">Besked</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary lang-en">Send</button>
+          <button type="submit" class="btn btn--primary lang-da">Send</button>
+          <div id="formStatus" style="margin-top:0.8rem;font-size:0.8rem;color:var(--accent);display:none"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer class="site-footer">
+  <div class="container">
+    <hr class="hr-zen--thin">
+    <div class="footer-inner">
+      <div class="footer-brand">Based<span style="color:var(--accent)">Node</span></div>
+      <div class="footer-meta">
+        Omar · CVR 43750194<br>
+        <span class="lang-en">Built with clarity. One person at a time.</span>
+        <span class="lang-da">Bygget med klarhed. Én person ad gangen.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== SCROLL REVEAL =====
+(function(){
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}})
+  },{threshold:0.1});
+  document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+})();
+
+// ===== THEME TOGGLE =====
+function toggleTheme(){
+  const html = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  btn.textContent = isDark ? '🌙' : '☀️';
+}
+
+// ===== LANG TOGGLE =====
+let currentLang = 'en';
+function toggleLang(){
+  const btn = document.getElementById('langToggle');
+  const enEls = document.querySelectorAll('.lang-en');
+  const daEls = document.querySelectorAll('.lang-da');
+  if(currentLang === 'en'){
+    currentLang = 'da';
+    btn.textContent = 'EN';
+    btn.classList.add('toggle-btn--active');
+    enEls.forEach(e=>e.style.display='none');
+    daEls.forEach(e=>e.style.display='block');
+  } else {
+    currentLang = 'en';
+    btn.textContent = 'DA';
+    btn.classList.remove('toggle-btn--active');
+    enEls.forEach(e=>e.style.display='block');
+    daEls.forEach(e=>e.style.display='none');
+  }
+}
+// init: show EN, hide DA
+document.querySelectorAll('.lang-da').forEach(e=>e.style.display='none');
+
+// ===== FORM HANDLER =====
+function handleSubmit(e){
+  e.preventDefault();
+  const status = document.getElementById('formStatus');
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const type = document.getElementById('type').value;
+  const message = document.getElementById('message').value;
+  const mailto = type === 'partnership' ? 'partner@basednode.xyz' : 'contact@basednode.xyz';
+  const subject = encodeURIComponent(`BasedNode inquiry from ${name} (${type})`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${type}\n\n${message}`);
+  status.style.display = 'block';
+  if(currentLang === 'en'){
+    status.innerHTML = `📨 Opening email to ${mailto}...`;
+  } else {
+    status.innerHTML = `📨 Åbner email til ${mailto}...`;
+  }
+  setTimeout(()=>{window.location.href=`mailto:${mailto}?subject=${subject}&body=${body}`},500);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown',(e)=>{
+  if(e.key === 't' || e.key === 'T'){toggleTheme()}
+  if(e.key === 'l' || e.key === 'L'){toggleLang()}
+});
+</script>
+
+</body>
+</html>

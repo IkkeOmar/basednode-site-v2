@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode — Partnership Network</title>
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:var(--gold);opacity:0.3;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold);opacity:0.5}
+
+/* ============================================================
+   THEME VARIABLES — Warm Amber/Gold + Deep Navy
+   ============================================================ */
+:root{
+  --bg-primary:#1a1a2e;
+  --bg-secondary:#16213e;
+  --bg-tertiary:#0f3460;
+  --bg-card:rgba(15,52,96,0.4);
+  --gold:#f0a500;
+  --gold-dim:#c48900;
+  --gold-glow:rgba(240,165,0,0.15);
+  --gold-light:rgba(240,165,0,0.25);
+  --navy-light:#1e2a4a;
+  --text-primary:#e8e0d0;
+  --text-secondary:#b0a898;
+  --text-dim:#706858;
+  --border-light:rgba(240,165,0,0.15);
+  --font-main:'Inter',-apple-system,sans-serif;
+  --nav-bg:rgba(26,26,46,0.95);
+  --badge-bg:rgba(240,165,0,0.08);
+  --badge-border:rgba(240,165,0,0.2);
+  --shadow-card:0 8px 32px rgba(0,0,0,0.4);
+  --hover-lift:translateY(-4px);
+}
+
+[data-theme="light"]{
+  --bg-primary:#faf6f0;
+  --bg-secondary:#f0ebe3;
+  --bg-tertiary:#e8e0d4;
+  --bg-card:rgba(255,255,255,0.85);
+  --gold:#b8860b;
+  --gold-dim:#9a7209;
+  --gold-glow:rgba(184,134,11,0.08);
+  --gold-light:rgba(184,134,11,0.15);
+  --navy-light:#d4d0c8;
+  --text-primary:#2a2420;
+  --text-secondary:#5a5450;
+  --text-dim:#8a8480;
+  --border-light:rgba(184,134,11,0.15);
+  --nav-bg:rgba(250,246,240,0.95);
+  --badge-bg:rgba(184,134,11,0.08);
+  --badge-border:rgba(184,134,11,0.2);
+  --shadow-card:0 8px 32px rgba(0,0,0,0.08);
+}
+
+*{transition:background-color 0.3s ease,color 0.3s ease,border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease}
+
+body{
+  font-family:var(--font-main);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  line-height:1.6;
+  overflow-x:hidden;
+  min-height:100dvh;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:var(--nav-bg);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border-light);
+  padding:0 24px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nav-logo{
+  font-size:1.25rem;font-weight:700;
+  color:var(--gold);text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo span{color:var(--text-primary)}
+.nav-links{display:flex;align-items:center;gap:16px;list-style:none}
+.nav-links a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:0.875rem;font-weight:500;
+  padding:6px 12px;border-radius:6px;
+  transition:all 0.2s;
+}
+.nav-links a:hover{color:var(--gold);background:var(--gold-glow)}
+.toggle-group{
+  display:flex;align-items:center;gap:4px;
+  background:var(--bg-tertiary);border-radius:8px;padding:3px;
+  border:1px solid var(--border-light);
+}
+.toggle-btn{
+  background:none;border:none;color:var(--text-dim);
+  cursor:pointer;padding:4px 8px;border-radius:6px;
+  font-size:0.8rem;font-weight:600;transition:all 0.2s;
+}
+.toggle-btn.active{background:var(--gold);color:var(--bg-primary)}
+.toggle-btn:hover:not(.active){color:var(--text-primary)}
+
+/* Hamburger */
+.hamburger{
+  display:none;flex-direction:column;gap:4px;
+  background:none;border:none;cursor:pointer;padding:6px;
+}
+.hamburger span{
+  width:22px;height:2px;background:var(--text-primary);
+  border-radius:2px;transition:all 0.3s;
+}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+.mobile-menu{
+  display:none;position:fixed;top:64px;left:0;right:0;
+  background:var(--nav-bg);backdrop-filter:blur(16px);
+  padding:24px;border-bottom:1px solid var(--border-light);
+  z-index:999;height:calc(100dvh - 64px);overflow-y:auto;
+}
+.mobile-menu.open{display:flex;flex-direction:column;gap:12px}
+.mobile-menu a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:1.1rem;font-weight:500;
+  padding:12px 16px;border-radius:8px;
+  border-bottom:1px solid var(--border-light);
+}
+.mobile-menu a:hover{color:var(--gold);background:var(--gold-glow)}
+.mobile-menu .toggle-group{margin-top:16px;align-self:flex-start}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  padding:140px 0 80px;
+  background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 50%,var(--bg-tertiary) 100%);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;right:-20%;
+  width:600px;height:600px;
+  background:radial-gradient(circle,var(--gold-glow) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:1}
+.hero h1{
+  font-size:3rem;font-weight:800;line-height:1.15;margin-bottom:20px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--text-primary) 60%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{font-size:1.2rem;color:var(--text-secondary);max-width:680px;margin-bottom:32px;line-height:1.7}
+.hero-badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.hero-badges .badge{
+  background:var(--badge-bg);border:1px solid var(--badge-border);
+  padding:6px 14px;border-radius:20px;font-size:0.8rem;color:var(--gold);
+  font-weight:500;
+}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:10px;
+  font-weight:600;font-size:0.95rem;
+  text-decoration:none;cursor:pointer;border:none;
+  transition:all 0.2s;
+}
+.btn-primary{background:var(--gold);color:var(--bg-primary)}
+.btn-primary:hover{transform:var(--hover-lift);box-shadow:0 8px 24px var(--gold-light)}
+.btn-outline{
+  background:transparent;color:var(--gold);
+  border:1px solid var(--gold);
+}
+.btn-outline:hover{background:var(--gold-glow);transform:var(--hover-lift)}
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section{padding:80px 0}
+.section-label{
+  font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;
+  color:var(--gold);font-weight:600;margin-bottom:8px;
+}
+.section h2{
+  font-size:2.2rem;font-weight:700;margin-bottom:16px;
+  color:var(--text-primary);
+}
+.section-sub{color:var(--text-secondary);max-width:600px;margin-bottom:48px;font-size:1.05rem;line-height:1.7}
+
+/* ============================================================
+   PARTNERSHIP GRID — 6 Types
+   ============================================================ */
+.partnership-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.p-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:28px;backdrop-filter:blur(8px);
+  transition:all 0.3s;position:relative;overflow:hidden;
+}
+.p-card:hover{transform:var(--hover-lift);border-color:var(--gold);box-shadow:var(--shadow-card)}
+.p-card .icon{font-size:2rem;margin-bottom:12px}
+.p-card h3{font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--gold)}
+.p-card p{font-size:0.9rem;color:var(--text-secondary);line-height:1.6;margin-bottom:16px}
+.p-card .tag{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  background:var(--gold-glow);border:1px solid var(--badge-border);
+  font-size:0.75rem;color:var(--gold);font-weight:600;
+}
+
+/* ============================================================
+   DUAL TRACK — Customer + Partner
+   ============================================================ */
+.dual-track{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.track{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:32px;backdrop-filter:blur(8px);
+}
+.track h3{font-size:1.3rem;font-weight:700;margin-bottom:16px}
+.track.customer h3{color:var(--text-primary)}
+.track.partner h3{color:var(--gold)}
+.track ul{list-style:none;padding:0}
+.track li{
+  padding:10px 0;border-bottom:1px solid var(--border-light);
+  color:var(--text-secondary);font-size:0.95rem;
+  display:flex;align-items:center;gap:10px;
+}
+.track li::before{content:'→';color:var(--gold);font-weight:700}
+.track .btn{margin-top:20px}
+
+/* ============================================================
+   COMMISSION STRUCTURE
+   ============================================================ */
+.commission-steps{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:48px}
+.c-step{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:12px;padding:24px;flex:1;min-width:160px;max-width:220px;
+  text-align:center;transition:all 0.3s;
+}
+.c-step:hover{transform:var(--hover-lift);border-color:var(--gold)}
+.c-step .pct{font-size:2.2rem;font-weight:800;color:var(--gold)}
+.c-step .label{font-size:0.85rem;color:var(--text-secondary);margin-top:6px}
+.c-step .desc{font-size:0.75rem;color:var(--text-dim);margin-top:4px}
+
+/* ============================================================
+   CASES
+   ============================================================ */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.case-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:24px;transition:all 0.3s;
+}
+.case-card:hover{transform:var(--hover-lift);border-color:var(--gold);box-shadow:var(--shadow-card)}
+.case-card .metric{font-size:2rem;font-weight:800;color:var(--gold);margin-bottom:6px}
+.case-card .metric-label{font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;font-weight:500}
+.case-card h4{font-size:1rem;font-weight:600;margin-bottom:8px}
+.case-card p{font-size:0.85rem;color:var(--text-secondary);line-height:1.6}
+.case-card .tag{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  background:var(--gold-glow);border:1px solid var(--badge-border);
+  font-size:0.7rem;color:var(--gold);margin-bottom:12px;font-weight:600;
+}
+
+/* ============================================================
+   PARTNER APPLICATION FORM
+   ============================================================ */
+.form-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:40px;max-width:640px;margin:0 auto;
+  backdrop-filter:blur(8px);
+}
+.form-group{margin-bottom:20px}
+.form-group label{
+  display:block;font-size:0.85rem;font-weight:600;
+  color:var(--text-secondary);margin-bottom:6px;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:12px 16px;border-radius:8px;
+  background:var(--bg-secondary);border:1px solid var(--border-light);
+  color:var(--text-primary);font-size:0.95rem;font-family:var(--font-main);
+  transition:border-color 0.2s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  outline:none;border-color:var(--gold);
+}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-btn{
+  width:100%;padding:14px;border-radius:10px;
+  background:var(--gold);color:var(--bg-primary);
+  font-weight:700;font-size:1rem;border:none;cursor:pointer;
+  transition:all 0.2s;
+}
+.form-btn:hover{transform:var(--hover-lift);box-shadow:0 8px 24px var(--gold-light)}
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badges-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--badge-bg);border:1px solid var(--badge-border);
+  padding:8px 16px;border-radius:20px;
+  font-size:0.8rem;color:var(--gold);font-weight:500;
+}
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contact-info h3{font-size:1.3rem;font-weight:700;margin-bottom:16px}
+.contact-info p{color:var(--text-secondary);margin-bottom:8px;font-size:0.95rem}
+.contact-info a{color:var(--gold);text-decoration:none}
+.contact-info a:hover{text-decoration:underline}
+.contact-socials{display:flex;gap:12px;margin-top:20px}
+.contact-socials a{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border-radius:10px;border:1px solid var(--border-light);
+  color:var(--text-secondary);text-decoration:none;font-size:1.1rem;
+  transition:all 0.2s;
+}
+.contact-socials a:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  padding:40px 0;border-top:1px solid var(--border-light);
+  text-align:center;color:var(--text-dim);font-size:0.85rem;
+}
+footer a{color:var(--gold);text-decoration:none}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ============================================================
+   PRICING TABLE
+   ============================================================ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pricing-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:32px 24px;backdrop-filter:blur(8px);
+  transition:all 0.4s;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.pricing-card:hover{transform:var(--hover-lift);border-color:var(--gold);box-shadow:0 12px 40px rgba(240,165,0,0.15)}
+.pricing-card.featured{
+  border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 8px 32px rgba(240,165,0,0.12);
+  transform:scale(1.03);
+}
+.pricing-card.featured:hover{transform:scale(1.03) var(--hover-lift)}
+.pricing-card .popular-tag{
+  position:absolute;top:12px;right:-28px;
+  background:var(--gold);color:var(--bg-primary);
+  font-size:0.65rem;font-weight:700;text-transform:uppercase;
+  padding:4px 36px;transform:rotate(45deg);letter-spacing:1px;
+}
+.pricing-card .plan-name{font-size:1rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px}
+.pricing-card .plan-price{font-size:2.5rem;font-weight:800;color:var(--gold);margin-bottom:4px}
+.pricing-card .plan-desc{font-size:0.85rem;color:var(--text-dim);margin-bottom:20px;line-height:1.5}
+.pricing-card .plan-features{list-style:none;padding:0;flex:1}
+.pricing-card .plan-features li{
+  padding:8px 0;border-bottom:1px solid var(--border-light);
+  font-size:0.85rem;color:var(--text-secondary);
+  display:flex;align-items:center;gap:8px;
+}
+.pricing-card .plan-features li::before{content:'✓';color:var(--gold);font-weight:700}
+.pricing-card .btn{margin-top:20px;width:100%;justify-content:center}
+
+/* ============================================================
+   HOW I WORK — Process
+   ============================================================ */
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
+.process-steps::before{
+  content:'';position:absolute;top:44px;left:10%;right:10%;
+  height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-dim));
+  opacity:0.3;z-index:0;
+}
+.process-step{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:28px 20px;text-align:center;
+  transition:all 0.4s;position:relative;z-index:1;
+}
+.process-step:hover{transform:var(--hover-lift);border-color:var(--gold);box-shadow:0 8px 24px var(--gold-light)}
+.process-step .step-num{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--gold);color:var(--bg-primary);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:0.9rem;margin:0 auto 16px;
+}
+.process-step .step-icon{font-size:1.8rem;margin-bottom:12px}
+.process-step h4{font-size:1rem;font-weight:700;color:var(--gold);margin-bottom:6px}
+.process-step p{font-size:0.8rem;color:var(--text-secondary);line-height:1.5}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.testimonial-card{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:16px;padding:28px;transition:all 0.4s;
+  position:relative;
+}
+.testimonial-card::before{
+  content:'"';position:absolute;top:12px;left:18px;
+  font-size:3rem;color:var(--gold);opacity:0.15;
+  font-family:Georgia,serif;line-height:1;
+}
+.testimonial-card:hover{transform:var(--hover-lift);border-color:var(--gold);box-shadow:var(--shadow-card)}
+.testimonial-card .quote{font-size:0.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;font-style:italic}
+.testimonial-card .author{display:flex;align-items:center;gap:12px}
+.testimonial-card .author .avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--gold-glow);border:1px solid var(--badge-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;color:var(--gold);
+}
+.testimonial-card .author .name{font-weight:600;font-size:0.9rem;color:var(--text-primary)}
+.testimonial-card .author .role{font-size:0.75rem;color:var(--text-dim)}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.faq-list{max-width:720px;margin:0 auto}
+.faq-item{
+  background:var(--bg-card);border:1px solid var(--border-light);
+  border-radius:12px;margin-bottom:10px;overflow:hidden;
+  transition:all 0.3s;
+}
+.faq-item:hover{border-color:var(--gold)}
+.faq-question{
+  width:100%;padding:16px 20px;background:none;border:none;
+  color:var(--text-primary);font-size:0.95rem;font-weight:600;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  text-align:left;font-family:var(--font-main);transition:color 0.2s;
+}
+.faq-question:hover{color:var(--gold)}
+.faq-question .faq-icon{
+  font-size:1.1rem;color:var(--gold);transition:transform 0.3s;
+  flex-shrink:0;
+}
+.faq-item.open .faq-question .faq-icon{transform:rotate(45deg)}
+.faq-answer{
+  max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;
+  padding:0 20px;
+}
+.faq-item.open .faq-answer{
+  max-height:300px;padding:0 20px 16px;
+}
+.faq-answer p{
+  font-size:0.9rem;color:var(--text-secondary);line-height:1.7;
+}
+
+/* ============================================================
+   STAGGERED REVEAL
+   ============================================================ */
+.reveal-stagger{opacity:0;transform:translateY(30px)}
+.reveal-stagger.visible{opacity:1;transform:translateY(0)}
+.reveal-stagger:nth-child(1){transition:all 0.5s ease 0s}
+.reveal-stagger:nth-child(2){transition:all 0.5s ease 0.1s}
+.reveal-stagger:nth-child(3){transition:all 0.5s ease 0.2s}
+.reveal-stagger:nth-child(4){transition:all 0.5s ease 0.3s}
+.reveal-stagger:nth-child(5){transition:all 0.5s ease 0.4s}
+.reveal-stagger:nth-child(6){transition:all 0.5s ease 0.5s}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:900px){
+  .partnership-grid{grid-template-columns:repeat(2,1fr)}
+  .cases-grid{grid-template-columns:repeat(2,1fr)}
+  .dual-track{grid-template-columns:1fr}
+  .contact-inner{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+  .pricing-card.featured{transform:none}
+  .pricing-card.featured:hover{transform:var(--hover-lift)}
+  .process-steps{grid-template-columns:repeat(2,1fr)}
+  .process-steps::before{display:none}
+  .testimonials-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .nav-links .nav-item{display:none}
+  .hamburger{display:flex}
+  .hero h1{font-size:2rem}
+  .hero p{font-size:1rem}
+  .section h2{font-size:1.6rem}
+  .partnership-grid{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:1fr}
+  .commission-steps{flex-direction:column;align-items:center}
+  .c-step{max-width:100%}
+}
+@media(max-width:480px){
+  .hero{padding:100px 0 60px}
+  .hero-actions{flex-direction:column}
+  .btn{width:100%;justify-content:center}
+  .form-card{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav>
+  <a href="#" class="nav-logo">Based<span>Node</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li class="nav-item"><a href="#partnerships" data-da="Partnerskaber" data-en="Partnerships">Partnerships</a></li>
+    <li class="nav-item"><a href="#cases" data-da="Cases" data-en="Cases">Cases</a></li>
+    <li class="nav-item"><a href="#apply" data-da="Ansøg" data-en="Apply">Apply</a></li>
+    <li class="nav-item"><a href="#contact" data-da="Kontakt" data-en="Contact">Contact</a></li>
+    <li class="nav-item">
+      <div class="toggle-group">
+        <button class="toggle-btn lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="toggle-btn lang-btn" data-lang="da" onclick="setLang('da')">DA</button>
+      </div>
+    </li>
+    <li class="nav-item">
+      <button class="toggle-btn" onclick="toggleTheme()" id="themeToggle" style="font-size:1rem;background:none;border:none;cursor:pointer;color:var(--gold)">☀️</button>
+    </li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#partnerships" onclick="toggleMobile()" data-da="Partnerskaber" data-en="Partnerships">Partnerships</a>
+  <a href="#cases" onclick="toggleMobile()" data-da="Cases" data-en="Cases">Cases</a>
+  <a href="#apply" onclick="toggleMobile()" data-da="Ansøg" data-en="Apply">Apply</a>
+  <a href="#contact" onclick="toggleMobile()" data-da="Kontakt" data-en="Contact">Contact</a>
+  <div class="toggle-group">
+    <button class="toggle-btn lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="toggle-btn lang-btn" data-lang="da" onclick="setLang('da')">DA</button>
+  </div>
+  <button class="toggle-btn" onclick="toggleTheme()" style="font-size:1rem;background:none;border:none;cursor:pointer;color:var(--gold);padding:12px 16px;text-align:left">☀️ <span data-da="Skift tema" data-en="Toggle theme">Toggle theme</span></button>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-badges reveal">
+      <span class="badge">🤝 <span data-da="Partnerskab" data-en="Partnership">Partnership</span></span>
+      <span class="badge">💰 <span data-da="Revenue Share" data-en="Revenue Share">Revenue Share</span></span>
+      <span class="badge">🇩🇰 CVR: 43750194</span>
+    </div>
+    <h1 class="reveal" data-da="Byg med BasedNode. Som partner, kunde eller kollega." data-en="Build with BasedNode. As partner, customer, or colleague.">Build with BasedNode. As partner, customer, or colleague.</h1>
+    <p class="reveal" data-da="Jeg er Omar — Civilingeniør i Fysik &amp; Nanoteknologi fra DTU med baggrund i quant finance. Jeg kører BasedNode solo: én fyr, AI-agenter og automatisering. Partnerskab er min primære model — revenue share, joint ventures og strategiske alliancer." data-en="I'm Omar — M.Sc. in Physics &amp; Nanotechnology from DTU with a quant finance background. I run BasedNode solo: one guy, AI agents, and automation. Partnership is my primary model — revenue share, joint ventures, and strategic alliances.">I'm Omar — M.Sc. in Physics &amp; Nanotechnology from DTU with a quant finance background. I run BasedNode solo: one guy, AI agents, and automation. Partnership is my primary model — revenue share, joint ventures, and strategic alliances.</p>
+    <div class="hero-actions reveal">
+      <a href="#partnerships" class="btn btn-primary">🤝 <span data-da="Se partnerskaber" data-en="View partnerships">View partnerships</span></a>
+      <a href="#apply" class="btn btn-outline">📋 <span data-da="Ansøg som partner" data-en="Apply as partner">Apply as partner</span></a>
+      <a href="#contact" class="btn btn-outline">✉️ <span data-da="Kontakt mig" data-en="Contact me">Contact me</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNERSHIPS — 6 Types
+     ============================================================ -->
+<section class="section" id="partnerships">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-da="Partnerskabsmodeller" data-en="Partnership Models">Partnership Models</span>
+      <h2 data-da="6 måder at samarbejde på" data-en="6 ways to collaborate">6 ways to collaborate</h2>
+      <p class="section-sub" data-da="Jeg tilbyder fleksible partnerskabsmodeller — fra simpel referral fee til fuld joint venture. Vælg den der passer til dig." data-en="I offer flexible partnership models — from a simple referral fee to a full joint venture. Pick what fits you.">I offer flexible partnership models — from a simple referral fee to a full joint venture. Pick what fits you.</p>
+    </div>
+    <div class="partnership-grid reveal">
+      <div class="p-card">
+        <div class="icon">🔗</div>
+        <h3 data-da="Referral Partner" data-en="Referral Partner">Referral Partner</h3>
+        <p data-da="Henvis kunder og få 20% commission på første års aftale. Minimal indsats, passiv indkomst." data-en="Refer clients and earn 20% commission on first-year deals. Minimal effort, passive income.">Refer clients and earn 20% commission on first-year deals. Minimal effort, passive income.</p>
+        <span class="tag">20% commission</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🧩</div>
+        <h3 data-da="Technology Integration" data-en="Technology Integration">Technology Integration</h3>
+        <p data-da="Integrér dit værktøj med BasedNode's AI stack. Fælles produktudvikling og co-branding." data-en="Integrate your tool with BasedNode's AI stack. Joint product development and co-branding.">Integrate your tool with BasedNode's AI stack. Joint product development and co-branding.</p>
+        <span class="tag" data-da="Revenue split" data-en="Revenue split">Revenue split</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">⚡</div>
+        <h3 data-da="Automation Services" data-en="Automation Services">Automation Services</h3>
+        <p data-da="Sælg automationsløsninger bygget på min infrastruktur. Du tager kundekontakten, jeg leverer tech." data-en="Resell automation solutions built on my infrastructure. You handle the client, I deliver the tech.">Resell automation solutions built on my infrastructure. You handle the client, I deliver the tech.</p>
+        <span class="tag" data-da="30-50% margin" data-en="30-50% margin">30-50% margin</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🏪</div>
+        <h3 data-da="Reseller" data-en="Reseller">Reseller</h3>
+        <p data-da="White-label løsninger du sælger som dine egne. Jeg står for drift, support og udvikling." data-en="White-label solutions you sell as your own. I handle operations, support, and development.">White-label solutions you sell as your own. I handle operations, support, and development.</p>
+        <span class="tag" data-da="White-label" data-en="White-label">White-label</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🤝</div>
+        <h3 data-da="Joint Venture" data-en="Joint Venture">Joint Venture</h3>
+        <p data-da="Start et nyt projekt eller produkt sammen. Equity split baseret på indsats — 50/50 eller custom." data-en="Launch a new project or product together. Equity split based on effort — 50/50 or custom.">Launch a new project or product together. Equity split based on effort — 50/50 or custom.</p>
+        <span class="tag" data-da="Equity split" data-en="Equity split">Equity split</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🌐</div>
+        <h3 data-da="Strategic Alliance" data-en="Strategic Alliance">Strategic Alliance</h3>
+        <p data-da="Langsigtet samarbejde med fælles mål. Deling af ressourcer, data, netværk og teknologi." data-en="Long-term collaboration with shared goals. Resource, data, network and technology sharing.">Long-term collaboration with shared goals. Resource, data, network and technology sharing.</p>
+        <span class="tag" data-da="Custom terms" data-en="Custom terms">Custom terms</span>
+      </div>
+    </div>
+
+    <!-- Dual Track -->
+    <div class="dual-track reveal">
+      <div class="track customer">
+        <h3 data-da="👤 For kunder" data-en="👤 For customers">👤 For customers</h3>
+        <ul>
+          <li data-da="Fastpris eller revenue-baseret betaling" data-en="Fixed price or revenue-based payment">Fixed price or revenue-based payment</li>
+          <li data-da="Skræddersyet AI-infrastruktur" data-en="Custom-built AI infrastructure">Custom-built AI infrastructure</li>
+          <li data-da="Dedikeret support — direkte kontakt" data-en="Dedicated support — direct contact">Dedicated support — direct contact</li>
+          <li data-da="Løbende optimering og drift" data-en="Ongoing optimization and operations">Ongoing optimization and operations</li>
+          <li data-da="Fuld transparens i performance" data-en="Full transparency on performance">Full transparency on performance</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" data-da="Start som kunde" data-en="Start as customer">Start as customer</a>
+      </div>
+      <div class="track partner">
+        <h3 data-da="🤝 For partnere" data-en="🤝 For partners">🤝 For partners</h3>
+        <ul>
+          <li data-da="Revenue share som standardmodel" data-en="Revenue share as standard model">Revenue share as standard model</li>
+          <li data-da="Co-branding og fælles markedsføring" data-en="Co-branding and joint marketing">Co-branding and joint marketing</li>
+          <li data-da="Adgang til BasedNode's AI stack" data-en="Access to BasedNode's AI stack">Access to BasedNode's AI stack</li>
+          <li data-da="Teknisk support og onboarding" data-en="Technical support and onboarding">Technical support and onboarding</li>
+          <li data-da="Løbende produktudvikling" data-en="Ongoing product development">Ongoing product development</li>
+        </ul>
+        <a href="#apply" class="btn btn-primary" data-da="Ansøg som partner" data-en="Apply as partner">Apply as partner</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMMISSION STRUCTURE
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="Provisionsstruktur" data-en="Commission Structure">Commission Structure</span>
+      <h2 data-da="Hvor meget du tjener" data-en="How much you earn">How much you earn</h2>
+      <p class="section-sub" style="margin:0 auto 48px" data-da="Alle provisioner er transparente og automatisk tracket. Udbetaling månedligt." data-en="All commissions are transparent and automatically tracked. Paid monthly.">All commissions are transparent and automatically tracked. Paid monthly.</p>
+    </div>
+    <div class="commission-steps reveal">
+      <div class="c-step">
+        <div class="pct">20%</div>
+        <div class="label" data-da="Referral" data-en="Referral">Referral</div>
+        <div class="desc" data-da="Første års aftale" data-en="First year deal">First year deal</div>
+      </div>
+      <div class="c-step">
+        <div class="pct">30%</div>
+        <div class="label" data-da="Reseller" data-en="Reseller">Reseller</div>
+        <div class="desc" data-da="White-label margin" data-en="White-label margin">White-label margin</div>
+      </div>
+      <div class="c-step">
+        <div class="pct">50%</div>
+        <div class="label" data-da="Joint Venture" data-en="Joint Venture">Joint Venture</div>
+        <div class="desc" data-da="Equity split" data-en="Equity split">Equity split</div>
+      </div>
+      <div class="c-step">
+        <div class="pct">Custom</div>
+        <div class="label" data-da="Strategic Alliance" data-en="Strategic Alliance">Strategic Alliance</div>
+        <div class="desc" data-da="Forhandles individuelt" data-en="Negotiated individually">Negotiated individually</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="Services" data-en="Services">Services</span>
+      <h2 data-da="Hvad jeg tilbyder" data-en="What I offer">What I offer</h2>
+      <p class="section-sub" style="margin:0 auto 48px" data-da="Skræddersyede AI- og automationsløsninger til din virksomhed." data-en="Tailored AI and automation solutions for your business.">Tailored AI and automation solutions for your business.</p>
+    </div>
+    <div class="partnership-grid reveal" style="grid-template-columns:repeat(3,1fr)">
+      <div class="p-card">
+        <div class="icon">🤖</div>
+        <h3 data-da="AI &amp; Automation" data-en="AI &amp; Automation">AI &amp; Automation</h3>
+        <p data-da="Custom AI-agenter, workflows og automatisering der sparer tid og penge." data-en="Custom AI agents, workflows and automation that save time and money.">Custom AI agents, workflows and automation that save time and money.</p>
+        <span class="tag">AI · Workflow</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">📈</div>
+        <h3 data-da="Marketing Automation" data-en="Marketing Automation">Marketing Automation</h3>
+        <p data-da="Automatisér dine marketing-kampagner, lead nurturing og kundekommunikation." data-en="Automate your marketing campaigns, lead nurturing, and customer communication.">Automate your marketing campaigns, lead nurturing, and customer communication.</p>
+        <span class="tag">Growth</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">📊</div>
+        <h3 data-da="Ad Optimization" data-en="Ad Optimization">Ad Optimization</h3>
+        <p data-da="Data-drevet annonceoptimering — få mere ud af dit budget med A/B-test og AI." data-en="Data-driven ad optimization — get more from your budget with A/B testing and AI.">Data-driven ad optimization — get more from your budget with A/B testing and AI.</p>
+        <span class="tag">Ads · ROI</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🔍</div>
+        <h3 data-da="SEO &amp; Lead Conversion" data-en="SEO &amp; Lead Conversion">SEO &amp; Lead Conversion</h3>
+        <p data-da="Optimer din synlighed og konverter flere besøgende til betalende kunder." data-en="Optimize your visibility and convert more visitors into paying customers.">Optimize your visibility and convert more visitors into paying customers.</p>
+        <span class="tag">SEO · CRO</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🌐</div>
+        <h3 data-da="Websites &amp; Dashboards" data-en="Websites &amp; Dashboards">Websites &amp; Dashboards</h3>
+        <p data-da="Landing pages, webapps og real-time dashboards der konverterer." data-en="Landing pages, webapps and real-time dashboards that convert.">Landing pages, webapps and real-time dashboards that convert.</p>
+        <span class="tag">Web · BI</span>
+      </div>
+      <div class="p-card">
+        <div class="icon">🤝</div>
+        <h3 data-da="Partnership" data-en="Partnership">Partnership</h3>
+        <p data-da="White-label, joint ventures og strategiske alliancer." data-en="White-label, joint ventures and strategic alliances.">White-label, joint ventures and strategic alliances.</p>
+        <span class="tag">Collaboration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CASES
+     ============================================================ -->
+<section class="section" id="cases">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-da="Resultater" data-en="Results">Results</span>
+      <h2 data-da="Cases — hvad jeg har bygget" data-en="Cases — what I've built">Cases — what I've built</h2>
+      <p class="section-sub" data-da="Målbare resultater fra rigtige projekter. Ingen fluff, kun data." data-en="Measurable results from real projects. No fluff, only data.">Measurable results from real projects. No fluff, only data.</p>
+    </div>
+    <div class="cases-grid reveal">
+      <div class="case-card">
+        <span class="tag">AI Infrastructure</span>
+        <div class="metric">80-100x</div>
+        <div class="metric-label" data-da="Omkostningsreduktion" data-en="Cost reduction">Cost reduction</div>
+        <h4 data-da="AI Infrastructure Pipeline" data-en="AI Infrastructure Pipeline">AI Infrastructure Pipeline</h4>
+        <p data-da="Erstattede dyr cloud-infrastruktur med en optimeret VPS-baseret AI stack. Custom routing, caching og model optimization." data-en="Replaced expensive cloud infra with an optimized VPS-based AI stack. Custom routing, caching and model optimization.">Replaced expensive cloud infra with an optimized VPS-based AI stack. Custom routing, caching and model optimization.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Lead Generation</span>
+        <div class="metric">340%</div>
+        <div class="metric-label" data-da="Lead stigning" data-en="Lead increase">Lead increase</div>
+        <h4 data-da="Automated Lead Gen System" data-en="Automated Lead Gen System">Automated Lead Gen System</h4>
+        <p data-da="Multi-agent system der automatisk finder, kvalificerer og kontakter leads. 24/7 drift med AI-drevet outreach." data-en="Multi-agent system that automatically finds, qualifies and contacts leads. 24/7 operation with AI-driven outreach.">Multi-agent system that automatically finds, qualifies and contacts leads. 24/7 operation with AI-driven outreach.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Education</span>
+        <div class="metric">12 uger</div>
+        <div class="metric-label" data-da="AI kursus" data-en="AI course">AI course</div>
+        <h4 data-da="GXU 12-ugers AI Forløb" data-en="GXU 12-week AI Course">GXU 12-week AI Course</h4>
+        <p data-da="Side project: Underviste AI på GXU. 12-ugers forløb fra basics til production-ready AI agents. Hands-on med rigtige tools." data-en="Side project: Taught AI at GXU. 12-week course from basics to production-ready AI agents. Hands-on with real tools.">Side project: Taught AI at GXU. 12-week course from basics to production-ready AI agents. Hands-on with real tools.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Quant Finance</span>
+        <div class="metric">99.7%</div>
+        <div class="metric-label" data-da="Uptime" data-en="Uptime">Uptime</div>
+        <h4 data-da="Quant Pipeline" data-en="Quant Pipeline">Quant Pipeline</h4>
+        <p data-da="Real-time data pipeline til finansielle markeder. Lav-latency processing, automated hedging og risk management." data-en="Real-time data pipeline for financial markets. Low-latency processing, automated hedging and risk management.">Real-time data pipeline for financial markets. Low-latency processing, automated hedging and risk management.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Chatbot</span>
+        <div class="metric">95%</div>
+        <div class="metric-label" data-da="Resolution rate" data-en="Resolution rate">Resolution rate</div>
+        <h4 data-da="AI Chatbot med RAG" data-en="AI Chatbot with RAG">AI Chatbot with RAG</h4>
+        <p data-da="Custom chatbot med vector memory (Chroma DB, 1M+ kapacitet). Automatisk svar på kundespørgsmål med semantisk søgning." data-en="Custom chatbot with vector memory (Chroma DB, 1M+ capacity). Auto-answers customer queries with semantic search.">Custom chatbot with vector memory (Chroma DB, 1M+ capacity). Auto-answers customer queries with semantic search.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Dashboard</span>
+        <div class="metric">Real-time</div>
+        <div class="metric-label" data-da="Live metrics" data-en="Live metrics">Live metrics</div>
+        <h4 data-da="Custom Business Dashboard" data-en="Custom Business Dashboard">Custom Business Dashboard</h4>
+        <p data-da="Full SPA med live metrics, system monitoring, session analytics og agent oversight. Auth og zero-trust security." data-en="Full SPA with live metrics, system monitoring, session analytics and agent oversight. Auth and zero-trust security.">Full SPA with live metrics, system monitoring, session analytics and agent oversight. Auth and zero-trust security.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Marketing Automation</span>
+        <div class="metric">+45%</div>
+        <div class="metric-label" data-da="Konverteringsrate" data-en="Conversion rate">Conversion rate</div>
+        <h4 data-da="Marketing Automation Pipeline" data-en="Marketing Automation Pipeline">Marketing Automation Pipeline</h4>
+        <p data-da="Automatiseret multi-channel marketing pipeline med AI-drevet segmentering og personalisering. 45% stigning i konverteringsrate på 3 måneder." data-en="Automated multi-channel marketing pipeline with AI-driven segmentation and personalization. 45% increase in conversion rate over 3 months.">Automated multi-channel marketing pipeline with AI-driven segmentation and personalization. 45% increase in conversion rate over 3 months.</p>
+      </div>
+      <div class="case-card">
+        <span class="tag">Ad Optimization</span>
+        <div class="metric">-60%</div>
+        <div class="metric-label" data-da="Annonceomkostninger" data-en="Ad costs">Ad costs</div>
+        <h4 data-da="AI Ad Cost Optimization" data-en="AI Ad Cost Optimization">AI Ad Cost Optimization</h4>
+        <p data-da="AI-drevet annoncebudgetoptimering med automatisk budjustering og målgruppesegmentering. Reducerede annonceomkostninger med 60% mens leads steg." data-en="AI-driven ad budget optimization with automated bid adjustment and audience segmentation. Reduced ad costs by 60% while leads increased.">AI-driven ad budget optimization with automated bid adjustment and audience segmentation. Reduced ad costs by 60% while leads increased.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BADGES
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary);padding:40px 0">
+  <div class="container">
+    <div class="badges-row reveal">
+      <span class="badge">🎓 <span data-da="Civilingeniør i Fysik &amp; Nanoteknologi fra DTU" data-en="M.Sc. Physics &amp; Nanotechnology, DTU">M.Sc. Physics &amp; Nanotechnology, DTU</span></span>
+      <span class="badge">📊 Quant Finance</span>
+      <span class="badge">🧑‍🏫 <span data-da="Side project: Underviser i matematik, prog. &amp; AI siden 2019 (MentorDanmark, GXU)" data-en="Side project: Teaching math, prog. &amp; AI since 2019 (MentorDanmark, GXU)">Side project: Teaching math, prog. &amp; AI since 2019 (MentorDanmark, GXU)</span></span>
+      <span class="badge">💻 Software since 2020</span>
+      <span class="badge">🤖 AI Agent Systems</span>
+      <span class="badge" style="border-color:var(--gold);background:var(--gold-glow)">💡 Affordable tech help for small businesses — starting from 500 kr</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AFFORDABLE HELP
+     ============================================================ -->
+<section class="section" style="padding:40px 0;background:var(--bg-secondary)">
+  <div class="container" style="text-align:center;max-width:700px">
+    <p style="font-size:1rem;color:var(--text-secondary);line-height:1.7" data-da="Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter." data-en="I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.">I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNER APPLICATION FORM
+     ============================================================ -->
+<section class="section" id="apply">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="Partner Ansøgning" data-en="Partner Application">Partner Application</span>
+      <h2 data-da="Bliv partner" data-en="Become a partner">Become a partner</h2>
+      <p class="section-sub" style="margin:0 auto 40px" data-da="Udfyld formularen, så tager jeg en snak med dig. Typisk svar inden for 24 timer." data-en="Fill out the form and I'll reach out. Usually reply within 24 hours.">Fill out the form and I'll reach out. Usually reply within 24 hours.</p>
+    </div>
+    <div class="form-card reveal">
+      <form action="mailto:partner@basednode.xyz" method="post" enctype="text/plain">
+        <div class="form-group">
+          <label for="pname" data-da="Dit navn" data-en="Your name">Your name</label>
+          <input type="text" id="pname" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="pemail" data-da="Din email" data-en="Your email">Your email</label>
+          <input type="email" id="pemail" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="pcompany" data-da="Virksomhed / Organisation" data-en="Company / Organization">Company / Organization</label>
+          <input type="text" id="pcompany" name="company">
+        </div>
+        <div class="form-group">
+          <label for="ppartner-type" data-da="Partnerskabstype" data-en="Partnership type">Partnership type</label>
+          <select id="ppartner-type" name="partner_type">
+            <option value="Referral" data-da="Referral Partner" data-en="Referral Partner">Referral Partner</option>
+            <option value="Technology" data-da="Technology Integration" data-en="Technology Integration">Technology Integration</option>
+            <option value="Automation" data-da="Automation Services" data-en="Automation Services">Automation Services</option>
+            <option value="Reseller" data-da="Reseller" data-en="Reseller">Reseller</option>
+            <option value="Joint Venture" data-da="Joint Venture" data-en="Joint Venture">Joint Venture</option>
+            <option value="Strategic Alliance" data-da="Strategic Alliance" data-en="Strategic Alliance">Strategic Alliance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pmsg" data-da="Hvorfor vil du samarbejde?" data-en="Why do you want to collaborate?">Why do you want to collaborate?</label>
+          <textarea id="pmsg" name="message" required></textarea>
+        </div>
+        <button type="submit" class="form-btn" data-da="Send ansøgning → partner@basednode.xyz" data-en="Send application → partner@basednode.xyz">Send application → partner@basednode.xyz</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section class="section">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="Priser" data-en="Pricing">Pricing</span>
+      <h2 data-da="Vælg din model" data-en="Choose your model">Choose your model</h2>
+      <p class="section-sub" style="margin:0 auto 48px" data-da="Projektbaserede priser med fokus på værdi, ikke timepriser. Hver løsning er skræddersyet til dine behov — her er eksempler." data-en="Project-based pricing focused on value, not hours. Each solution is tailored to your needs — here are examples.">Project-based pricing focused on value, not hours. Each solution is tailored to your needs — here are examples.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="plan-name" data-da="CRM Automation" data-en="CRM Automation">CRM Automation</div>
+        <div class="plan-price">8.000 kr</div>
+        <div class="plan-desc" data-da="Automatiser din CRM, kundekommunikation og opfølgning. Estimat baseret på typisk scope og kompleksitet." data-en="Automate your CRM, customer communication and follow-ups. Estimate based on typical scope and complexity.">Automate your CRM, customer communication and follow-ups. Estimate based on typical scope and complexity.</div>
+        <ul class="plan-features">
+          <li data-da="HubSpot/Salesforce integration" data-en="HubSpot/Salesforce integration">HubSpot/Salesforce integration</li>
+          <li data-da="Automatiske opfølgningsmails" data-en="Automated follow-up emails">Automated follow-up emails</li>
+          <li data-da="Lead scoring &amp; routing" data-en="Lead scoring &amp; routing">Lead scoring &amp; routing</li>
+          <li data-da="Dashboard med pipeline-overblik" data-en="Dashboard with pipeline overview">Dashboard with pipeline overview</li>
+          <li data-da="2 ugers implementering" data-en="2 weeks implementation">2 weeks implementation</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" data-da="Forespørg på dette eksempel" data-en="Inquire about this example">Inquire about this example</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-tag" data-da="Eksempel" data-en="Example">Example</div>
+        <div class="plan-name" data-da="Marketing Stack" data-en="Marketing Stack">Marketing Stack</div>
+        <div class="plan-price">15.000 kr</div>
+        <div class="plan-desc" data-da="Fuldt marketing automationssystem med AI-drevet segmentering og multi-channel kampagner. Resultat: +45% konvertering." data-en="Full marketing automation system with AI-driven segmentation and multi-channel campaigns. Result: +45% conversion.">Full marketing automation system with AI-driven segmentation and multi-channel campaigns. Result: +45% conversion.</div>
+        <ul class="plan-features">
+          <li data-da="Multi-channel kampagne-automation" data-en="Multi-channel campaign automation">Multi-channel campaign automation</li>
+          <li data-da="AI segmentering &amp; personalisering" data-en="AI segmentation &amp; personalization">AI segmentation &amp; personalization</li>
+          <li data-da="A/B test framework" data-en="A/B test framework">A/B test framework</li>
+          <li data-da="Analytics &amp; rapportering" data-en="Analytics &amp; reporting">Analytics &amp; reporting</li>
+          <li data-da="4 ugers implementering" data-en="4 weeks implementation">4 weeks implementation</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" data-da="Forespørg på dette eksempel" data-en="Inquire about this example">Inquire about this example</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name" data-da="AI Agent System" data-en="AI Agent System">AI Agent System</div>
+        <div class="plan-price">Fra 25.000 kr</div>
+        <div class="plan-desc" data-da="Custom AI agent system med RAG, multi-agent swarm og production deployment. Pris afhænger af kompleksitet og scope." data-en="Custom AI agent system with RAG, multi-agent swarm and production deployment. Price depends on complexity and scope.">Custom AI agent system with RAG, multi-agent swarm and production deployment. Price depends on complexity and scope.</div>
+        <ul class="plan-features">
+          <li data-da="Custom AI agent arkitektur" data-en="Custom AI agent architecture">Custom AI agent architecture</li>
+          <li data-da="RAG med vektor database" data-en="RAG with vector database">RAG with vector database</li>
+          <li data-da="Multi-agent orchestration" data-en="Multi-agent orchestration">Multi-agent orchestration</li>
+          <li data-da="24/7 drift &amp; monitoring" data-en="24/7 operations &amp; monitoring">24/7 operations &amp; monitoring</li>
+          <li data-da="6-8 ugers implementering" data-en="6-8 weeks implementation">6-8 weeks implementation</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" data-da="Få et skræddersyet tilbud" data-en="Get a custom quote">Get a custom quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW I WORK — Process
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="Sådan arbejder jeg" data-en="How I Work">How I Work</span>
+      <h2 data-da="Fra idé til impact. En 4-trins proces der sikrer klarhed, kvalitet og resultater." data-en="From Idea to Impact. A proven 4-step process that ensures clarity, quality, and results.">From Idea to Impact. A proven 4-step process that ensures clarity, quality, and results.</h2>
+      <p class="section-sub" style="margin:0 auto 48px" data-da="En gennemprøvet 4-trins proces der sikrer klarhed, kvalitet og resultater — hurtigt." data-en="A proven 4-step process that ensures clarity, quality, and results — fast.">A proven 4-step process that ensures clarity, quality, and results — fast.</p>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <div class="step-icon">🔍</div>
+        <h4 data-da="🔍 Discovery" data-en="🔍 Discovery">🔍 Discovery</h4>
+        <p data-da="Forstå din forretning, dine mål og dine kunder." data-en="Understand your business, your goals, and your customers.">Understand your business, your goals, and your customers.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🧩</div>
+        <h4 data-da="🧩 Design" data-en="🧩 Design">🧩 Design</h4>
+        <p data-da="Tegn løsningen der passer præcist til dit behov." data-en="Design the solution that fits your exact needs.">Design the solution that fits your exact needs.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <div class="step-icon">🏗️</div>
+        <h4 data-da="🏗️ Build" data-en="🏗️ Build">🏗️ Build</h4>
+        <p data-da="Byg systemet med løbende feedback og iteration." data-en="Build the system with continuous feedback and iteration.">Build the system with continuous feedback and iteration.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <div class="step-icon">🚀</div>
+        <h4 data-da="🚀 Deploy &amp; Scale" data-en="🚀 Deploy &amp; Scale">🚀 Deploy &amp; Scale</h4>
+        <p data-da="Sæt i drift, mål resultater og skaler op." data-en="Launch, measure results, and scale up.">Launch, measure results, and scale up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="section" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label" data-da="FAQ" data-en="FAQ">FAQ</span>
+      <h2 data-da="Ofte stillede spørgsmål" data-en="Frequently asked questions">Frequently asked questions</h2>
+      <p class="section-sub" style="margin:0 auto 40px" data-da="Svar på de mest almindelige spørgsmål om BasedNode." data-en="Answers to the most common questions about BasedNode.">Answers to the most common questions about BasedNode.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvad er BasedNode?" data-en="What is BasedNode?">What is BasedNode?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="BasedNode er mit solo-operated AI infrastructure og automation bureau. Jeg bygger AI agenter, pipelines og automationsløsninger til virksomheder — med en quant finance tilgang: mål alt, optimér konstant. Jeg tilbyder både fastpris og revenue share modeller, samt partnerskaber på alle niveauer." data-en="BasedNode is my solo-operated AI infrastructure and automation bureau. I build AI agents, pipelines, and automation solutions for businesses — with a quant finance approach: measure everything, optimize constantly. I offer both fixed-price and revenue share models, as well as partnerships at all levels.">BasedNode is my solo-operated AI infrastructure and automation bureau. I build AI agents, pipelines, and automation solutions for businesses — with a quant finance approach: measure everything, optimize constantly. I offer both fixed-price and revenue share models, as well as partnerships at all levels.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvordan fungerer revenue share?" data-en="How does revenue share work?">How does revenue share work?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="I stedet for en stor upfront betaling, betaler du en procentdel af den ekstra revenue eller besparelse som systemet genererer. Typisk 20-30%. Det betyder lavere risiko for dig — du betaler kun når der er resultater. Alle metrics trackes automatisk og er fuldt transparente." data-en="Instead of a large upfront payment, you pay a percentage of the additional revenue or savings the system generates. Typically 20-30%. This means lower risk for you — you only pay when there are results. All metrics are tracked automatically and are fully transparent.">Instead of a large upfront payment, you pay a percentage of the additional revenue or savings the system generates. Typically 20-30%. This means lower risk for you — you only pay when there are results. All metrics are tracked automatically and are fully transparent.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvad er din baggrund?" data-en="What is your background?">What is your background?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Jeg er uddannet Civilingeniør i Fysik &amp; Nanoteknologi fra DTU, med en baggrund i quant finance. Jeg har bygget software siden 2020 og undervist i matematik, programmering og AI siden 2019 på MentorDanmark og GXU. Min tilgang kombinerer teknisk dybde med en datadrevet, quant-baseret mindset." data-en="I hold an M.Sc. in Physics &amp; Nanotechnology from DTU, with a background in quant finance. I've been building software since 2020 and teaching math, programming, and AI since 2019 at MentorDanmark and GXU. My approach combines technical depth with a data-driven, quant-based mindset.">I hold an M.Sc. in Physics &amp; Nanotechnology from DTU, with a background in quant finance. I've been building software since 2020 and teaching math, programming, and AI since 2019 at MentorDanmark and GXU. My approach combines technical depth with a data-driven, quant-based mindset.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Hvor lang tid tager et typisk projekt?" data-en="How long does a typical project take?">How long does a typical project take?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Et simpelt AI workflow eller agent kan være klar på 1-2 uger. Større projekter med multi-agent systemer og custom integrationer tager typisk 4-8 uger. Jeg arbejder iterativt med ugentlige demoer, så du ser løbende fremskridt — ikke kun ved levering." data-en="A simple AI workflow or agent can be ready in 1-2 weeks. Larger projects with multi-agent systems and custom integrations typically take 4-8 weeks. I work iteratively with weekly demos, so you see continuous progress — not just at delivery.">A simple AI workflow or agent can be ready in 1-2 weeks. Larger projects with multi-agent systems and custom integrations typically take 4-8 weeks. I work iteratively with weekly demos, so you see continuous progress — not just at delivery.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span data-da="Kan jeg starte som partner uden teknisk baggrund?" data-en="Can I become a partner without a technical background?">Can I become a partner without a technical background?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-da="Absolut! Mange af mine partnere er sælgere, konsulenter eller virksomhedsejere uden teknisk baggrund. Jeg håndterer al tech — du fokuserer på kunderelationer og salg. Referral partner-modellen kræver ingen tekniske skills, og jeg supporterer dig gennem hele processen." data-en="Absolutely! Many of my partners are salespeople, consultants, or business owners without a technical background. I handle all the tech — you focus on client relationships and sales. The referral partner model requires no technical skills, and I support you through the entire process.">Absolutely! Many of my partners are salespeople, consultants, or business owners without a technical background. I handle all the tech — you focus on client relationships and sales. The referral partner model requires no technical skills, and I support you through the entire process.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="section" id="contact" style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label" data-da="Kontakt" data-en="Contact">Contact</span>
+      <h2 data-da="Sig hej" data-en="Say hello">Say hello</h2>
+    </div>
+    <div class="contact-inner reveal" style="text-align:center;grid-template-columns:1fr;max-width:600px;margin:0 auto">
+      <div>
+        <p style="margin-bottom:24px;color:var(--text-secondary);font-size:1.05rem" data-da="Klar til at tage næste skridt? Klik nedenfor for at komme i kontakt." data-en="Ready to take the next step? Click below to get in touch.">Ready to take the next step? Click below to get in touch.</p>
+        <a href="./contact.html?style=6" class="btn btn-primary">✉️ <span data-da="Kontakt mig" data-en="Contact me">Contact me</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESOURCES PROMO
+     ============================================================ -->
+<section class="section" style="padding:40px 0;background:var(--gold-glow)">
+  <div class="container" style="text-align:center">
+    <div class="reveal" style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:12px;padding:28px">
+      <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;color:var(--gold)">📚 <span data-da="Tjek mine gratis ressourcer" data-en="Check out my free resources">Check out my free resources</span></p>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:16px" data-da="Guides, tools og værktøjer til AI, automatisering og digital vækst. Gratis." data-en="Guides, tools, and templates for AI, automation, and digital growth. Free.">Guides, tools, and templates for AI, automation, and digital growth. Free.</p>
+      <a href="./resources.html?style=6" class="btn btn-primary" style="font-size:0.85rem;padding:10px 24px">📖 <span data-da="Gå til Ressourcer" data-en="Browse Resources">Browse Resources</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     REVENUE SHARE NOTE
+     ============================================================ -->
+<section class="section" style="padding:40px 0">
+  <div class="container" style="text-align:center">
+    <div class="reveal" style="background:var(--bg-card);border:1px solid var(--border-light);border-radius:12px;padding:24px">
+      <p style="font-size:1rem;color:var(--text-secondary);line-height:1.7">
+        💰 <strong data-da="Revenue share-modeller tilgængelige" data-en="Revenue share models available">Revenue share models available</strong><br>
+        <span data-da="For Automatisering, AI &amp; Agenter, og Markedsføring tilbyder jeg revenue-baserede betalingsmodeller. Lavere upfront, større upside — vi vinder sammen." data-en="For Automation, AI &amp; Agents, and Marketing, I offer revenue-based payment models. Lower upfront, bigger upside — we win together.">For Automation, AI &amp; Agents, and Marketing, I offer revenue-based payment models. Lower upfront, bigger upside — we win together.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <p>© 2025 Based Node. All rights reserved. CVR: 43750194</p>
+    <p style="margin-top:4px">
+      <a href="mailto:contact@basednode.xyz">contact@basednode.xyz</a> ·
+      <a href="mailto:partner@basednode.xyz">partner@basednode.xyz</a>
+    </p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// --- Theme ---
+function toggleTheme(){
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('basednode-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = isDark ? '☀️' : '🌙';
+}
+(function(){
+  const saved = localStorage.getItem('basednode-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  const btn = document.getElementById('themeToggle');
+  if(btn) btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+})();
+
+// --- Language ---
+let currentLang = localStorage.getItem('basednode-lang') || 'en';
+
+function setLang(lang){
+  currentLang = lang;
+  localStorage.setItem('basednode-lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if(el.getAttribute('data-' + lang)){
+      el.textContent = el.getAttribute('data-' + lang);
+    }
+  });
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    if(el.hasAttribute('data-' + lang)){
+      el.placeholder = el.getAttribute('data-' + lang);
+    }
+  });
+}
+// Init language on load
+setLang(currentLang);
+
+// --- Mobile Menu ---
+function toggleMobile(){
+  const menu = document.getElementById('mobileMenu');
+  const ham = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  ham.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+// Close mobile on link click
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
+// --- Scroll Reveal ---
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+// --- Staggered Scroll Reveal ---
+const staggerObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const items = entry.target.querySelectorAll('.reveal-stagger');
+      items.forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 100);
+      });
+      staggerObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.stagger-grid').forEach(el => staggerObserver.observe(el));
+});
+
+// --- FAQ Accordion ---
+function toggleFaq(btn){
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  // Toggle this one
+  if(!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>

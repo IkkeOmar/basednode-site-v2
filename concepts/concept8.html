@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="light" data-lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode · Omar — NEOBRUTALISM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --yellow:#FFD700;
+  --black:#000000;
+  --offwhite:#F5F0EB;
+  --bg:var(--offwhite);
+  --fg:var(--black);
+  --card-bg:var(--offwhite);
+  --border:4px solid var(--black);
+  --shadow:8px 8px 0px var(--black);
+  --shadow-sm:4px 4px 0px var(--black);
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+}
+
+[data-theme="dark"]{
+  --bg:var(--black);
+  --fg:var(--offwhite);
+  --card-bg:#1a1a1a;
+  --border:4px solid var(--yellow);
+  --shadow:8px 8px 0px var(--yellow);
+  --shadow-sm:4px 4px 0px var(--yellow);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--fg);
+  line-height:1.5;
+  font-size:18px;
+  transition:background .3s,color .3s;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ===== UTILITY ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+.section{border-bottom:var(--border);padding:80px 0}
+.section:last-child{border-bottom:4px solid var(--black)}
+[data-theme="dark"] .section:last-child{border-bottom:4px solid var(--yellow)}
+
+.section-title{
+  font-size:3rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:48px;
+  letter-spacing:-1px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.section-title .icon{font-size:3rem;line-height:1}
+.section-title::after{
+  content:'';
+  flex:1;
+  height:4px;
+  background:var(--fg);
+}
+
+/* ===== HEADER / NAV ===== */
+header{
+  border-bottom:var(--border);
+  background:var(--yellow);
+  position:sticky;
+  top:0;
+  z-index:100;
+  transition:background .3s;
+}
+[data-theme="dark"] header{background:var(--black);border-bottom:4px solid var(--yellow)}
+header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding-top:16px;
+  padding-bottom:16px;
+  flex-wrap:wrap;
+}
+.logo{
+  font-size:1.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:-.5px;
+  color:var(--black);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+[data-theme="dark"] .logo{color:var(--yellow)}
+.nav-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.nav-btn{
+  background:var(--offwhite);
+  border:3px solid var(--black);
+  color:var(--black);
+  font-family:var(--font);
+  font-weight:800;
+  font-size:.8rem;
+  padding:8px 16px;
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:none;
+  box-shadow:var(--shadow-sm);
+  height:44px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.nav-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0px var(--black)}
+.nav-btn:active{transform:translate(2px,2px);box-shadow:none}
+[data-theme="dark"] .nav-btn{background:#1a1a1a;color:var(--yellow);border-color:var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+[data-theme="dark"] .nav-btn:hover{box-shadow:6px 6px 0px var(--yellow)}
+.nav-btn.lang-btn{min-width:70px;justify-content:center}
+
+/* ===== HERO ===== */
+.hero{
+  padding:100px 0 80px;
+  background:var(--yellow);
+  border-bottom:var(--border);
+  position:relative;
+  overflow:hidden;
+}
+[data-theme="dark"] .hero{background:var(--black);border-bottom:4px solid var(--yellow)}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  align-items:center;
+}
+.hero-badge{
+  display:inline-block;
+  background:var(--black);
+  color:var(--yellow);
+  font-weight:800;
+  font-size:.8rem;
+  padding:6px 16px;
+  border:3px solid var(--black);
+  text-transform:uppercase;
+  margin-bottom:24px;
+  letter-spacing:1px;
+}
+[data-theme="dark"] .hero-badge{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+.hero h1{
+  font-size:5rem;
+  font-weight:900;
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:-3px;
+  color:var(--black);
+  margin-bottom:16px;
+}
+[data-theme="dark"] .hero h1{color:var(--yellow)}
+.hero h1 .outline{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:3px var(--black);
+}
+[data-theme="dark"] .hero h1 .outline{-webkit-text-stroke:3px var(--yellow)}
+.hero p{
+  font-size:1.25rem;
+  font-weight:700;
+  color:var(--black);
+  max-width:520px;
+  margin-bottom:32px;
+  line-height:1.4;
+}
+[data-theme="dark"] .hero p{color:var(--offwhite)}
+.hero-cta{
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+.btn-primary{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:var(--black);
+  color:var(--yellow);
+  border:4px solid var(--black);
+  font-family:var(--font);
+  font-weight:800;
+  font-size:1.1rem;
+  padding:16px 32px;
+  cursor:pointer;
+  text-transform:uppercase;
+  box-shadow:var(--shadow);
+  transition:none;
+}
+.btn-primary:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0px var(--black)}
+.btn-primary:active{transform:translate(3px,3px);box-shadow:none}
+[data-theme="dark"] .btn-primary{background:var(--yellow);color:var(--black);border-color:var(--yellow);box-shadow:8px 8px 0px var(--yellow)}
+[data-theme="dark"] .btn-primary:hover{box-shadow:11px 11px 0px var(--yellow)}
+.btn-secondary{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:transparent;
+  color:var(--black);
+  border:4px solid var(--black);
+  font-family:var(--font);
+  font-weight:800;
+  font-size:1.1rem;
+  padding:16px 32px;
+  cursor:pointer;
+  text-transform:uppercase;
+  box-shadow:var(--shadow);
+  transition:none;
+}
+.btn-secondary:hover{transform:translate(-3px,-3px);box-shadow:11px 11px 0px var(--black)}
+.btn-secondary:active{transform:translate(3px,3px);box-shadow:none}
+[data-theme="dark"] .btn-secondary{color:var(--yellow);border-color:var(--yellow)}
+[data-theme="dark"] .btn-secondary:hover{box-shadow:11px 11px 0px var(--yellow)}
+
+.hero-visual{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.hero-shape{
+  width:100%;
+  max-width:400px;
+  aspect-ratio:1/1;
+  background:var(--offwhite);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+  position:relative;
+}
+[data-theme="dark"] .hero-shape{border:4px solid var(--yellow);box-shadow:8px 8px 0px var(--yellow)}
+.hero-shape .big-emoji{font-size:5rem;margin-bottom:8px}
+.hero-shape .stats-text{
+  font-weight:900;
+  font-size:1.1rem;
+  text-transform:uppercase;
+  color:var(--black);
+}
+[data-theme="dark"] .hero-shape .stats-text{color:var(--offwhite)}
+.hero-shape::after{
+  content:'';
+  position:absolute;
+  top:16px;left:16px;
+  width:100%;height:100%;
+  border:4px solid var(--black);
+  z-index:-1;
+}
+[data-theme="dark"] .hero-shape::after{border-color:var(--yellow)}
+
+/* ===== BADGES ROW ===== */
+.badges-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:24px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--offwhite);
+  border:3px solid var(--black);
+  color:var(--black);
+  font-weight:700;
+  font-size:.75rem;
+  padding:8px 16px;
+  text-transform:uppercase;
+  box-shadow:var(--shadow-sm);
+  letter-spacing:.3px;
+}
+[data-theme="dark"] .badge{background:#1a1a1a;color:var(--yellow);border-color:var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+
+/* ===== SERVICES GRID ===== */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+}
+.service-card{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px 24px;
+  position:relative;
+  transition:none;
+}
+.service-card:hover{transform:translate(-4px,-4px);box-shadow:12px 12px 0px var(--black)}
+[data-theme="dark"] .service-card:hover{box-shadow:12px 12px 0px var(--yellow)}
+.service-card .icon{font-size:3rem;display:block;margin-bottom:16px}
+.service-card h3{
+  font-size:1.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  letter-spacing:-.5px;
+}
+.service-card p{
+  font-weight:400;
+  font-size:.95rem;
+  opacity:.8;
+}
+.service-tag{
+  position:absolute;
+  top:-12px;
+  right:16px;
+  background:var(--yellow);
+  color:var(--black);
+  border:3px solid var(--black);
+  font-weight:800;
+  font-size:.7rem;
+  padding:4px 12px;
+  text-transform:uppercase;
+}
+[data-theme="dark"] .service-tag{background:var(--black);color:var(--yellow);border-color:var(--yellow)}
+
+/* ===== CASES ===== */
+.cases-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+}
+.case-card{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px;
+  position:relative;
+}
+.case-card .big-number{
+  font-size:4rem;
+  font-weight:900;
+  line-height:1;
+  color:var(--yellow);
+  -webkit-text-stroke:2px var(--black);
+  margin-bottom:8px;
+}
+[data-theme="dark"] .case-card .big-number{-webkit-text-stroke:2px var(--yellow);color:var(--black)}
+.case-card h3{
+  font-size:1.3rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.case-card .case-tag{
+  display:inline-block;
+  background:var(--black);
+  color:var(--yellow);
+  border:3px solid var(--black);
+  font-weight:800;
+  font-size:.7rem;
+  padding:4px 12px;
+  text-transform:uppercase;
+  margin-top:12px;
+}
+[data-theme="dark"] .case-card .case-tag{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+
+/* ===== ABOUT / NARRATIVE ===== */
+.about-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  align-items:start;
+}
+.about-text h2{
+  font-size:2.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  letter-spacing:-1px;
+}
+.about-text p{
+  font-size:1.1rem;
+  margin-bottom:16px;
+  font-weight:500;
+}
+.about-text .highlight{
+  background:var(--yellow);
+  color:var(--black);
+  padding:2px 6px;
+  font-weight:800;
+}
+[data-theme="dark"] .about-text .highlight{background:var(--yellow);color:var(--black)}
+
+.about-badges{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.about-badge-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow-sm);
+  padding:16px 20px;
+  font-weight:700;
+  font-size:.9rem;
+}
+[data-theme="dark"] .about-badge-item{border:3px solid var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+.about-badge-item .icon{font-size:2rem}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+}
+.testimonial-card{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px;
+  position:relative;
+}
+.testimonial-card .quote-icon{
+  font-size:3rem;
+  line-height:1;
+  margin-bottom:12px;
+  color:var(--yellow);
+}
+[data-theme="dark"] .testimonial-card .quote-icon{color:var(--yellow)}
+.testimonial-card blockquote{
+  font-size:1.05rem;
+  font-weight:600;
+  margin-bottom:16px;
+  font-style:normal;
+}
+.testimonial-card .author{
+  font-weight:800;
+  text-transform:uppercase;
+  font-size:.85rem;
+  border-top:3px solid var(--black);
+  padding-top:12px;
+}
+[data-theme="dark"] .testimonial-card .author{border-top:3px solid var(--yellow)}
+
+/* ===== PRICING ===== */
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:24px;
+}
+.pricing-card{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px;
+  text-align:center;
+  position:relative;
+}
+.pricing-card.featured{
+  background:var(--yellow);
+  transform:scale(1.03);
+}
+[data-theme="dark"] .pricing-card.featured{background:#1a1a1a;border-color:var(--yellow)}
+.pricing-card .pricing-emoji{font-size:3rem;margin-bottom:12px}
+.pricing-card h3{
+  font-size:1.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.pricing-card .price{
+  font-size:3rem;
+  font-weight:900;
+  line-height:1;
+  margin:16px 0;
+}
+.pricing-card .price span{
+  font-size:1rem;
+  font-weight:700;
+}
+.pricing-card ul{
+  list-style:none;
+  text-align:left;
+  margin:24px 0;
+}
+.pricing-card ul li{
+  padding:8px 0;
+  font-weight:600;
+  font-size:.9rem;
+  border-bottom:2px solid rgba(0,0,0,.15);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+[data-theme="dark"] .pricing-card ul li{border-bottom:2px solid rgba(255,215,0,.2)}
+.pricing-card ul li:last-child{border-bottom:none}
+.pricing-card .btn-primary{width:100%;justify-content:center}
+.pricing-badge{
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--black);
+  color:var(--yellow);
+  border:3px solid var(--black);
+  font-weight:900;
+  font-size:.75rem;
+  padding:6px 20px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+[data-theme="dark"] .pricing-badge{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+
+/* ===== PARTNERSHIP ===== */
+.partnership-block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+  align-items:center;
+}
+.partnership-text h2{
+  font-size:2.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  letter-spacing:-1px;
+}
+.partnership-text p{
+  font-size:1.1rem;
+  font-weight:500;
+  margin-bottom:16px;
+}
+.partnership-form{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px;
+}
+.form-group{margin-bottom:20px}
+.form-group label{
+  display:block;
+  font-weight:800;
+  text-transform:uppercase;
+  font-size:.85rem;
+  margin-bottom:6px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:14px 16px;
+  font-family:var(--font);
+  font-size:1rem;
+  font-weight:600;
+  background:var(--offwhite);
+  border:3px solid var(--black);
+  color:var(--black);
+  box-shadow:4px 4px 0px var(--black);
+  outline:none;
+}
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group textarea,
+[data-theme="dark"] .form-group select{background:#1a1a1a;color:var(--offwhite);border-color:var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{box-shadow:6px 6px 0px var(--black);transform:translate(-2px,-2px)}
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group textarea:focus,
+[data-theme="dark"] .form-group select:focus{box-shadow:6px 6px 0px var(--yellow)}
+
+/* ===== FAQ ===== */
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{
+  border:var(--border);
+  box-shadow:var(--shadow-sm);
+  background:var(--card-bg);
+  overflow:hidden;
+}
+.faq-item + .faq-item{margin-top:0;border-top:none}
+.faq-question{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 24px;
+  font-family:var(--font);
+  font-size:1.1rem;
+  font-weight:800;
+  text-transform:uppercase;
+  background:var(--offwhite);
+  border:none;
+  color:var(--black);
+  cursor:pointer;
+  text-align:left;
+  transition:none;
+}
+[data-theme="dark"] .faq-question{background:#1a1a1a;color:var(--yellow)}
+.faq-question:hover{background:var(--yellow)}
+[data-theme="dark"] .faq-question:hover{background:var(--black)}
+.faq-question .faq-toggle{
+  font-size:1.5rem;
+  font-weight:900;
+  transition:transform .3s;
+  flex-shrink:0;
+}
+.faq-item.open .faq-toggle{transform:rotate(45deg)}
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease,padding .4s ease;
+  padding:0 24px;
+  border-top:3px solid var(--black);
+}
+[data-theme="dark"] .faq-answer{border-top:3px solid var(--yellow)}
+.faq-item.open .faq-answer{
+  max-height:500px;
+  padding:20px 24px;
+}
+.faq-answer p{
+  font-weight:500;
+  font-size:.95rem;
+}
+
+/* ===== CONTACT ===== */
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:48px;
+}
+.contact-info h2{
+  font-size:2.5rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  letter-spacing:-1px;
+}
+.contact-details{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:700;
+  font-size:1rem;
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow-sm);
+  padding:16px 20px;
+}
+[data-theme="dark"] .contact-item{border:3px solid var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+.contact-item .icon{font-size:1.8rem}
+.contact-item a:hover{text-decoration:underline}
+.contact-form{
+  background:var(--card-bg);
+  border:var(--border);
+  box-shadow:var(--shadow);
+  padding:32px;
+}
+
+/* ===== SOCIAL ===== */
+.social-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:24px;
+}
+.social-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--card-bg);
+  border:3px solid var(--black);
+  box-shadow:var(--shadow-sm);
+  padding:12px 20px;
+  font-weight:800;
+  font-size:.9rem;
+  text-transform:uppercase;
+  transition:none;
+}
+.social-link:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0px var(--black)}
+[data-theme="dark"] .social-link{background:#1a1a1a;color:var(--yellow);border-color:var(--yellow);box-shadow:4px 4px 0px var(--yellow)}
+
+/* ===== FOOTER ===== */
+footer{
+  border-top:var(--border);
+  padding:40px 0;
+  text-align:center;
+}
+[data-theme="dark"] footer{border-top:4px solid var(--yellow)}
+footer .footer-links{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:24px;
+  margin-bottom:16px;
+  font-weight:700;
+  font-size:.9rem;
+}
+footer .footer-links a:hover{text-decoration:underline}
+footer p{
+  font-weight:600;
+  font-size:.85rem;
+  opacity:.7;
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero h1{font-size:3rem;letter-spacing:-2px}
+  .about-block{grid-template-columns:1fr;gap:32px}
+  .partnership-block{grid-template-columns:1fr;gap:32px}
+  .contact-grid{grid-template-columns:1fr;gap:32px}
+  .section-title{font-size:2rem}
+  .about-text h2,.partnership-text h2,.contact-info h2{font-size:1.8rem}
+  .pricing-card.featured{transform:none}
+  .services-grid{grid-template-columns:1fr}
+  .cases-grid{grid-template-columns:1fr}
+  .testimonials-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  header .container{flex-direction:column;gap:12px}
+  .nav-controls{width:100%;justify-content:center}
+  .hero-shape{max-width:100%}
+}
+
+@media(max-width:480px){
+  .hero h1{font-size:2.2rem}
+  .section{padding:48px 0}
+  .container{padding:0 16px}
+  .btn-primary,.btn-secondary{padding:14px 24px;font-size:.95rem;width:100%;justify-content:center}
+  .hero-cta{flex-direction:column}
+  .badges-row{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container">
+    <div class="logo">⚡ BasedNode · Omar</div>
+    <div class="nav-controls">
+      <button class="nav-btn lang-btn" id="langToggle" aria-label="Toggle language">🇩🇰 DA</button>
+      <button class="nav-btn" id="themeToggle" aria-label="Toggle theme">🌙 Dark</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal">
+        <div class="hero-badge">🇩🇰 CVR 43750194 · Civilingeniør · DTU</div>
+        <h1>
+          Build<br>
+          <span class="outline">Based</span>
+          Systems
+        </h1>
+        <p>Just me — en civilingeniør der bygger AI-infrastruktur, dashboards og automatisering. Og underviser lidt ved siden af.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn-primary">📝 Kontakt mig</a>
+          <a href="#partnership" class="btn-secondary">🤝 Partnerskab</a>
+        </div>
+        <div class="badges-row">
+          <span class="badge">🎓 DTU Fysik & Nanoteknologi</span>
+          <span class="badge">📈 Quant Finance</span>
+          <span class="badge">⭐ MentorDanmark 2019</span>
+          <span class="badge">🚀 GXU 2025</span>
+          <span class="badge">💻 Software since 2020</span>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-shape">
+          <span class="big-emoji">⚡</span>
+          <div class="stats-text">100+ Projekter<br>7 Services<br>6 Cases</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">👤</span> <span data-i18n="about_title">Hvem er jeg?</span></h2>
+    <div class="about-block">
+      <div class="about-text reveal">
+        <h2 data-i18n="about_heading">Én mand. En mission.</h2>
+        <p>Jeg hedder <strong>Omar</strong> — og <span class="highlight">BasedNode</span> er bare mig. Ingen bureaufloskel, ingen salgsteam. Bare en <span class="highlight">civilingeniør</span> fra DTU (Fysik & Nanoteknologi) med en skarp kant inden for <span class="highlight">Quant Finance</span>, AI-infrastruktur og softwareudvikling siden 2020.</p>
+        <p>Jeg bygger systemer der <strong>faktisk virker</strong> — ikke PowerPoint-demoer. AI-agenter der skalerer, dashboards der giver overblik, automatisering der sparer timer hver dag.</p>
+        <p>Undervisning? Det er mit <span class="highlight">sideprojekt</span> — jeg elsker at dele viden. MentorDanmark (2019) og GXU (2025). Fordi den største superkraft er at lære andre at bygge.</p>
+        <p><strong>CVR 43750194</strong> · BasedNode · Omar</p>
+        <p data-i18n="about_affordable">Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.</p>
+      </div>
+      <div class="about-badges reveal">
+        <div class="about-badge-item"><span class="icon">🎓</span> Civilingeniør i Fysik & Nanoteknologi — DTU</div>
+        <div class="about-badge-item"><span class="icon">📈</span> Quant Finance — Matematisk modellering & risikostyring</div>
+        <div class="about-badge-item"><span class="icon">⭐</span> MentorDanmark (2019) + GXU (2025)</div>
+        <div class="about-badge-item"><span class="icon">💻</span> Softwareudvikling siden 2020</div>
+        <div class="about-badge-item"><span class="icon">🧠</span> AI & Machine Learning — Fra research til production</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESOURCES PROMO ===== -->
+<section style="padding:32px 0;background:var(--yellow)">
+  <div class="container" style="text-align:center">
+    <div style="max-width:600px;margin:0 auto">
+      <p style="font-size:1.1rem;font-weight:800;text-transform:uppercase;color:var(--black);margin-bottom:4px">📚 <span data-i18n="resources_title">Gratis ressourcer</span></p>
+      <p style="font-size:0.85rem;font-weight:600;color:var(--black);opacity:0.8;margin-bottom:12px" data-i18n="resources_desc">Guides, tools og værktøjer til AI, automatisering og digital vækst.</p>
+      <a href="./resources.html?style=8" class="btn-primary" style="font-size:0.85rem;padding:12px 28px">📖 <span data-i18n="resources_cta">Gå til Ressourcer</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="section" id="services">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">⚡</span> <span data-i18n="services_title">Services</span></h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-tag">🔥</span>
+        <span class="icon">🤖</span>
+        <h3 data-i18n="svc_automation">Automatisering</h3>
+        <p data-i18n="svc_automation_desc">Fjern manuelle opgaver. Workflows, scripts, pipelines — alt der spiller sig selv.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">🚀</span>
+        <span class="icon">🧠</span>
+        <h3 data-i18n="svc_ai">AI & Agenter</h3>
+        <p data-i18n="svc_ai_desc">Custom AI-agenter, RAG-systemer, LLM-integrationer til virkelige problemer.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">📊</span>
+        <span class="icon">📈</span>
+        <h3 data-i18n="svc_dashboards">Dashboards</h3>
+        <p data-i18n="svc_dashboards_desc">Real-time visualisering, metrics, BI — så du ser præcis hvad der sker.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">🌐</span>
+        <span class="icon">🖥️</span>
+        <h3 data-i18n="svc_web">Hjemmesider</h3>
+        <p data-i18n="svc_web_desc">Landing pages, webapps, portfolio — hurtige, skarpe, konverterende.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">📣</span>
+        <span class="icon">📢</span>
+        <h3 data-i18n="svc_marketing">Markedsføring</h3>
+        <p data-i18n="svc_marketing_desc">Lead gen, automation, analytics — få flere kunder uden at bruge mere tid.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">📚</span>
+        <span class="icon">🎓</span>
+        <h3 data-i18n="svc_teaching">Undervisning <span style="font-weight:400;text-transform:none;font-size:.7rem;opacity:.6">(side)</span></h3>
+        <p data-i18n="svc_teaching_desc">Workshops, mentoring, kurser i AI, software & tech — fordi jeg elsker at dele.</p>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-tag">🤝</span>
+        <span class="icon">🤝</span>
+        <h3 data-i18n="svc_partnership">Partnerskab</h3>
+        <p data-i18n="svc_partnership_desc">Lad os bygge noget sammen. Langsigtede samarbejder der skaber værdi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CASES ===== -->
+<section class="section" id="cases">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">🏆</span> <span data-i18n="cases_title">Cases</span></h2>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="big-number">80-100x</div>
+        <h3>AI Infrastructure</h3>
+        <p>Optimering af AI-infrastruktur gav 80-100x performance-forbedring. Fra dage til minutter.</p>
+        <span class="case-tag">AI · Infra</span>
+      </div>
+      <div class="case-card reveal">
+        <div class="big-number">340%</div>
+        <h3>Lead Gen Boost</h3>
+        <p>Automatiseret lead generation pipeline der øgede konvertering med 340% på 3 måneder.</p>
+        <span class="case-tag">Marketing</span>
+      </div>
+      <div class="case-card reveal">
+        <div class="big-number">12 uger</div>
+        <h3>GXU AI Program</h3>
+        <p>Intensivt 12-ugers AI-forløb på GXU — fra grundlæggende koncepter til production-ready systemer.</p>
+        <span class="case-tag">Undervisning</span>
+      </div>
+      <div class="case-card reveal">
+        <div class="big-number">∞</div>
+        <h3>Quant Pipeline</h3>
+        <p>Automated quant pipeline til finansiel dataanalyse, backtesting og risk management.</p>
+        <span class="case-tag">Finance</span>
+      </div>
+      <div class="case-card reveal">
+        <div class="big-number">95%</div>
+        <h3>Chatbot Resolution</h3>
+        <p>AI-chatbot med 95% first-contact resolution rate. Reducerede support tickets med 70%.</p>
+        <span class="case-tag">AI · Support</span>
+      </div>
+      <div class="case-card reveal">
+        <div class="big-number">✓</div>
+        <h3>Custom Dashboard</h3>
+        <p>Skræddersyet real-time dashboard med custom metrics, alerts og integrations.</p>
+        <span class="case-tag">Dashboard</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">💬</span> <span data-i18n="testimonials_title">Hvad andre siger</span></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="quote-icon">💬</div>
+        <blockquote>"Omar leverede vores AI-infrastruktur på rekordtid. 80x speedup — vi var målløse. Han forstår både forskning og production."</blockquote>
+        <div class="author">— CTO, SaaS-virksomhed</div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="quote-icon">💬</div>
+        <blockquote>"Bedste underviser jeg har haft. GXU forløbet var intenst, praktisk og direkte anvendeligt. Omar gør komplekst stof enkelt."</blockquote>
+        <div class="author">— Deltager, GXU AI Forløb</div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="quote-icon">💬</div>
+        <blockquote>"Vores lead gen pipeline kører fuldautomatisk nu. 340% stigning på 3 måneder. BasedNode leverer — no fluff."</blockquote>
+        <div class="author">— Founder, Scale-up Startup</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section" id="pricing">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">🏷️</span> <span data-i18n="pricing_title">Priser</span></h2>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-emoji">⚡</div>
+        <h3 data-i18n="pricing_starter_name">Starter</h3>
+        <div class="price">5.000 <span>DKK</span></div>
+        <ul>
+          <li>✅ Konsultation & analyse</li>
+          <li>✅ Op til 20 timers udvikling</li>
+          <li>✅ 1 revisionsrunde</li>
+          <li>✅ Dokumentation</li>
+          <li>❌ Løbende support</li>
+        </ul>
+        <a href="#contact" class="btn-primary">📝 Vælg Starter</a>
+      </div>
+      <div class="pricing-card featured reveal">
+        <span class="pricing-badge">🔥 Mest populær</span>
+        <div class="pricing-emoji">🚀</div>
+        <h3 data-i18n="pricing_pro_name">Professional</h3>
+        <div class="price">15.000 <span>DKK</span></div>
+        <ul>
+          <li>✅ Alt i Starter</li>
+          <li>✅ Op til 60 timers udvikling</li>
+          <li>✅ 3 revisionsrunder</li>
+          <li>✅ Løbende support (1 md.)</li>
+          <li>✅ Deployment & hosting</li>
+        </ul>
+        <a href="#contact" class="btn-primary">📝 Vælg Professional</a>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="pricing-emoji">🤝</div>
+        <h3 data-i18n="pricing_partner_name">Partnership</h3>
+        <div class="price">Skræddersyet</div>
+        <ul>
+          <li>✅ Dedikeret samarbejde</li>
+          <li>✅ Prioritetskø til opgaver</li>
+          <li>✅ Løbende optimering</li>
+          <li>✅ Strategisk sparring</li>
+          <li>✅ Faste månedlige timer</li>
+        </ul>
+        <a href="#partnership" class="btn-secondary">🤝 Kontakt mig</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARTNERSHIP ===== -->
+<section class="section" id="partnership">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">🤝</span> <span data-i18n="partnership_title">Partnerskab</span></h2>
+    <div class="partnership-block">
+      <div class="partnership-text reveal">
+        <h2 data-i18n="partnership_heading">Byg noget stort — sammen</h2>
+        <p>Jeg tror på <strong>langsigtede samarbejder</strong>, ikke enkelte projekter. Som partner får du en forlænget arm ind i AI, automatisering og softwareudvikling — uden at skulle ansætte en fuldtidsingeniør.</p>
+        <p>Vi aftaler faste timer, prioriteter og mål. Du får løbende leverancer, strategisk sparring og en der rent faktisk forstår <strong>din</strong> forretning.</p>
+        <p>Uanset om du er startup, scale-up eller etableret virksomhed — lad os finde ud af hvordan vi skaber værdi sammen.</p>
+        <div class="social-row">
+          <a href="https://linkedin.com/in/ikkeomar" target="_blank" class="social-link">💼 LinkedIn</a>
+          <a href="https://t.me/IkkeOmar" target="_blank" class="social-link">✈️ Telegram @IkkeOmar</a>
+        </div>
+      </div>
+      <div class="partnership-form reveal">
+        <form id="partnershipForm">
+          <div class="form-group">
+            <label for="partnerName">📛 Dit navn</label>
+            <input type="text" id="partnerName" name="name" required placeholder="Dit navn">
+          </div>
+          <div class="form-group">
+            <label for="partnerCompany">🏢 Virksomhed</label>
+            <input type="text" id="partnerCompany" name="company" placeholder="Virksomhed (valgfrit)">
+          </div>
+          <div class="form-group">
+            <label for="partnerEmail">📧 Email</label>
+            <input type="email" id="partnerEmail" name="email" required placeholder="din@email.dk">
+          </div>
+          <div class="form-group">
+            <label for="partnerType">🤝 Samarbejdstype</label>
+            <select id="partnerType" name="type">
+              <option value="">Vælg...</option>
+              <option value="fast">Faste månedlige timer</option>
+              <option value="project">Projektbaseret</option>
+              <option value="strategic">Strategisk sparring</option>
+              <option value="other">Andet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="partnerMessage">💬 Besked</label>
+            <textarea id="partnerMessage" name="message" rows="4" required placeholder="Fortæl om dit projekt..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">🤝 Send forespørgsel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">❓</span> <span data-i18n="faq_title">FAQ</span></h2>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          <span data-i18n="faq1_q">Hvad koster et typisk projekt?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-i18n="faq1_a">Det afhænger af omfanget. Mindre automatiseringer starter omkring 5.000 DKK, mens større AI-infrastruktur eller dashboards typisk ligger mellem 15.000-50.000 DKK. Jeg giver altid en gratis indledende vurdering.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          <span data-i18n="faq2_q">Hvor lang tid tager et projekt?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-i18n="faq2_a">De fleste projekter leveres inden for 2-6 uger. AI-agenter og større infrastruktur kan tage 4-12 uger afhængig af kompleksitet. Jeg arbejder iterativt — du ser resultater løbende.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          <span data-i18n="faq3_q">Hvad er undervisning som sideprojekt?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-i18n="faq3_a">Jeg underviser ved siden af mine klientprojekter — workshops, mentoring, og kortere forløb hos GXU og MentorDanmark. Det giver mig mulighed for at give tilbage og holde mig skarp. Men primærfokus er altid på at levere værdi til klienter.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          <span data-i18n="faq4_q">Hvordan starter vi et samarbejde?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-i18n="faq4_a">Kontakt mig via formularen, og så booker vi et uforpligtende kald på 30 minutter. Her kortlægger jeg dit behov, giver et realistisk estimat, og så beslutter vi om det giver mening at gå videre. Ingen salgspitch — bare ærlig snak.</p>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-question">
+          <span data-i18n="faq5_q">Kan du hjælpe hvis jeg ikke har teknisk baggrund?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">
+          <p data-i18n="faq5_a">Absolut! Jeg er vant til at forklare komplekse ting enkelt — det er en stor del af mit undervisningsarbejde. Du behøver ikke være teknisk for at samarbejde med mig. Jeg oversætter dine behov til løsninger og sørger for at du forstår hvad der sker.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="section" id="contact">
+  <div class="container">
+    <h2 class="section-title reveal"><span class="icon">📝</span> <span data-i18n="contact_title">Kontakt</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2 data-i18n="contact_heading">Sig hej 👋</h2>
+        <div class="contact-details">
+          <div class="contact-item">
+            <span class="icon">📧</span>
+            <span>
+              <a href="mailto:contact@basednode.xyz">contact@basednode.xyz</a><br>
+              <a href="mailto:partner@basednode.xyz">partner@basednode.xyz</a>
+            </span>
+          </div>
+          <div class="contact-item">
+            <span class="icon">🏢</span>
+            <span>BasedNode · Omar<br>CVR 43750194</span>
+          </div>
+          <div class="contact-item">
+            <span class="icon">💼</span>
+            <a href="https://linkedin.com/in/ikkeomar" target="_blank">LinkedIn /in/IkkeOmar</a>
+          </div>
+          <div class="contact-item">
+            <span class="icon">✈️</span>
+            <a href="https://t.me/IkkeOmar" target="_blank">Telegram @IkkeOmar</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactName">📛 Navn</label>
+            <input type="text" id="contactName" name="name" required placeholder="Dit navn">
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">📧 Email</label>
+            <input type="email" id="contactEmail" name="email" required placeholder="din@email.dk">
+          </div>
+          <div class="form-group">
+            <label for="contactSubject">📌 Emne</label>
+            <select id="contactSubject" name="subject">
+              <option value="">Vælg emne...</option>
+              <option value="automation">Automatisering</option>
+              <option value="ai">AI & Agenter</option>
+              <option value="dashboard">Dashboards</option>
+              <option value="web">Hjemmesider</option>
+              <option value="marketing">Markedsføring</option>
+              <option value="teaching">Undervisning</option>
+              <option value="partnership">Partnerskab</option>
+              <option value="other">Andet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="contactMessage">💬 Besked</label>
+            <textarea id="contactMessage" name="message" rows="5" required placeholder="Hvad har du brug for?"></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">📤 Send besked</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="#about" data-i18n="nav_about">Om mig</a>
+      <a href="#services">Services</a>
+      <a href="#cases">Cases</a>
+      <a href="#pricing">Priser</a>
+      <a href="#partnership">Partnerskab</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Kontakt</a>
+    </div>
+    <p>© 2025 BasedNode · Omar — CVR 43750194 — <a href="mailto:contact@basednode.xyz">contact@basednode.xyz</a></p>
+  </div>
+</footer>
+
+<script>
+// ===== THEME TOGGLE =====
+(function(){
+  const html = document.documentElement;
+  const themeBtn = document.getElementById('themeToggle');
+  function setTheme(theme){
+    html.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
+    localStorage.setItem('concept8-theme', theme);
+  }
+  const saved = localStorage.getItem('concept8-theme');
+  if(saved){setTheme(saved)}
+  else if(window.matchMedia('(prefers-color-scheme: dark)').matches){setTheme('dark')}
+  themeBtn.addEventListener('click', ()=>{
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  });
+})();
+
+// ===== LANGUAGE TOGGLE =====
+(function(){
+  const html = document.documentElement;
+  const langBtn = document.getElementById('langToggle');
+  const translations = {
+    da: {
+      lang_label: '🇩🇰 DA',
+      about_title: 'Hvem er jeg?',
+      about_heading: 'Én mand. En mission.',
+      services_title: 'Services',
+      svc_automation: 'Automatisering',
+      svc_automation_desc: 'Fjern manuelle opgaver. Workflows, scripts, pipelines — alt der spiller sig selv.',
+      svc_ai: 'AI & Agenter',
+      svc_ai_desc: 'Custom AI-agenter, RAG-systemer, LLM-integrationer til virkelige problemer.',
+      svc_dashboards: 'Dashboards',
+      svc_dashboards_desc: 'Real-time visualisering, metrics, BI — så du ser præcis hvad der sker.',
+      svc_web: 'Hjemmesider',
+      svc_web_desc: 'Landing pages, webapps, portfolio — hurtige, skarpe, konverterende.',
+      svc_marketing: 'Markedsføring',
+      svc_marketing_desc: 'Lead gen, automation, analytics — få flere kunder uden at bruge mere tid.',
+      svc_teaching: 'Undervisning (side)',
+      svc_teaching_desc: 'Workshops, mentoring, kurser i AI, software & tech — fordi jeg elsker at dele.',
+      svc_partnership: 'Partnerskab',
+      svc_partnership_desc: 'Lad os bygge noget sammen. Langsigtede samarbejder der skaber værdi.',
+      cases_title: 'Cases',
+      testimonials_title: 'Hvad andre siger',
+      pricing_title: 'Priser',
+      pricing_starter_name: 'Starter',
+      pricing_pro_name: 'Professional',
+      pricing_partner_name: 'Partnership',
+      partnership_title: 'Partnerskab',
+      partnership_heading: 'Byg noget stort — sammen',
+      faq_title: 'FAQ',
+      faq1_q: 'Hvad koster et typisk projekt?',
+      faq1_a: 'Det afhænger af omfanget. Mindre automatiseringer starter omkring 5.000 DKK, mens større AI-infrastruktur eller dashboards typisk ligger mellem 15.000-50.000 DKK. Jeg giver altid en gratis indledende vurdering.',
+      faq2_q: 'Hvor lang tid tager et projekt?',
+      faq2_a: 'De fleste projekter leveres inden for 2-6 uger. AI-agenter og større infrastruktur kan tage 4-12 uger afhængig af kompleksitet. Jeg arbejder iterativt — du ser resultater løbende.',
+      faq3_q: 'Hvad er undervisning som sideprojekt?',
+      faq3_a: 'Jeg underviser ved siden af mine klientprojekter — workshops, mentoring, og kortere forløb hos GXU og MentorDanmark. Det giver mig mulighed for at give tilbage og holde mig skarp. Men primærfokus er altid på at levere værdi til klienter.',
+      faq4_q: 'Hvordan starter vi et samarbejde?',
+      faq4_a: 'Kontakt mig via formularen, og så booker vi et uforpligtende opkald på 30 minutter. Her kortlægger jeg dit behov, giver et realistisk estimat, og så beslutter vi om det giver mening at gå videre. Ingen salgspitch — bare ærlig snak.',
+      faq5_q: 'Kan du hjælpe hvis jeg ikke har teknisk baggrund?',
+      faq5_a: 'Absolut! Jeg er vant til at forklare komplekse ting enkelt — det er en stor del af mit undervisningsarbejde. Du behøver ikke være teknisk for at samarbejde med mig. Jeg oversætter dine behov til løsninger og sørger for at du forstår hvad der sker.',
+      contact_title: 'Kontakt',
+      contact_heading: 'Sig hej 👋',
+      nav_about: 'Om mig',
+      resources_title: 'Gratis ressourcer',
+      resources_desc: 'Guides, tools og værktøjer til AI, automatisering og digital vækst.',
+      resources_cta: 'Gå til Ressourcer',
+      about_affordable: 'Jeg forstår at mange virksomheder har processer hvor det ville være smart at hyre en teknisk person, men det bliver for dyrt. Jeg kan højst sandsynligt gøre det billigt for små projekter.',
+    },
+    en: {
+      lang_label: '🇬🇧 EN',
+      about_title: 'Who am I?',
+      about_heading: 'One man. One mission.',
+      services_title: 'Services',
+      svc_automation: 'Automation',
+      svc_automation_desc: 'Eliminate manual work. Workflows, scripts, pipelines — everything on autopilot.',
+      svc_ai: 'AI & Agents',
+      svc_ai_desc: 'Custom AI agents, RAG systems, LLM integrations for real-world problems.',
+      svc_dashboards: 'Dashboards',
+      svc_dashboards_desc: 'Real-time visualization, metrics, BI — see exactly what is happening.',
+      svc_web: 'Websites',
+      svc_web_desc: 'Landing pages, webapps, portfolio — fast, sharp, converting.',
+      svc_marketing: 'Marketing',
+      svc_marketing_desc: 'Lead gen, automation, analytics — get more customers without spending more time.',
+      svc_teaching: 'Teaching (side)',
+      svc_teaching_desc: 'Workshops, mentoring, courses in AI, software & tech — because I love to share.',
+      svc_partnership: 'Partnership',
+      svc_partnership_desc: "Let's build something together. Long-term collaborations that create value.",
+      cases_title: 'Cases',
+      testimonials_title: 'What people say',
+      pricing_title: 'Pricing',
+      pricing_starter_name: 'Starter',
+      pricing_pro_name: 'Professional',
+      pricing_partner_name: 'Partnership',
+      partnership_title: 'Partnership',
+      partnership_heading: 'Build something big — together',
+      faq_title: 'FAQ',
+      faq1_q: 'How much does a typical project cost?',
+      faq1_a: 'It depends on scope. Smaller automations start around 5,000 DKK, while larger AI infrastructure or dashboards typically range from 15,000-50,000 DKK. I always provide a free initial assessment.',
+      faq2_q: 'How long does a project take?',
+      faq2_a: 'Most projects are delivered within 2-6 weeks. AI agents and larger infrastructure can take 4-12 weeks depending on complexity. I work iteratively — you see results continuously.',
+      faq3_q: 'What is teaching as a side project?',
+      faq3_a: 'I teach alongside my client projects — workshops, mentoring, and shorter programs with GXU and MentorDanmark. It lets me give back and stay sharp. But my primary focus is always delivering value to clients.',
+      faq4_q: 'How do we start a collaboration?',
+      faq4_a: 'Contact me via the form, and we will book a no-obligation 30-minute call. I will map out your needs, give a realistic estimate, and we decide if it makes sense to move forward. No sales pitch — just honest talk.',
+      faq5_q: 'Can you help if I have no technical background?',
+      faq5_a: 'Absolutely! I am used to explaining complex things simply — it is a big part of my teaching work. You do not need to be technical to work with me. I translate your needs into solutions and make sure you understand what is happening.',
+      contact_title: 'Contact',
+      contact_heading: 'Say hi 👋',
+      nav_about: 'About me',
+      resources_title: 'Free Resources',
+      resources_desc: 'Guides, tools, and templates for AI, automation, and digital growth.',
+      resources_cta: 'Browse Resources',
+      about_affordable: 'I understand many businesses have processes where hiring a technical person would be smart, but it gets too expensive. I can most likely do it cheaply for small projects.',
+    }
+  };
+  let currentLang = html.getAttribute('data-lang') || 'da';
+  function setLang(lang){
+    currentLang = lang;
+    html.setAttribute('data-lang', lang);
+    localStorage.setItem('concept8-lang', lang);
+    const t = translations[lang];
+    if(!t) return;
+    langBtn.textContent = t.lang_label;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(t[key]) el.textContent = t[key];
+    });
+  }
+  const savedLang = localStorage.getItem('concept8-lang');
+  if(savedLang) setLang(savedLang);
+  langBtn.addEventListener('click', ()=>{
+    const next = currentLang === 'da' ? 'en' : 'da';
+    setLang(next);
+  });
+})();
+
+// ===== FAQ ACCORDION =====
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+// ===== SCROLL REVEAL =====
+(function(){
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// ===== FORM HANDLERS =====
+document.getElementById('contactForm')?.addEventListener('submit', function(e){
+  e.preventDefault();
+  const btn = this.querySelector('button[type="submit"]');
+  const orig = btn.textContent;
+  btn.textContent = '✅ Sendt!';
+  btn.style.background = 'var(--yellow)';
+  btn.style.color = 'var(--black)';
+  setTimeout(()=>{
+    btn.textContent = orig;
+    btn.style.background = '';
+    btn.style.color = '';
+    this.reset();
+  }, 2500);
+});
+
+document.getElementById('partnershipForm')?.addEventListener('submit', function(e){
+  e.preventDefault();
+  const btn = this.querySelector('button[type="submit"]');
+  const orig = btn.textContent;
+  btn.textContent = '✅ Sendt!';
+  btn.style.background = 'var(--yellow)';
+  btn.style.color = 'var(--black)';
+  setTimeout(()=>{
+    btn.textContent = orig;
+    btn.style.background = '';
+    btn.style.color = '';
+    this.reset();
+  }, 2500);
+});
+</script>
+</body>
+</html>

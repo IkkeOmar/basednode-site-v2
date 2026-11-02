@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wilmo.ai — Investor Intelligence Report</title>
+<meta name="robots" content="noindex">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#0a0b0f;color:#e0e0e8;line-height:1.6;min-height:100vh}
+:root{
+  --accent:#a78bfa;--accent2:#38bdf8;--accent3:#34d399;--accent4:#fbbf24;--accent5:#f87171;
+  --grad1:linear-gradient(135deg,#7c5cfc,#38bdf8);
+  --bg-card:rgba(15,17,23,0.8);--bg-glass:rgba(15,17,23,0.6);
+  --border:rgba(255,255,255,0.06);--border-accent:rgba(124,92,252,0.2);
+  --text1:#f1f3f5;--text2:#8b95a5;--text3:#5c6675;
+  --radius:16px;--shadow:0 8px 32px rgba(0,0,0,0.3)
+}
+
+/* Nav */
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,15,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:1.3rem;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px}
+.badge{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);background:rgba(167,139,250,0.1);padding:4px 12px;border-radius:100px;border:1px solid rgba(167,139,250,0.15)}
+
+/* Container */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+main{padding-top:88px;padding-bottom:60px}
+
+/* Hero */
+.hero{padding:40px 0 30px;text-align:center}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.04em;line-height:1.15;margin-bottom:8px}
+.hero .accent{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text2);max-width:600px;margin:0 auto;font-size:0.95rem}
+
+/* Cards */
+.card{background:var(--bg-glass);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all 0.3s ease;overflow:hidden;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad1);opacity:0;transition:opacity 0.3s ease}
+.card:hover::before{opacity:1}
+.card:hover{border-color:var(--border-accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+
+/* Grid */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;margin-bottom:24px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:24px}
+
+/* Section */
+.section{margin-bottom:28px}
+.section-title{font-size:1.1rem;font-weight:700;color:var(--text1);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title .icon{font-size:1.3rem}
+
+/* Stat cards */
+.stat{text-align:center;padding:20px}
+.stat-value{font-size:1.8rem;font-weight:800;background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:0.78rem;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:0.06em}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+th{text-align:left;color:var(--text3);font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;padding:10px 12px;border-bottom:1px solid var(--border)}
+td{padding:12px;border-bottom:1px solid var(--border);color:var(--text1)}
+tr:last-child td{border-bottom:none}
+td small{color:var(--text3);display:block}
+
+/* Tags */
+.tag{display:inline-block;font-size:0.7rem;padding:3px 10px;border-radius:100px;font-weight:600;margin:2px}
+.tag-green{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.2)}
+.tag-purple{background:rgba(167,139,250,0.12);color:#a78bfa;border:1px solid rgba(167,139,250,0.2)}
+.tag-yellow{background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.2)}
+.tag-red{background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.2)}
+
+/* Investor network */
+.network{display:flex;flex-direction:column;gap:10px}
+.investor-row{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid var(--border)}
+.investor-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;flex-shrink:0}
+.avatar-purple{background:rgba(167,139,250,0.15);color:#a78bfa}
+.avatar-blue{background:rgba(56,189,248,0.15);color:#38bdf8}
+.avatar-green{background:rgba(52,211,153,0.15);color:#34d399}
+.avatar-yellow{background:rgba(251,191,36,0.15);color:#fbbf24}
+.investor-info{flex:1}
+.investor-name{font-weight:600;color:var(--text1)}
+.investor-role{font-size:0.75rem;color:var(--text3)}
+.connection{font-size:0.7rem;padding:3px 8px;border-radius:100px;font-weight:600;white-space:nowrap}
+.conn-same{background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)}
+.conn-external{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.2)}
+
+/* Blind spot cards */
+.blindspot{display:flex;gap:14px;padding:18px;background:rgba(248,113,113,0.04);border:1px solid rgba(248,113,113,0.1);border-radius:12px;margin-bottom:10px}
+.bs-icon{font-size:1.4rem;flex-shrink:0}
+.bs-text strong{display:block;color:var(--text1);margin-bottom:4px}
+.bs-text p{font-size:0.82rem;color:var(--text2);line-height:1.5}
+
+/* Timeline */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border-accent)}
+.timeline-item{position:relative;margin-bottom:20px;padding-left:16px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid #0a0b0f}
+.timeline-date{font-size:0.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em}
+.timeline-title{font-weight:700;color:var(--text1);margin:2px 0}
+.timeline-desc{font-size:0.82rem;color:var(--text2)}
+
+/* Responsive */
+@media(max-width:768px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .stat-value{font-size:1.4rem}
+  .card{padding:20px}
+  .hero h1{font-size:1.6rem}
+}
+
+/* Footer */
+footer{text-align:center;padding:30px 0;color:var(--text3);font-size:0.75rem;border-top:1px solid var(--border);margin-top:40px}
+
+/* Print */
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🔍 Investor Intelligence</span>
+  <span class="badge">Private Report</span>
+</header>
+
+<main class="container">
+
+<!-- HERO -->
+<section class="hero">
+  <h1><span class="accent">Wilmo.ai</span> — Money Map</h1>
+  <p>AI customer support platform · Founded late 2025 · Copenhagen, Denmark</p>
+</section>
+
+<!-- KEY STATS -->
+<div class="grid3">
+  <div class="card stat">
+    <div class="stat-value">$190K</div>
+    <div class="stat-label">Total Raised</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">$8M</div>
+    <div class="stat-label">Valuation (Feb 2026)</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">$85K</div>
+    <div class="stat-label">ARR (Feb 2026)</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">4</div>
+    <div class="stat-label">Angel Investors</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">2→6</div>
+    <div class="stat-label">Team Growth</div>
+  </div>
+  <div class="card stat">
+    <div class="stat-value">85%</div>
+    <div class="stat-label">Ticket Automation (Viamaja)</div>
+  </div>
+</div>
+
+<!-- FUNDING TIMELINE -->
+<section class="section">
+  <div class="section-title"><span class="icon">📅</span> Funding Timeline</div>
+  <div class="card">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">Late 2025</div>
+        <div class="timeline-title">Company Founded</div>
+        <div class="timeline-desc">First line of code written. Team: Villads Leth, Albert Overgaard, Magnus Søndergaard, Lasse Osmann, Lasse Markussen, Hjalte Junge. Previously built Alvas.ai</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Jan 2026</div>
+        <div class="timeline-title">Angel Round — $100K at $2M valuation</div>
+        <div class="timeline-desc">Initial fundraising goal: $100K (650K DKK). "Friends, family & fools" round.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Feb 20, 2026</div>
+        <div class="timeline-title">Pre-Seed Round — $190K at $8M valuation</div>
+        <div class="timeline-desc">Closed $190K (1.2M DKK). ARR grew from $10K→$85K in 45 days. Team doubled from 2→6. Launched Viamaja case study.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTOR NETWORK -->
+<section class="section">
+  <div class="section-title"><span class="icon">👥</span> Investor Network</div>
+  <div class="card">
+    <div class="network">
+      <div class="investor-row">
+        <div class="investor-avatar avatar-purple">JU</div>
+        <div class="investor-info">
+          <div class="investor-name">Jeppe Uhd</div>
+          <div class="investor-role">Kanpla Co-founder</div>
+        </div>
+        <span class="connection conn-same">Kanpla Cluster</span>
+      </div>
+      <div class="investor-row">
+        <div class="investor-avatar avatar-blue">JG</div>
+        <div class="investor-info">
+          <div class="investor-name">Jonas Gøttler</div>
+          <div class="investor-role">Kanpla COO & Co-founder · Forbes 30 Under 30</div>
+        </div>
+        <span class="connection conn-same">Kanpla Cluster</span>
+      </div>
+      <div class="investor-row">
+        <div class="investor-avatar avatar-purple">PB</div>
+        <div class="investor-info">
+          <div class="investor-name">Peter Bæch</div>
+          <div class="investor-role">Kanpla Co-founder · 1 investment (Wilmo)</div>
+        </div>
+        <span class="connection conn-same">Kanpla Cluster</span>
+      </div>
+      <div class="investor-row">
+        <div class="investor-avatar avatar-green">DF</div>
+        <div class="investor-info">
+          <div class="investor-name">Dennis Schade Forchhammer</div>
+          <div class="investor-role">CEO & Co-founder, Happy Helper</div>
+        </div>
+        <span class="connection conn-external">External</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE KANPLA CONNECTION -->
+<section class="section">
+  <div class="section-title"><span class="icon">🔗</span> The Kanpla Connection</div>
+  <div class="card">
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Investors from same organization</td><td><strong style="color:#fbbf24">3 of 4 (75%)</strong></td></tr>
+      <tr><td>External investors</td><td>1 of 4 (25%)</td></tr>
+      <tr><td>Organization</td><td>Kanpla — Danish SaaS (canteen management)</td></tr>
+      <tr><td>Kanpla funding</td><td>€8M raised (founded 2020)</td></tr>
+      <tr><td>Kanpla founders investing in Wilmo</td><td>All 3 co-founders (Jeppe, Jonas, Peter)</td></tr>
+    </table>
+    <p style="margin-top:14px;font-size:0.82rem;color:var(--text2);line-height:1.5">
+      <strong style="color:var(--text1)">Key insight:</strong> Kanpla's founders are investing as angels in Wilmo, likely because they know Villads Leth (both are Aarhus-based Danish tech founders). This is a <span style="color:#fbbf24">tight-knit founder-to-founder</span> investment — not institutional.
+    </p>
+  </div>
+</section>
+
+<!-- PEOPLE CONNECTIONS -->
+<section class="section">
+  <div class="section-title"><span class="icon">🕵️</span> People Connections — OSINT</div>
+  <div class="card">
+    <table>
+      <tr><th>Connection</th><th>Evidence</th><th>Strength</th></tr>
+      <tr>
+        <td><strong>Jeppe Uhd → Villads Leth</strong></td>
+        <td><small>Explicitly called Villads "my good friend" on LinkedIn. Invested in <strong>Alvas.ai</strong> (Villads' previous startup) — $63K round at $3M. Now investing again in Wilmo. Multi-startup relationship.</small></td>
+        <td><span class="tag tag-yellow">STRONG — 2 startups</span></td>
+      </tr>
+      <tr>
+        <td><strong>Peter Bæch → Villads Leth</strong></td>
+        <td><small>Also invested in <strong>Alvas.ai</strong>. Listed among investors Villads publicly thanked and paid back. Now investing in Wilmo.</small></td>
+        <td><span class="tag tag-yellow">STRONG — 2 startups</span></td>
+      </tr>
+      <tr>
+        <td><strong>Aarhus University Connection</strong></td>
+        <td><small>Villads is a Data Science student at <strong>Aarhus University</strong>. Kanpla is headquartered in <strong>Aarhus</strong>. All three Kanpla founders are part of the Aarhus startup ecosystem.</small></td>
+        <td><span class="tag tag-purple">ECOSYSTEM</span></td>
+      </tr>
+      <tr>
+        <td><strong>Villads paid back Alvas.ai investors</strong></td>
+        <td><small>After Alvas "didn't work", Villads publicly posted that he repaid <strong>every single dollar</strong> to all 7 investors (including Jeppe and Peter). Quote: "trusted us when we were just 20 years old — today we could return that trust."</small></td>
+        <td><span class="tag tag-green">TRUST BUILT</span></td>
+      </tr>
+      <tr>
+        <td><strong>Robert Wolf (Kanpla CEO) — NOT an investor</strong></td>
+        <td><small>Curiously, the <strong>CEO</strong> of Kanpla did NOT invest in Wilmo. Only the other 3 founders did. Possible reasons: different risk appetite, personal liquidity, or non-compete concerns.</small></td>
+        <td><span class="tag tag-red">GAP</span></td>
+      </tr>
+    </table>
+    <p style="margin-top:14px;font-size:0.82rem;color:var(--text2);line-height:1.5">
+      <strong style="color:var(--text1)">The narrative:</strong> Jeppe Uhd and Peter Bæch have been backing Villads since he was 20. They invested in his first startup (Alvas.ai), got paid back when it didn't work out, and are now doubling down on his second venture. This is a <span style="color:#a78bfa">relationship built on trust and track record</span> — not just a bet on an idea. The fact that Robert Wolf (Kanpla CEO) chose <em>not</em> to invest is equally telling.
+    </p>
+  </div>
+</section>
+
+<!-- BLIND SPOTS -->
+<section class="section">
+  <div class="section-title"><span class="icon">🔴</span> Blind Spots & Knowledge Gaps</div>
+  
+  <div class="blindspot">
+    <span class="bs-icon">1</span>
+    <div class="bs-text">
+      <strong>Narrow Investor Base</strong>
+      <p>75% of investors come from the <em>same company</em> (Kanpla). If Kanpla hits trouble, those angels may not be able to follow on. No institutional validation — VC firms haven't touched this yet.</p>
+    </div>
+  </div>
+
+  <div class="blindspot">
+    <span class="bs-icon">2</span>
+    <div class="bs-text">
+      <strong>No Strategic Investors</strong>
+      <p>No investors from the e-commerce, customer service, or AI infrastructure space. A strategic investor (e.g., Zendesk, Intercom, or an e-commerce platform) could provide both capital <em>and</em> distribution channels.</p>
+    </div>
+  </div>
+
+  <div class="blindspot">
+    <span class="bs-icon">3</span>
+    <div class="bs-text">
+      <strong>Aggressive Valuation Jump</strong>
+      <p>Valuation went from $2M → $8M (4×) in ~45 days. While ARR grew proportionally ($10K→$85K), this valuation on $85K ARR is ~94× ARR — very high for a pre-seed SaaS.</p>
+    </div>
+  </div>
+
+  <div class="blindspot">
+    <span class="bs-icon">4</span>
+    <div class="bs-text">
+      <strong>No International Investors</strong>
+      <p>All investors are Danish. For a company targeting global e-commerce, having no international network limits market entry, hiring, and future fundraising rounds.</p>
+    </div>
+  </div>
+
+  <div class="blindspot">
+    <span class="bs-icon">5</span>
+    <div class="bs-text">
+      <strong>Single Case Study</strong>
+      <p>Only 1 public case study (Viamaja). 85% ticket automation is impressive, but it's a sample size of 1. More diverse case studies across industries would de-risk the investment thesis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPPORTUNITIES -->
+<section class="section">
+  <div class="section-title"><span class="icon">💡</span> Opportunities to Present</div>
+  <div class="grid2">
+    <div class="card">
+      <strong style="color:#a78bfa">Token Usage Optimization</strong>
+      <p style="font-size:0.84rem;color:var(--text2);margin-top:8px;line-height:1.5">
+        Wilmo runs AI agents 24/7 on customer tickets. With $35K already spent on "coding agents" pre-funding, their LLM token costs will scale with usage. A 30-60% token optimization could be significant at their target scale.
+      </p>
+      <span class="tag tag-purple" style="margin-top:8px">AI Infrastructure</span>
+    </div>
+    <div class="card">
+      <strong style="color:#38bdf8">Multi-Language Expansion</strong>
+      <p style="font-size:0.84rem;color:var(--text2);margin-top:8px;line-height:1.5">
+        Danish-only investors + Danish-first market. Expanding to English/German/French markets requires localization infrastructure — both for the AI and the sales process.
+      </p>
+      <span class="tag tag-blue" style="margin-top:8px">Internationalization</span>
+    </div>
+    <div class="card">
+      <strong style="color:#34d399">Investor Network Diversification</strong>
+      <p style="font-size:0.84rem;color:var(--text2);margin-top:8px;line-height:1.5">
+        Connecting Wilmo to e-commerce focused VCs or angels (e.g., people who invested in Gorgias, Zendesk, Intercom alumni) would fill the "no strategic investor" gap.
+      </p>
+      <span class="tag tag-green" style="margin-top:8px">Fundraising Strategy</span>
+    </div>
+    <div class="card">
+      <strong style="color:#fbbf24">Enterprise Compliance</strong>
+      <p style="font-size:0.84rem;color:var(--text2);margin-top:8px;line-height:1.5">
+        As they move upmarket (Viamaja is a single case), GDPR compliance, data residency, and enterprise security certifications become blockers. This can be positioned as a service.
+      </p>
+      <span class="tag tag-yellow" style="margin-top:8px">Enterprise Readiness</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY DETAILS -->
+<section class="section">
+  <div class="section-title"><span class="icon">📋</span> Company Profile</div>
+  <div class="card">
+    <table>
+      <tr><td><strong>Company</strong></td><td>Wilmo.ai</td></tr>
+      <tr><td><strong>CEO & Founder</strong></td><td>Villads Leth (LinkedIn: villads-leth)</td></tr>
+      <tr><td><strong>Product</strong></td><td>AI-powered customer support platform — "Autopilot" agent</td></tr>
+      <tr><td><strong>Founded</strong></td><td>Late 2025 (6 months old)</td></tr>
+      <tr><td><strong>Location</strong></td><td>Denmark (presumed Aarhus/Copenhagen)</td></tr>
+      <tr><td><strong>Previous Startup</strong></td><td>Alvas.ai — AI automation platform</td></tr>
+      <tr><td><strong>Team</strong></td><td>6 people: Villads Leth, Albert Overgaard, Magnus Søndergaard, Lasse Osmann, Lasse Markussen, Hjalte Junge</td></tr>
+      <tr><td><strong>ARR</strong></td><td>$85K (Feb 2026, up from $10K in Jan)</td></tr>
+      <tr><td><strong>Total Raised</strong></td><td>$190K (1 round, pre-seed)</td></tr>
+      <tr><td><strong>Valuation</strong></td><td>$8M (Feb 2026)</td></tr>
+      <tr><td><strong>Stated Goal</strong></td><td>Build a unicorn ($1B+ valuation)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- INVESTOR DETAILS -->
+<section class="section">
+  <div class="section-title"><span class="icon">💰</span> Investor Deep Dive</div>
+  <div class="card">
+    <table>
+      <tr><th>Investor</th><th>Organization</th><th>Role</th><th>Portfolio Size</th><th>Known Investments</th></tr>
+      <tr>
+        <td>Jeppe Uhd</td>
+        <td>Kanpla</td>
+        <td>Co-founder</td>
+        <td>Unknown</td>
+        <td>Kanpla, Wilmo</td>
+      </tr>
+      <tr>
+        <td>Jonas Gøttler</td>
+        <td>Kanpla</td>
+        <td>COO & Co-founder<br><small>Forbes 30 Under 30</small></td>
+        <td>1 (as angel)</td>
+        <td>Kanpla (raised €8M), Wilmo</td>
+      </tr>
+      <tr>
+        <td>Peter Bæch</td>
+        <td>Kanpla</td>
+        <td>Co-founder</td>
+        <td>1 (as angel)</td>
+        <td>Kanpla, Wilmo</td>
+      </tr>
+      <tr>
+        <td>Dennis Schade Forchhammer</td>
+        <td>Happy Helper</td>
+        <td>CEO & Co-founder</td>
+        <td>Unknown</td>
+        <td>Happy Helper, Wilmo</td>
+      </tr>
+    </table>
+    <p style="margin-top:14px;font-size:0.78rem;color:var(--text3)">
+      Sources: Crunchbase, Tracxn, PitchBook, TechSavvy.media, Wilmo.ai/press, LinkedIn, Nordic9
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Investor Intelligence Report · Generated May 2026 · Private — not for distribution
+</footer>
+
+</body>
+</html>

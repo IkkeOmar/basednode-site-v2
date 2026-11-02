@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasedNode — Intelligent Systems, Bold Results</title>
+<meta name="description" content="Solo AI engineering studio by Omar. Production-grade AI systems, dashboards, automation."/>
+<style>
+:root {
+  /* TINTED NEUTRALS — no pure black/white */
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-elevated: #181825;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --text: #e8e6de;
+  --text-secondary: #a09e98;
+  --text-tertiary: #6b6a66;
+  
+  /* PURPLE accent (user preference) */
+  --accent: #7c3aed;
+  --accent-soft: #a78bfa;
+  --accent-dim: #4a1d9e;
+  --accent-glow: rgba(124,58,237,0.25);
+  
+  /* OKLCH tinted neutrals */
+  --surface: oklch(0.13 0.02 280);
+  --surface-alt: oklch(0.15 0.025 280);
+  
+  /* Emil Kowalski easing */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* NO default import — using system fallback stack */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: local('Segoe UI'), local('Inter'), local('system-ui');
+  font-display: swap;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ──────── scrollbar ──────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ──────── utility classes ──────── */
+.contain { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* ──────── buttons ──────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: var(--accent); color: white;
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 32px var(--accent-glow);
+}
+.btn-secondary {
+  background: var(--bg-elevated); color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  border-color: var(--accent); color: var(--accent-soft);
+}
+
+/* ──────── NAV ──────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 0;
+  background: rgba(10,10,15,0.8);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+nav .contain {
+  display: flex; align-items: center; justify-content: space-between;
+}
+nav .logo {
+  font-size: 18px; font-weight: 600; color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.3px;
+}
+nav .logo span { color: var(--accent-soft); }
+nav .nav-links { display: flex; gap: 32px; align-items: center; }
+nav a:not(.btn) {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 14px; transition: color 200ms var(--ease-out);
+}
+nav a:not(.btn):hover { color: var(--text); }
+
+/* ──────── HERO ──────── */
+.hero {
+  min-height: 90vh;
+  display: flex; align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 80px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -20%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-grid {
+  position: relative;
+  z-index: 1;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 600;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent-soft), #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+
+/* ──────── stats bar ──────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 60px;
+}
+.stat-card {
+  background: var(--bg-card);
+  padding: 28px 24px;
+  text-align: center;
+}
+.stat-number {
+  font-size: 28px; font-weight: 600;
+  color: var(--accent-soft);
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 13px; color: var(--text-tertiary);
+}
+
+/* ──────── section ──────── */
+section { padding: 100px 0; }
+.section-label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent-soft);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 15px; color: var(--text-secondary);
+  max-width: 520px;
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+/* ──────── services grid ──────── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.service-card {
+  background: var(--bg-card);
+  padding: 32px;
+  transition: background 200ms var(--ease-out);
+}
+.service-card:hover {
+  background: var(--bg-elevated);
+}
+.service-icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: var(--accent-glow);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+.service-card h3 {
+  font-size: 16px; font-weight: 500;
+  margin-bottom: 8px;
+}
+.service-card p {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ──────── case studies ──────── */
+.cases-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.case-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 24px 32px;
+  transition: background 200ms var(--ease-out);
+}
+.case-row:hover {
+  background: var(--bg-elevated);
+}
+.case-row .project {
+  font-size: 14px; font-weight: 500;
+}
+.case-row .result {
+  font-size: 13px; color: var(--accent-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ──────── process timeline ──────── */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.process-step {
+  background: var(--bg-card);
+  padding: 32px 24px;
+  text-align: center;
+}
+.process-step .step-num {
+  font-size: 32px; font-weight: 700;
+  color: var(--accent-dim);
+  margin-bottom: 8px;
+}
+.process-step h3 {
+  font-size: 15px; font-weight: 500;
+  margin-bottom: 6px;
+}
+.process-step p {
+  font-size: 12px; color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* ──────── CTA ──────── */
+.cta-section {
+  background: linear-gradient(135deg, 
+    var(--accent-dim) 0%, 
+    var(--bg) 60%
+  );
+  border-radius: 16px;
+  padding: 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section h2 {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.cta-section p {
+  color: var(--text-secondary);
+  max-width: 450px;
+  margin: 0 auto 28px;
+  font-size: 14px;
+}
+
+/* ──────── footer ──────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  margin-top: 40px;
+}
+footer .contain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer .copy {
+  font-size: 13px; color: var(--text-tertiary);
+}
+footer .links {
+  display: flex; gap: 24px;
+}
+footer .links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 200ms var(--ease-out);
+}
+footer .links a:hover { color: var(--accent-soft); }
+
+/* ──────── stagger animations ──────── */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 500ms var(--ease-out) forwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 80ms; }
+.stagger > *:nth-child(3) { animation-delay: 160ms; }
+.stagger > *:nth-child(4) { animation-delay: 240ms; }
+.stagger > *:nth-child(5) { animation-delay: 320ms; }
+.stagger > *:nth-child(6) { animation-delay: 400ms; }
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ──────── RESPONSIVE ──────── */
+@media (max-width: 768px) {
+  .hero { padding: 100px 0 60px; min-height: auto; }
+  .stats { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .case-row { grid-template-columns: 1fr; }
+  .case-row .result { text-align: left; }
+  .cta-section { padding: 40px 24px; }
+  nav .nav-links a:not(.btn) { display: none; }
+  footer .contain { flex-direction: column; text-align: center; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .service-card {
+    transition: transform 200ms var(--ease-out), background 200ms var(--ease-out);
+  }
+  .service-card:hover {
+    transform: translateY(-2px);
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="contain">
+    <a href="/" class="logo">Based<span>Node</span></a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#cases">Case Studies</a>
+      <a href="#process">Process</a>
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="contain hero-grid">
+    <h1>Intelligent systems.<br><span class="highlight">Bold results.</span></h1>
+    <p>
+      Solo AI engineering studio by Omar. No jargon — just production-grade AI systems 
+      that cut costs, automate workflows, and drive measurable impact.
+    </p>
+    <div class="hero-actions stagger">
+      <a href="#contact" class="btn btn-primary">Start a conversation →</a>
+      <a href="#cases" class="btn btn-secondary">See case studies</a>
+    </div>
+
+    <div class="stats stagger">
+      <div class="stat-card">
+        <div class="stat-number">€12k→€150</div>
+        <div class="stat-label">Monthly LLM cost reduction</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2,500+/day</div>
+        <div class="stat-label">Autonomous support tickets</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">85%</div>
+        <div class="stat-label">Fully autonomous resolution</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="contain">
+    <div class="section-label">What I can do</div>
+    <h2 class="section-title">Capabilities</h2>
+    <p class="section-sub">From custom GPT agents to full-stack AI dashboards — I build what your business needs, solo.</p>
+    <div class="services-grid stagger">
+      <div class="service-card">
+        <div class="service-icon">🤖</div>
+        <h3>Custom GPT Agents</h3>
+        <p>Tailored LLM agents for customer support, lead qualification, and internal knowledge retrieval.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3>API Cost Optimization</h3>
+        <p>Smart caching, batching, model routing. Reduced costs 80–100× without sacrificing quality.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <h3>AI-Native Dashboards</h3>
+        <p>React/Next.js dashboards with AI copilots, real-time analytics, natural-language queries.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔁</div>
+        <h3>Workflow Automation</h3>
+        <p>Document processing, invoice extraction, email routing — let the machines handle the repetitive work.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛠️</div>
+        <h3>Data Engineering & ETL</h3>
+        <p>Clean, transform, and unify your data so your AI systems actually work.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📈</div>
+        <h3>Marketing Automation</h3>
+        <p>Email campaigns, social media scheduling, abandoned cart recovery, personalised recommendations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="contain">
+    <div class="section-label">Proof</div>
+    <h2 class="section-title">Case studies</h2>
+    <p class="section-sub">Real projects with measurable outcomes.</p>
+    <div class="cases-grid stagger">
+      <div class="case-row">
+        <div class="project">LLM API Cost Optimization</div>
+        <div class="result">€12,000 → €150 / month</div>
+      </div>
+      <div class="case-row">
+        <div class="project">Customer Support AI Agent</div>
+        <div class="result">85% autonomous, 98% accuracy</div>
+      </div>
+      <div class="case-row">
+        <div class="project">Invoice Processing Pipeline</div>
+        <div class="result">40 hrs → 4 min, 97% accuracy</div>
+      </div>
+      <div class="case-row">
+        <div class="project">Lead Qualification Engine</div>
+        <div class="result">15k leads/mo, 3× conversion</div>
+      </div>
+      <div class="case-row">
+        <div class="project">Real-Time AI Dashboard</div>
+        <div class="result">60% latency drop, 94% adoption</div>
+      </div>
+      <div class="case-row">
+        <div class="project">Ad Cost Optimization</div>
+        <div class="result">60% spend reduction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="contain">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">From idea to impact</h2>
+    <p class="section-sub">A structured process that keeps you informed at every step.</p>
+    <div class="process-grid stagger">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h3>Discovery</h3>
+        <p>Understand your business, goals, and customers</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h3>Design</h3>
+        <p>Sketch the solution that fits your exact need</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h3>Build</h3>
+        <p>Iterate with continuous feedback</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h3>Deploy & Scale</h3>
+        <p>Launch, measure, and grow</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contain">
+    <div class="cta-section">
+      <h2>Ready to build something?</h2>
+      <p>First conversation is always free and low-pressure. Reach out — responds within 24 hours.</p>
+      <a href="mailto:omar.jennane@hotmail.com" class="btn btn-primary">omar.jennane@hotmail.com →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="contain">
+    <div class="copy">© 2026 BasedNode · Danish-registered CVR 43750194</div>
+    <div class="links">
+      <a href="https://github.com/IkkeOmar">GitHub</a>
+      <a href="https://basednode.xyz">basednode.xyz</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

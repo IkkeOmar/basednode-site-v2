@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI & Automation Resources — BasedNode</title>
+<meta name="description" content="Everything small business owners need to understand and leverage AI and automation. No jargon, just practical guidance.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root, [data-theme="dark"] {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181b24;
+  --bg-tertiary: #1e2230;
+  --bg-card: rgba(24, 27, 36, 0.6);
+  --bg-glass: rgba(15, 17, 23, 0.72);
+  --bg-glass-hover: rgba(24, 27, 36, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #f1f3f5;
+  --text-secondary: #8b95a5;
+  --text-tertiary: #5c6675;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --accent-glow: rgba(167, 139, 250, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --pill-bg: rgba(255,255,255,0.03);
+  --table-row: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8f5f0;
+  --bg-secondary: #eeebe6;
+  --bg-tertiary: #e5e0d8;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(248, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-dim: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.15);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0,0,0,0.02);
+  --table-row: rgba(0,0,0,0.02);
+}
+
+body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+.nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.3); border-bottom-color: rgba(167, 139, 250, 0.15); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
+  text-decoration: none; color: var(--text-primary);
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-logo:hover { opacity: 0.8; }
+.logo-accent { color: var(--accent); }
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none; margin: 0; padding: 0;
+}
+.nav-link {
+  font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; padding: 6px 14px; border-radius: 6px;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--accent-dim); }
+.nav-cta {
+  font-size: 0.8rem; font-weight: 600; color: #fff;
+  background: var(--accent); text-decoration: none;
+  padding: 8px 18px; border-radius: 6px;
+}
+.nav-cta:hover {
+  background: var(--accent-hover); transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.nav-toggle-btn {
+  background: none; border: 1px solid var(--border-subtle);
+  color: var(--text-secondary); cursor: pointer;
+  padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1;
+}
+.nav-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-toggles { display: flex; align-items: center; gap: 6px; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 50vh; display: flex; align-items: center;
+  justify-content: center; position: relative;
+  padding: 120px 0 60px; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 40%, rgba(167, 139, 250, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(167, 139, 250, 0.04) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 700px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 500; color: var(--accent);
+  background: var(--accent-dim); padding: 6px 16px;
+  border-radius: 100px; border: 1px solid rgba(167, 139, 250, 0.2);
+  margin-bottom: 24px;
+}
+.hero-title {
+  font-size: 3rem; font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1.1; margin: 0 0 16px; color: var(--text-primary);
+}
+.hero-title .accent-text { color: var(--accent); }
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 600px; margin: 0 auto 8px; line-height: 1.7;
+}
+.hero-meta {
+  font-size: 0.82rem; color: var(--text-tertiary);
+  margin-top: 16px;
+}
+
+/* ===== SECTION ===== */
+.section { padding: 60px 0; }
+.section-alt { background: var(--bg-secondary); }
+.section-header { margin-bottom: 40px; }
+.section-label {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 8px;
+}
+.section-title {
+  font-size: 1.8rem; font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.2; margin: 0 0 16px; color: var(--text-primary);
+}
+.section-subtitle {
+  font-size: 0.95rem; color: var(--text-secondary);
+  line-height: 1.6; margin: 0;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  transition: border-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+}
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(167, 139, 250, 0.1);
+}
+.card-icon {
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; background: var(--accent-dim);
+  border-radius: 10px; margin-bottom: 16px; color: var(--accent);
+}
+.card:hover .card-icon { background: var(--accent); color: #fff; }
+.card-title {
+  font-size: 1.1rem; font-weight: 600; margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.card-desc {
+  font-size: 0.9rem; color: var(--text-secondary);
+  margin: 0 0 8px; line-height: 1.7;
+}
+.card-desc:last-child { margin-bottom: 0; }
+
+/* ===== CHECKLIST ===== */
+.checklist { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.checklist li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;
+}
+.checklist li .check {
+  flex-shrink: 0; width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim); border-radius: 50%;
+  color: var(--accent); font-size: 0.75rem; margin-top: 2px;
+}
+.checklist li .check.done { background: rgba(52, 211, 153, 0.15); color: var(--success); }
+
+/* ===== STEP LIST ===== */
+.steps { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.steps li {
+  display: flex; align-items: flex-start; gap: 14px;
+  font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;
+}
+.steps li .step-num {
+  flex-shrink: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim); border-radius: 50%;
+  color: var(--accent); font-weight: 700; font-size: 0.8rem;
+  margin-top: 1px;
+}
+.steps li strong { color: var(--text-primary); }
+
+/* ===== GLOSSARY GRID ===== */
+.glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.glossary-item {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color 300ms ease, transform 300ms ease;
+}
+.glossary-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.glossary-term {
+  font-size: 0.95rem; font-weight: 600; color: var(--accent);
+  margin: 0 0 6px; letter-spacing: -0.02em;
+}
+.glossary-def {
+  font-size: 0.82rem; color: var(--text-secondary);
+  margin: 0; line-height: 1.6;
+}
+
+/* ===== STACK TABLE ===== */
+.stack-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); }
+.stack-table thead { background: var(--bg-tertiary); }
+.stack-table th {
+  padding: 14px 18px; font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-tertiary); text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.stack-table td {
+  padding: 14px 18px; font-size: 0.88rem; color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-glass);
+}
+.stack-table tr:last-child td { border-bottom: none; }
+.stack-table tr:hover td { background: var(--bg-glass-hover); }
+.stack-table .layer-icon { font-size: 1.1rem; margin-right: 8px; }
+
+/* ===== COST CARDS ===== */
+.cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.cost-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  transition: border-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+}
+.cost-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(167, 139, 250, 0.1);
+}
+.cost-card.featured {
+  border-color: var(--accent);
+  position: relative;
+}
+.cost-card.featured::before {
+  content: 'Most Popular';
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #fff;
+  background: var(--accent); padding: 3px 14px;
+  border-radius: 100px;
+}
+.cost-tier { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 4px; }
+.cost-price { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin: 0 0 4px; letter-spacing: -0.03em; }
+.cost-price small { font-size: 0.7rem; font-weight: 500; color: var(--text-tertiary); }
+.cost-desc { font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 16px; line-height: 1.5; }
+.cost-features { list-style: none; margin: 0; padding: 0; text-align: left; display: flex; flex-direction: column; gap: 8px; }
+.cost-features li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;
+}
+.cost-features li .cf-check { color: var(--success); flex-shrink: 0; }
+
+/* ===== SECURITY SECTION ===== */
+.security-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.security-item {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: border-color 300ms ease, transform 300ms ease;
+}
+.security-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.security-item .si-icon {
+  flex-shrink: 0; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim); border-radius: 8px;
+  color: var(--accent); font-size: 1rem;
+}
+.security-item .si-text { }
+.security-item .si-title { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin: 0 0 2px; }
+.security-item .si-desc { font-size: 0.8rem; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+/* ===== BACK LINK ===== */
+.back-section {
+  text-align: center; padding: 60px 0 80px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 40px;
+}
+.back-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; font-weight: 600; color: var(--accent);
+  text-decoration: none; padding: 12px 24px;
+  border: 1px solid var(--border-subtle); border-radius: 8px;
+  transition: all 300ms ease;
+}
+.back-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  transform: translateX(-4px);
+}
+.back-link svg { transition: transform 300ms ease; }
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ===== BADGE ROW ===== */
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; }
+.badge {
+  font-size: 0.7rem; font-weight: 500;
+  color: var(--accent); background: var(--accent-dim);
+  border: 1px solid rgba(167,139,250,0.15);
+  padding: 5px 12px; border-radius: 100px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-title { font-size: 2rem; }
+  .section-title { font-size: 1.4rem; }
+  .card { padding: 24px; }
+  .hero { padding: 100px 0 40px; }
+  .glossary-grid { grid-template-columns: 1fr; }
+  .cost-grid { grid-template-columns: 1fr; }
+  .security-grid { grid-template-columns: 1fr; }
+  .stack-table { font-size: 0.8rem; }
+  .stack-table th, .stack-table td { padding: 10px 12px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero-title { font-size: 1.7rem; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+::selection { background: var(--accent-dim); color: var(--text-primary); }
+
+/* ===== FOOTER ===== */
+.page-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 24px 0;
+  text-align: center;
+}
+.page-footer p {
+  font-size: 0.78rem; color: var(--text-tertiary); margin: 0;
+}
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== STYLE 2: CYBERPUNK ===== */
+html[data-style="2"] {
+  --accent: #00f0ff;
+  --accent-hover: #66f5ff;
+  --accent-dim: rgba(0, 240, 255, 0.12);
+  --accent-glow: rgba(0, 240, 255, 0.2);
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111122;
+  --bg-tertiary: #1a1a33;
+  --bg-card: rgba(10, 10, 15, 0.6);
+  --bg-glass: rgba(10, 10, 15, 0.75);
+}
+html[data-style="2"] .card:hover { box-shadow: 0 8px 32px rgba(0, 240, 255, 0.15); }
+html[data-style="2"] .cost-card.featured { border-color: #ff00aa; }
+html[data-style="2"] .cost-card.featured::before { background: #ff00aa; }
+html[data-style="2"] .hero::before {
+  background: radial-gradient(ellipse at 30% 40%, rgba(255, 0, 170, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(0, 240, 255, 0.08) 0%, transparent 50%);
+}
+
+/* ===== STYLE 3: NORDIC ===== */
+html[data-style="3"] {
+  --accent: #8b7cf6;
+  --accent-hover: #a99cff;
+  --accent-dim: rgba(139, 124, 246, 0.1);
+  --accent-glow: rgba(139, 124, 246, 0.15);
+  --bg-primary: #f5f5f0;
+  --bg-secondary: #eeebe6;
+  --bg-tertiary: #e5e0d8;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(245, 245, 240, 0.85);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0,0,0,0.02);
+  --table-row: rgba(0,0,0,0.02);
+}
+html[data-style="3"] .card:hover { box-shadow: 0 8px 32px rgba(139, 124, 246, 0.12); }
+html[data-style="3"] .hero::before {
+  background: radial-gradient(ellipse at 30% 40%, rgba(139, 124, 246, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(139, 124, 246, 0.04) 0%, transparent 50%);
+}
+
+/* ===== STYLE 4: COSMIC ===== */
+html[data-style="4"] {
+  --accent: #7c5cfc;
+  --accent-hover: #a385ff;
+  --accent-dim: rgba(124, 92, 252, 0.12);
+  --accent-glow: rgba(124, 92, 252, 0.2);
+  --bg-primary: #0b0d17;
+  --bg-secondary: #12152a;
+  --bg-tertiary: #1a1f3a;
+  --bg-card: rgba(11, 13, 23, 0.6);
+  --bg-glass: rgba(11, 13, 23, 0.75);
+}
+html[data-style="4"] .card:hover { box-shadow: 0 8px 32px rgba(124, 92, 252, 0.15); }
+html[data-style="4"] .cost-card.featured { border-color: #38bdf8; }
+html[data-style="4"] .cost-card.featured::before { background: #38bdf8; }
+html[data-style="4"] .hero::before {
+  background: radial-gradient(ellipse at 30% 40%, rgba(56, 189, 248, 0.1) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(124, 92, 252, 0.08) 0%, transparent 50%);
+}
+
+/* ===== STYLE 5: TERMINAL ===== */
+html[data-style="5"] {
+  --accent: #00ff41;
+  --accent-hover: #66ff99;
+  --accent-dim: rgba(0, 255, 65, 0.1);
+  --accent-glow: rgba(0, 255, 65, 0.15);
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #111111;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: rgba(12, 12, 12, 0.6);
+  --bg-glass: rgba(12, 12, 12, 0.75);
+  --border-subtle: rgba(0, 255, 65, 0.08);
+  --border-hover: rgba(0, 255, 65, 0.15);
+}
+html[data-style="5"] .card:hover { box-shadow: 0 8px 32px rgba(0, 255, 65, 0.1); }
+html[data-style="5"] .hero::before {
+  background: radial-gradient(ellipse at 30% 40%, rgba(0, 255, 65, 0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(0, 255, 65, 0.03) 0%, transparent 50%);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Based<span class="logo-accent">Node</span></a>
+    <ul class="nav-links">
+      <li><a href="#foundations" class="nav-link" data-i18n="nav_foundations">Foundations</a></li>
+      <li><a href="#os-guide" class="nav-link" data-i18n="nav_osguide">AI OS Guide</a></li>
+      <li><a href="#glossary" class="nav-link" data-i18n="nav_glossary">Glossary</a></li>
+      <li><a href="#stack" class="nav-link" data-i18n="nav_stack">Stack</a></li>
+      <li><a href="#costs" class="nav-link" data-i18n="nav_costs">Costs</a></li>
+      <li><a href="#accounting" class="nav-link" data-i18n="nav_accounting">Accounting</a></li>
+      <li><a href="#security" class="nav-link" data-i18n="nav_security">Security</a></li>
+      <li class="nav-toggles">
+        <button class="nav-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="nav-toggle-btn" id="langToggle" aria-label="Toggle language">DA | EN</button>
+      </li>
+      <li><a href="index.html" class="nav-cta">← Concepts</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content container" style="padding:0 24px">
+    <div class="hero-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+      </svg>
+      <span data-i18n="hero_badge">Practical guide · No jargon</span>
+    </div>
+    <h1 class="hero-title"><span data-i18n="hero_title">AI &amp; Automation</span> <span class="accent-text" data-i18n="hero_title2">Resources</span></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">
+      A plain-language guide for small business owners who want to understand, adopt, and profit from AI and automation — without the technical headache.
+    </p>
+    <div class="hero-meta">
+      <span data-i18n="hero_meta">Start here. No experience needed.</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ===== 1. AI FOUNDATIONS ===== -->
+<section class="section" id="foundations">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="found_label">📖 Chapter 1</span>
+    <h2 class="section-title" data-i18n="found_title">AI Foundations for Beginners</h2>
+    <p class="section-subtitle" data-i18n="found_subtitle">What can AI and automation actually do for your small business? Here is the no-jargon breakdown.</p>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="found_card1_title">Email Automation</h3>
+    <p class="card-desc" data-i18n="found_card1_desc">
+      Imagine sending the right email to the right customer at exactly the right time — without you having to click "send" every time. Email automation handles welcome sequences for new subscribers, follow-ups after purchases, reminders for abandoned carts, and monthly newsletters. It works while you sleep. A single welcome email sequence can recover 10-15% of abandoned sales, and automated follow-ups can triple your response rate on inquiries — all without you lifting a finger after the initial setup.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="found_b1_1">Drip campaigns</span>
+      <span class="badge" data-i18n="found_b1_2">Welcome sequences</span>
+      <span class="badge" data-i18n="found_b1_3">Abandoned cart</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="found_card2_title">Customer Support Bots</h3>
+    <p class="card-desc" data-i18n="found_card2_desc">
+      A simple chatbot on your website can answer common questions instantly — opening hours, pricing, shipping info, return policies — 24 hours a day, 7 days a week. When a question is too complex for the bot, it hands off to a human. This means your customers get answers in seconds instead of waiting for a reply, and you deal with fewer repetitive questions. Most small businesses see 50-70% of common questions answered automatically, freeing hours every week.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="found_b2_1">24/7 availability</span>
+      <span class="badge" data-i18n="found_b2_2">Instant answers</span>
+      <span class="badge" data-i18n="found_b2_3">Human handoff</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="found_card3_title">Data Analysis</h3>
+    <p class="card-desc" data-i18n="found_card3_desc">
+      AI can look at your sales data, customer behavior, and website traffic — and tell you what is working and what is not. It can spot patterns a human would miss: which products get bought together, which times of day your customers buy most, which marketing channels actually bring in paying customers, and even predict which customers might stop buying soon so you can reach out before they leave. No spreadsheets required — the AI does the math and gives you plain-language answers.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="found_b3_1">Sales patterns</span>
+      <span class="badge" data-i18n="found_b3_2">Customer insights</span>
+      <span class="badge" data-i18n="found_b3_3">Predictions</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="found_card4_title">Content Generation</h3>
+    <p class="card-desc" data-i18n="found_card4_desc">
+      AI can help you write social media posts, blog articles, product descriptions, email newsletters, and even video scripts. It is not about replacing your voice — it is about getting past the blank page faster. You give it your ideas and style, and it produces a first draft you can tweak. This turns a 3-hour writing session into a 30-minute editing session. Many small business owners use it to post consistently on social media without hiring a content manager.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="found_b4_1">Social media</span>
+      <span class="badge" data-i18n="found_b4_2">Blog posts</span>
+      <span class="badge" data-i18n="found_b4_3">Product descriptions</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. BUILDING YOUR AI OS ===== -->
+<section class="section section-alt" id="os-guide" style="margin:0 -24px;padding:60px 24px">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="os_label">🛠️ Chapter 2</span>
+    <h2 class="section-title" data-i18n="os_title">Building Your Own 'AI Operating System'</h2>
+    <p class="section-subtitle" data-i18n="os_subtitle">A step-by-step guide to setting up your own AI-powered business system — no technical skills required.</p>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="os_step1_title">Step 1: Start with Simple Automation Tools</h3>
+    <p class="card-desc" data-i18n="os_step1_desc">
+      You do not need to write code to automate your business. There are plenty of no-code platforms and workflow tools designed for non-technical users. These let you create "if this happens, then do that" rules — like "if someone fills out my contact form, add them to my email list and send a welcome message." Start with one simple automation: automate a task you currently do manually every day. Getting one thing working gives you the confidence to build more.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="os_b1_1">No-code platforms</span>
+      <span class="badge" data-i18n="os_b1_2">Workflow tools</span>
+      <span class="badge" data-i18n="os_b1_3">Visual builders</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 4h16v16H4z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="os_step2_title">Step 2: Connect Your Tools Together</h3>
+    <p class="card-desc" data-i18n="os_step2_desc">
+      Your business probably already uses several tools: a CRM to track customers, email (like Gmail or Outlook), a calendar (Google Calendar, Calendly), social media accounts, maybe an invoicing system. The magic happens when you connect them. When a lead fills out your website form, the information can automatically go into your CRM, trigger a welcome email, schedule a follow-up task, and add a row to your sales spreadsheet — all at once. Connection platforms make this as simple as drawing lines between boxes on a screen.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="os_b2_1">CRM integration</span>
+      <span class="badge" data-i18n="os_b2_2">Email + calendar</span>
+      <span class="badge" data-i18n="os_b2_3">Social media sync</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 3a6 6 0 0 0 6 6 6 6 0 0 0-6 6 6 6 0 0 0-6-6 6 6 0 0 0 6-6Z"/><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="os_step3_title">Step 3: Add an AI Layer</h3>
+    <p class="card-desc" data-i18n="os_step3_desc">
+      Once your tools are connected, AI makes them smarter. Your customer support bot can read your FAQ and answer questions in natural language. Your email system can generate personalized follow-ups based on what a customer bought. Your dashboard can summarize weekly sales trends and suggest what to focus on. AI can also help you draft social posts, analyze customer feedback, and even score leads so you know who to call first. Think of it as hiring a super-smart assistant who works for free.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="os_b3_1">Smart chatbots</span>
+      <span class="badge" data-i18n="os_b3_2">Content generation</span>
+      <span class="badge" data-i18n="os_b3_3">Lead scoring</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="os_step4_title">Step 4: Scale Up Gradually</h3>
+    <p class="card-desc" data-i18n="os_step4_desc">
+      Do not try to automate everything at once. Start with one flow — for example, automate your lead capture from website to CRM. Get it running smoothly. Then add another: automate your invoice reminders. Then another: automate your customer satisfaction surveys. Each automation saves you a few hours a month. As they add up, you free up entire days. Eventually, you can have a system where most of your routine operations run themselves, and you only step in for the important decisions and exceptions.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="os_b4_1">Start small</span>
+      <span class="badge" data-i18n="os_b4_2">One flow at a time</span>
+      <span class="badge" data-i18n="os_b4_3">Compound savings</span>
+    </div>
+  </div>
+
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="os_step5_title">Step 5: Keep It Secure</h3>
+    <p class="card-desc" data-i18n="os_step5_desc">
+      As you connect more tools, you share sensitive information between them. A few simple habits keep everything safe: use strong, unique passwords for every account (a password manager makes this easy), turn on two-factor authentication (2FA) everywhere it is available, back up your data regularly (most tools have automatic backup options), and never share your API keys or login credentials. Treat access to your automation system the same way you treat access to your business bank account.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="os_b5_1">Password manager</span>
+      <span class="badge" data-i18n="os_b5_2">2FA all accounts</span>
+      <span class="badge" data-i18n="os_b5_3">Regular backups</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. GLOSSARY ===== -->
+<section class="section" id="glossary">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="gloss_label">📚 Chapter 3</span>
+    <h2 class="section-title" data-i18n="gloss_title">Glossary</h2>
+    <p class="section-subtitle" data-i18n="gloss_subtitle">Common terms explained in plain language. No technical background required.</p>
+  </div>
+
+  <div class="glossary-grid">
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">LLM</h4>
+      <p class="glossary-def" data-i18n="gloss_llm">Stands for "Large Language Model." It is the brain behind modern AI chatbots and writing assistants. It has been trained on huge amounts of text so it can understand, summarize, and generate human-like responses. Think of it as a very well-read assistant who can write, explain, and answer questions.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">API</h4>
+      <p class="glossary-def" data-i18n="gloss_api">A digital handshake between two programs. When your CRM talks to your email tool, they use an API to exchange information. APIs are what allow you to connect all your different business tools so they work together as one system.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Automation</h4>
+      <p class="glossary-def" data-i18n="gloss_auto">Making a computer do a repetitive task so you do not have to. Like setting up a rule that says "when a new customer signs up, automatically send them a welcome email and add them to my CRM." Automation saves time and reduces human error.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Vector Database</h4>
+      <p class="glossary-def" data-i18n="gloss_vector">A special database that stores information by meaning rather than by keywords. It allows an AI to quickly find relevant information from your business documents, FAQs, or knowledge base — like having an instant memory of everything your company knows.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">RAG</h4>
+      <p class="glossary-def" data-i18n="gloss_rag">Stands for "Retrieval-Augmented Generation." A technique that lets an AI look up your specific business information (from your website, manuals, or FAQs) before answering a question. This means the AI gives accurate answers based on your actual business data, not just general knowledge.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Agent</h4>
+      <p class="glossary-def" data-i18n="gloss_agent">An AI program that can perform tasks on its own — like answering customer questions, writing reports, or analyzing data. Unlike a simple chatbot that just responds, an agent can take action, make decisions, and follow multi-step instructions without someone guiding every step.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Workflow</h4>
+      <p class="glossary-def" data-i18n="gloss_workflow">A sequence of automated steps that happen in order. For example: "When a form is submitted → add contact to CRM → send welcome email → create task for follow-up call." Each step triggers the next automatically.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Pipeline</h4>
+      <p class="glossary-def" data-i18n="gloss_pipeline">A series of connected steps that data flows through. A lead generation pipeline might move a person from "website visitor" → "email subscriber" → "sales call booked" → "customer" automatically, with the right actions happening at each stage.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Dashboard</h4>
+      <p class="glossary-def" data-i18n="gloss_dash">A visual screen that shows your most important business numbers in one place — sales today, new leads, open tasks, website visitors. Instead of checking five different tools, you look at one dashboard that summarizes everything. Like the instrument panel in a car.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Prompt</h4>
+      <p class="glossary-def" data-i18n="gloss_prompt">The instruction or question you give to an AI. A good prompt is clear and specific. Instead of "write about our service," try "write a 3-paragraph description of our lawn care service aimed at homeowners, highlighting our eco-friendly approach and free estimate offer." Better prompts get better results.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Embedding</h4>
+      <p class="glossary-def" data-i18n="gloss_embed">A way of converting words into numbers so the AI can understand relationships between concepts. It is how a search can find "winter coat" when you type "warm jacket" — the AI knows they are related even though the words are different.</p>
+    </div>
+    <div class="glossary-item reveal">
+      <h4 class="glossary-term">Fine-tuning</h4>
+      <p class="glossary-def" data-i18n="gloss_fine">Taking a general AI model and training it further on your specific business data so it becomes an expert in your field. Like taking a talented new employee who knows a little about everything and teaching them everything about your specific business so they become your best team member.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. RECOMMENDED STACK ===== -->
+<section class="section section-alt" id="stack" style="margin:0 -24px;padding:60px 24px">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="stack_label">🏗️ Chapter 4</span>
+    <h2 class="section-title" data-i18n="stack_title">Recommended Stack</h2>
+    <p class="section-subtitle" data-i18n="stack_subtitle">What every small business needs to build a modern, AI-powered operation — layer by layer.</p>
+  </div>
+
+  <div class="card reveal">
+    <table class="stack-table">
+      <thead>
+        <tr>
+          <th data-i18n="stack_th_layer">Layer</th>
+          <th data-i18n="stack_th_what">What It Does</th>
+          <th data-i18n="stack_th_examples">Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="layer-icon">💬</span> <strong style="color:var(--text-primary)">Communication</strong></td>
+          <td data-i18n="stack_comm_desc">Internal team chat, client messaging, and announcements. Keeps everyone on the same page without endless email threads.</td>
+          <td data-i18n="stack_comm_ex">Slack, Microsoft Teams, Discord, email</td>
+        </tr>
+        <tr>
+          <td><span class="layer-icon">👥</span> <strong style="color:var(--text-primary)">CRM</strong></td>
+          <td data-i18n="stack_crm_desc">Track every customer interaction — emails, calls, meetings, purchases. Know who your customers are and what they need.</td>
+          <td data-i18n="stack_crm_ex">HubSpot, Salesforce, Pipedrive, Airtable</td>
+        </tr>
+        <tr>
+          <td><span class="layer-icon">🌐</span> <strong style="color:var(--text-primary)">Website</strong></td>
+          <td data-i18n="stack_web_desc">Your digital storefront. Where customers find you, learn about you, and decide to work with you. Must be fast and mobile-friendly.</td>
+          <td data-i18n="stack_web_ex">Webflow, Framer, WordPress, custom build</td>
+        </tr>
+        <tr>
+          <td><span class="layer-icon">⚡</span> <strong style="color:var(--text-primary)">Automation</strong></td>
+          <td data-i18n="stack_auto_desc">The glue that connects everything. Moves data between your tools so you do not have to copy-paste manually.</td>
+          <td data-i18n="stack_auto_ex">Make, Zapier, n8n, custom workflows</td>
+        </tr>
+        <tr>
+          <td><span class="layer-icon">🧠</span> <strong style="color:var(--text-primary)">AI Layer</strong></td>
+          <td data-i18n="stack_ai_desc">Adds intelligence on top of everything else. Chatbots, content generation, data analysis, lead scoring, predictions.</td>
+          <td data-i18n="stack_ai_ex">AI chatbots, LLM APIs, custom agents, analytics</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 5. COST GUIDE ===== -->
+<section class="section" id="costs">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="cost_label">💰 Chapter 5</span>
+    <h2 class="section-title" data-i18n="cost_title">Cost Guide</h2>
+    <p class="section-subtitle" data-i18n="cost_subtitle">Rough monthly estimates for different levels of AI and automation adoption. Start where you are comfortable.</p>
+  </div>
+
+  <div class="cost-grid">
+    <div class="cost-card reveal">
+      <p class="cost-tier" data-i18n="cost_t1_tier">Starter</p>
+      <p class="cost-price">€0 <small data-i18n="cost_t1_per">/mo</small></p>
+      <p class="cost-desc" data-i18n="cost_t1_desc">Perfect for testing the waters. Get your first automation running with free tools.</p>
+      <ul class="cost-features">
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t1_f1">Basic workflow automation (1-2 flows)</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t1_f2">Simple chatbot for FAQs</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t1_f3">Free CRM tier</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t1_f4">Free email marketing (up to 2K contacts)</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t1_f5">Manual data handling</span></li>
+      </ul>
+    </div>
+
+    <div class="cost-card featured reveal">
+      <p class="cost-tier" data-i18n="cost_t2_tier">Growth</p>
+      <p class="cost-price">€50-200 <small data-i18n="cost_t2_per">/mo</small></p>
+      <p class="cost-desc" data-i18n="cost_t2_desc">Serious about automation. Connect your tools and add AI-powered features.</p>
+      <ul class="cost-features">
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t2_f1">Multiple automations (5-15 flows)</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t2_f2">AI content generation (social, email, blog)</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t2_f3">Lead scoring and follow-up sequences</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t2_f4">Paid CRM with pipeline tracking</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t2_f5">Customer support chatbot (AI-powered)</span></li>
+      </ul>
+    </div>
+
+    <div class="cost-card reveal">
+      <p class="cost-tier" data-i18n="cost_t3_tier">Scale</p>
+      <p class="cost-price">€500-2,000 <small data-i18n="cost_t3_per">/mo</small></p>
+      <p class="cost-desc" data-i18n="cost_t3_desc">Full automation across your entire business. Custom AI agents and dedicated infrastructure.</p>
+      <ul class="cost-features">
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t3_f1">Custom AI agents for your specific needs</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t3_f2">Full pipeline automation (end-to-end)</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t3_f3">Dedicated support and maintenance</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t3_f4">Custom dashboard + analytics</span></li>
+        <li><span class="cf-check">✓</span> <span data-i18n="cost_t3_f5">Priority support and rapid iteration</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card reveal" style="margin-top:24px">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="cost_note_title">A Note on Pricing</h3>
+    <p class="card-desc" data-i18n="cost_note_desc">
+      These are rough estimates. Many tools have generous free tiers that let you start without spending anything. As you grow, you can upgrade gradually. The most important thing is to start — even a single €0 automation that saves you 2 hours a week is a win. When hiring someone to build custom AI for your business, expect one-time setup costs of €1,000-10,000 depending on complexity, plus monthly hosting and API usage fees.
+    </p>
+  </div>
+</section>
+
+<!-- ===== 6. ACCOUNTING AUTOMATION ===== -->
+<section class="section" id="accounting" style="margin:0 -24px;padding:60px 24px;background:var(--bg-secondary)">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="acc_label">📊 Chapter 6</span>
+    <h2 class="section-title" data-i18n="acc_title">Accounting Automation</h2>
+    <p class="section-subtitle" data-i18n="acc_subtitle">A practical, step-by-step guide to automating your bookkeeping — no technical skills or expensive accountants needed.</p>
+  </div>
+
+  <!-- 6.1 The Problem -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_61_title">6.1 The Problem</h3>
+    <p class="card-desc" data-i18n="acc_61_desc">
+      Small business owners spend 5-10 hours every month on bookkeeping — sorting receipts, matching invoices to orders, tracking expenses, and preparing for VAT or audit. Many hire a bookkeeper at €300-800 per month for tasks that can be automated for roughly €50 per month. The result is the same organized records, but at a fraction of the cost and with zero data entry errors.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_b61_1">5-10 hrs/month wasted</span>
+      <span class="badge" data-i18n="acc_b61_2">€300-800/mo savings</span>
+      <span class="badge" data-i18n="acc_b61_3">Human error eliminated</span>
+    </div>
+  </div>
+
+  <!-- 6.2 Step 1 -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_step1_title">Step 1: Digital Receipt System</h3>
+    <p class="card-desc" data-i18n="acc_step1_desc">
+      Use your smartphone camera to photograph every receipt the moment you get it. Name each file by date and merchant — for example "2025-05-12_lunch_meeting.jpg". Save all photos to a dedicated folder in a cloud service like Google Drive, Dropbox, or OneDrive. This single habit eliminates the shoebox of crumpled receipts at tax time and gives you searchable, organized records from day one.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_bs1_1">Smartphone camera</span>
+      <span class="badge" data-i18n="acc_bs1_2">Date+merchant naming</span>
+      <span class="badge" data-i18n="acc_bs1_3">Cloud folder storage</span>
+    </div>
+  </div>
+
+  <!-- 6.2 Step 2 -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_step2_title">Step 2: Simple Database (Spreadsheet-Based)</h3>
+    <p class="card-desc" data-i18n="acc_step2_desc">
+      Create a Google Sheets or Excel workbook with four tabs. Tab 1 — "Ordrer (Orders)": Date, Customer, Amount, Paid?, Invoice #. Tab 2 — "Kvitteringer (Receipts)": Date, Merchant, Amount, Category (office, travel, software, etc.), Receipt file link. Tab 3 — "Forbrug (Expenses)": Monthly summary of rent, utilities, subscriptions, and payroll. Tab 4 — "Revision (Audit Trail)": Auto-calculated totals for revenue, expenses, VAT owed, and profit. This one spreadsheet replaces an entire bookkeeping service.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_bs2_1">4-tab workbook</span>
+      <span class="badge" data-i18n="acc_bs2_2">Orders + Receipts</span>
+      <span class="badge" data-i18n="acc_bs2_3">Auto-calculated audit</span>
+    </div>
+  </div>
+
+  <!-- 6.2 Step 3 -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="3" y1="3" x2="9" y2="9"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_step3_title">Step 3: Connect with Automation</h3>
+    <p class="card-desc" data-i18n="acc_step3_desc">
+      Use a no-code automation tool (like Make, Zapier, or n8n) to connect everything. Set up rules: when an invoice is marked paid in your payment processor → auto-add a row to your Orders tab. When a new receipt image appears in your cloud folder → auto-add it to your Receipts tab with the filename as the description. Monthly: auto-import a bank CSV export to update the Expenses tab. Quarterly: auto-calculate VAT report numbers from the Audit Trail tab. The system runs itself.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_bs3_1">No-code tools</span>
+      <span class="badge" data-i18n="acc_bs3_2">Auto-add rows</span>
+      <span class="badge" data-i18n="acc_bs3_3">Quarterly VAT prep</span>
+    </div>
+  </div>
+
+  <!-- 6.2 Step 4 -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_step4_title">Step 4: The Excel Formulas</h3>
+    <p class="card-desc" data-i18n="acc_step4_desc">
+      Use SUMIF to automatically categorize expenses by type — for example, =SUMIF(Kvitteringer!D:D,"office",Kvitteringer!C:C) adds up all office supply spending. Use XLOOKUP to match a receipt to its related order. Create a simple Dashboard sheet with cells showing: Revenue this month (=SUM(Ordrer!C:C)), Expenses this month (=SUM(Forbrug!B:B)), Profit (=Revenue-Expenses), and VAT payable (=Profit*0.25 for 25% VAT). Add conditional formatting: red background if an expense exceeds budget, green if profit exceeds target.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_bs4_1">SUMIF formulas</span>
+      <span class="badge" data-i18n="acc_bs4_2">XLOOKUP matching</span>
+      <span class="badge" data-i18n="acc_bs4_3">Dashboard + conditional</span>
+    </div>
+  </div>
+
+  <!-- 6.3 Cost Savings Table -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_63_title">6.3 Cost Savings</h3>
+    <div style="overflow-x:auto">
+      <table class="stack-table" style="margin-top:12px">
+        <thead>
+          <tr>
+            <th data-i18n="acc_tbl_before">Before (Manual / Bookkeeper)</th>
+            <th data-i18n="acc_tbl_after">After (Automated DIY)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="acc_tbl_r1b">€300-800/mo for bookkeeper</td>
+            <td data-i18n="acc_tbl_r1a">€0-50/mo for tools</td>
+          </tr>
+          <tr>
+            <td data-i18n="acc_tbl_r2b">5-10 hrs/week manual work</td>
+            <td data-i18n="acc_tbl_r2a">30 min/week review</td>
+          </tr>
+          <tr>
+            <td data-i18n="acc_tbl_r3b">Receipt pileups at tax time</td>
+            <td data-i18n="acc_tbl_r3a">Real-time organized records</td>
+          </tr>
+          <tr>
+            <td data-i18n="acc_tbl_r4b">Human errors in data entry</td>
+            <td data-i18n="acc_tbl_r4a">Auto-calculated, consistent</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6.4 Template Download -->
+  <div class="card reveal">
+    <div class="card-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    </div>
+    <h3 class="card-title" data-i18n="acc_64_title">6.4 Free Template</h3>
+    <p class="card-desc" data-i18n="acc_64_desc">
+      Get a ready-to-use spreadsheet template with all four tabs, pre-built formulas, and conditional formatting already set up. Just fill in your data and the calculations happen automatically. Contact us for your free download — no strings attached.
+    </p>
+    <div class="badge-row">
+      <span class="badge" data-i18n="acc_b64_1">Free download</span>
+      <span class="badge" data-i18n="acc_b64_2">Pre-built formulas</span>
+      <span class="badge" data-i18n="acc_b64_3">Ready in minutes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. SECURITY CHECKLIST ===== -->
+<section class="section section-alt" id="security" style="margin:0 -24px;padding:60px 24px">
+  <div class="section-header reveal">
+    <span class="section-label" data-i18n="sec_label">🔒 Chapter 7</span>
+    <h2 class="section-title" data-i18n="sec_title">Security Checklist</h2>
+    <p class="section-subtitle" data-i18n="sec_subtitle">Simple, practical steps to keep your business data safe as you add more tools and automation.</p>
+  </div>
+
+  <div class="security-grid">
+    <div class="security-item reveal">
+      <div class="si-icon">🔐</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i1_title">Enable 2FA on Everything</p>
+        <p class="si-desc" data-i18n="sec_i1_desc">Two-factor authentication adds a second layer of protection. Even if someone gets your password, they cannot log in without your phone or authenticator app. Enable it on email, CRM, bank accounts, social media, and automation tools.</p>
+      </div>
+    </div>
+    <div class="security-item reveal">
+      <div class="si-icon">💾</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i2_title">Regular Backups</p>
+        <p class="si-desc" data-i18n="sec_i2_desc">Set up automatic backups for your website, customer data, and critical files. Most tools offer this in settings. Test your backups at least once a quarter — a backup you cannot restore is not a backup at all.</p>
+      </div>
+    </div>
+    <div class="security-item reveal">
+      <div class="si-icon">🔑</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i3_title">Use a Password Manager</p>
+        <p class="si-desc" data-i18n="sec_i3_desc">Stop reusing passwords. A password manager generates and stores strong, unique passwords for every account. You only need to remember one master password. It also helps you spot fake login pages. Popular options include 1Password, Bitwarden, and KeePass.</p>
+      </div>
+    </div>
+    <div class="security-item reveal">
+      <div class="si-icon">🚫</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i4_title">Never Share API Keys</p>
+        <p class="si-desc" data-i18n="sec_i4_desc">API keys are like digital passwords for your tools. Never share them via email, messages, or post them on public websites. Treat them like your credit card number. If you suspect a key is compromised, revoke it immediately and generate a new one.</p>
+      </div>
+    </div>
+    <div class="security-item reveal">
+      <div class="si-icon">🔄</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i5_title">Keep Software Updated</p>
+        <p class="si-desc" data-i18n="sec_i5_desc">Outdated software is the most common way attackers get in. Enable automatic updates on your website platform, plugins, and any software you use. For tools like your CRM and automation platforms, they handle updates themselves — just make sure you are on a supported plan.</p>
+      </div>
+    </div>
+    <div class="security-item reveal">
+      <div class="si-icon">👁️</div>
+      <div class="si-text">
+        <p class="si-title" data-i18n="sec_i6_title">Review Connected Apps</p>
+        <p class="si-desc" data-i18n="sec_i6_desc">Every few months, check which apps have access to your accounts. Revoke access for anything you no longer use. If an employee leaves, remove their access immediately. Less connected apps means fewer potential weak points.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BACK LINKS ===== -->
+<div class="back-section reveal">
+  <div class="section-header" style="margin-bottom:24px">
+    <span class="section-label" data-i18n="back_label">⬅️ Explore More</span>
+    <h2 class="section-title" data-i18n="back_title">Ready to see these concepts in action?</h2>
+    <p class="section-subtitle" data-i18n="back_subtitle">Check out our design concepts or security & privacy page to see how this all comes together.</p>
+  </div>
+  <div class="back-links">
+    <a href="index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      <span data-i18n="back_concepts">View All Concepts</span>
+    </a>
+    <a href="security-privacy.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-i18n="back_security">Security &amp; Privacy</span>
+    </a>
+  </div>
+</div>
+
+</div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  <div class="container">
+    <p>&copy; 2026 Based Node. <span data-i18n="footer_text">Practical resources for small business owners exploring AI and automation.</span></p>
+  </div>
+</footer>
+
+<script>
+// ===== STYLE PARAM =====
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const style = params.get('style');
+  console.log('[Style Debug] URL style param:', style);
+  if (style && ['2','3','4','5'].includes(style)) {
+    document.documentElement.setAttribute('data-style', style);
+    try { localStorage.setItem('bn-style', style); } catch(e) {}
+    console.log('[Style Debug] Set data-style to:', style);
+  } else {
+    // Fallback: read from localStorage (preserves style across page navigations)
+    let savedStyle = null;
+    try { savedStyle = localStorage.getItem('bn-style'); } catch(e) {}
+    if (savedStyle && ['2','3','4','5'].includes(savedStyle)) {
+      document.documentElement.setAttribute('data-style', savedStyle);
+      console.log('[Style Debug] Restored from localStorage:', savedStyle);
+    }
+  }
+})();
+
+// ===== TEXT CONTENT OBJECTS =====
+const TEXT = {
+  da: {
+    nav_foundations: 'Grundlag', nav_osguide: 'AI OS Guide', nav_glossary: 'Ordliste', nav_stack: 'Stack', nav_costs: 'Omkostninger', nav_security: 'Sikkerhed',
+    hero_badge: 'Praktisk guide · Uden jargon',
+    hero_title: 'AI & Automation',
+    hero_title2: 'Ressourcer',
+    hero_subtitle: 'En letforståelig guide for små virksomhedsejere, der vil forstå, tage i brug og tjene på AI og automation — uden den tekniske hovedpine.',
+    hero_meta: 'Start her. Ingen erfaring nødvendig.',
+    found_label: '📖 Kapitel 1',
+    found_title: 'AI Grundlag for Begyndere',
+    found_subtitle: 'Hvad kan AI og automation gøre for din lille virksomhed? Her er den jargongfri gennemgang.',
+    found_card1_title: 'Email Automation',
+    found_card1_desc: 'Forestil dig at sende den rigtige email til den rigtige kunde på præcis det rigtige tidspunkt — uden at du skal klikke "send" hver gang. Email automation håndterer velkomstsekvenser for nye abonnenter, opfølgninger efter køb, påmindelser om efterladte indkøbskurve og månedlige nyhedsbreve. Det virker mens du sover.',
+    found_b1_1: 'Drip-kampagner', found_b1_2: 'Velkomstsekvenser', found_b1_3: 'Efterladte indkøbskurve',
+    found_card2_title: 'Kundesupport Bots',
+    found_card2_desc: 'En simpel chatbot på din hjemmeside kan besvare almindelige spørgsmål med det samme — åbningstider, priser, forsendelsesinfo, returpolitikker — 24 timer i døgnet, 7 dage om ugen. Når et spørgsmål er for komplekst, overdrager den til et menneske. De fleste små virksomheder ser 50-70% af almindelige spørgsmål besvaret automatisk.',
+    found_b2_1: '24/7 tilgængelighed', found_b2_2: 'Øjeblikkelige svar', found_b2_3: 'Menneskelig overdragelse',
+    found_card3_title: 'Dataanalyse',
+    found_card3_desc: 'AI kan se på dine salgsdata, kundeadfærd og hjemmesidetrafik — og fortælle dig hvad der virker, og hvad der ikke gør. Det kan opdage mønstre: hvilke produkter købes sammen, hvornår dine kunder køber mest, hvilke markedsføringskanaler der faktisk giver betalende kunder. Ingen regneark nødvendige — AI laver regnestykket og giver dig svar på almindeligt sprog.',
+    found_b3_1: 'Salgsmønstre', found_b3_2: 'Kundeindsigt', found_b3_3: 'Forudsigelser',
+    found_card4_title: 'Indholdsgenerering',
+    found_card4_desc: 'AI kan hjælpe dig med at skrive sociale medie-opslag, blogindlæg, produktbeskrivelser, email-nyhedsbreve og endda videoscripts. Det handler ikke om at erstatte din stemme — det handler om at komme forbi den tomme side hurtigere. Du giver den dine ideer og stil, og den producerer et første udkast, du kan redigere.',
+    found_b4_1: 'Sociale medier', found_b4_2: 'Blogindlæg', found_b4_3: 'Produktbeskrivelser',
+    os_label: '🛠️ Kapitel 2',
+    os_title: 'Byg Dit Eget "AI Operativsystem"',
+    os_subtitle: 'En trin-for-trin guide til at opsætte dit eget AI-drevne forretningssystem — uden tekniske færdigheder.',
+    os_step1_title: 'Trin 1: Start med Simple Automationsværktøjer',
+    os_step1_desc: 'Du behøver ikke skrive kode for at automatisere din virksomhed. Der findes masser af no-code platforme og workflow-værktøjer designet til ikke-tekniske brugere. Start med én simpel automatisering: automatiser en opgave, du laver manuelt hver dag.',
+    os_b1_1: 'No-code platforme', os_b1_2: 'Workflow-værktøjer', os_b1_3: 'Visuelle byggere',
+    os_step2_title: 'Trin 2: Forbind Dine Værktøjer',
+    os_step2_desc: 'Din virksomhed bruger sikkert allerede flere værktøjer: et CRM, email, kalender, sociale medier. Magien sker når du forbinder dem. Når en lead udfylder din hjemmesideformular, kan oplysningerne automatisk gå ind i dit CRM, udløse en velkomstemail og planlægge en opgave.',
+    os_b2_1: 'CRM-integration', os_b2_2: 'Email + kalender', os_b2_3: 'Sociale medier-synk',
+    os_step3_title: 'Trin 3: Tilføj et AI-lag',
+    os_step3_desc: 'Når dine værktøjer er forbundet, gør AI dem smartere. Din chatbot kan læse din FAQ og svare på naturligt sprog. Dit emailsystem kan generere personlige opfølgninger baseret på hvad en kunde har købt. Tænk på det som at ansætte en super-smart assistent, der arbejder gratis.',
+    os_b3_1: 'Smarte chatbots', os_b3_2: 'Indholdsgenerering', os_b3_3: 'Lead-scoring',
+    os_step4_title: 'Trin 4: Skalér Gradvist',
+    os_step4_desc: 'Prøv ikke at automatisere alt på én gang. Start med ét flow — for eksempel automatiser din lead-indsamling fra hjemmeside til CRM. Få det til at køre. Tilføj så et andet: automatiser dine fakturarydelser. Hver automatisering sparer dig nogle timer om måneden.',
+    os_b4_1: 'Start småt', os_b4_2: 'Ét flow ad gangen', os_b4_3: 'Sammensatte besparelser',
+    os_step5_title: 'Trin 5: Hold Det Sikkert',
+    os_step5_desc: 'Når du forbinder flere værktøjer, deler du følsomme oplysninger mellem dem. Nogle få enkle vaner holder alt sikkert: brug stærke, unikke adgangskoder til hver konto, slå to-faktor-godkendelse til, backup dine data regelmæssigt, og del aldrig dine API-nøgler.',
+    os_b5_1: 'Adgangskodeadministrator', os_b5_2: '2FA på alle konti', os_b5_3: 'Regelmæssig backup',
+    gloss_label: '📚 Kapitel 3',
+    gloss_title: 'Ordliste',
+    gloss_subtitle: 'Almindelige termer forklaret i almindeligt sprog.',
+    gloss_llm: 'Står for "Large Language Model". Det er hjernen bag moderne AI-chatbots og skriveassistenter. Trænet på store mængder tekst, så den kan forstå, opsummere og generere menneskelignende svar.',
+    gloss_api: 'Et digitalt håndtryk mellem to programmer. Når dit CRM taler med din email, bruger de en API til at udveksle information. APIer gør det muligt at forbinde dine forskellige forretningsværktøjer.',
+    gloss_auto: 'At få en computer til at udføre en gentagen opgave, så du ikke skal. Som at sætte en regel op: "når en ny kunde tilmelder sig, send automatisk en velkomstemail".',
+    gloss_vector: 'En særlig database, der gemmer information efter betydning snarere end nøgleord. Gør det muligt for AI hurtigt at finde relevant information fra dine forretningsdokumenter eller FAQ.',
+    gloss_rag: 'Står for "Retrieval-Augmented Generation". En teknik der lader AI slå dine specifikke forretningsoplysninger op før den svarer. Det giver præcise svar baseret på dine faktiske data.',
+    gloss_agent: 'Et AI-program der kan udføre opgaver på egen hånd — svare på kundespørgsmål, skrive rapporter eller analysere data. Kan tage beslutninger og følge flertrinsinstruktioner.',
+    gloss_workflow: 'En sekvens af automatiserede trin, der sker i rækkefølge. F.eks.: "Når en formular indsendes → tilføj kontakt til CRM → send velkomstemail → opret opgave til opfølgning".',
+    gloss_pipeline: 'En række forbundne trin som data flyder igennem. En lead-genereringspipeline flytter en person fra "hjemmesidebesøgende" → "emailabonnent" → "kunde" automatisk.',
+    gloss_dash: 'En visuel skærm, der viser dine vigtigste forretningstal ét sted — dagens salg, nye leads, åbne opgaver, hjemmesidebesøgende. Som instrumentbrættet i en bil.',
+    gloss_prompt: 'Instruktionen eller spørgsmålet du giver til en AI. En god prompt er klar og specifik. I stedet for "skriv om vores service", prøv "skriv en 3-afsnits beskrivelse af vores plæneplejeservice".',
+    gloss_embed: 'En måde at konvertere ord til tal, så AI kan forstå relationer mellem begreber. Det er sådan, at en søgning kan finde "vinterjakke", når du skriver "varm frakke".',
+    gloss_fine: 'At tage en generel AI-model og træne den videre på din specifikke forretningsdata, så den bliver ekspert i dit felt. Som at lære en ny medarbejder alt om din virksomhed.',
+    stack_label: '🏗️ Kapitel 4',
+    stack_title: 'Anbefalet Stack',
+    stack_subtitle: 'Hvad enhver lille virksomhed har brug for at bygge en moderne, AI-drevet operation — lag for lag.',
+    stack_th_layer: 'Lag', stack_th_what: 'Formål', stack_th_examples: 'Eksempler',
+    stack_comm_desc: 'Intern teamchat, kundekommunikation og meddelelser. Holder alle opdateret uden endeløse email-tråde.',
+    stack_comm_ex: 'Slack, Microsoft Teams, Discord, email',
+    stack_crm_desc: 'Spor hver kundeinteraktion — emails, opkald, møder, køb. Kend dine kunder og hvad de har brug for.',
+    stack_crm_ex: 'HubSpot, Salesforce, Pipedrive, Airtable',
+    stack_web_desc: 'Din digitale butiksfacade. Hvor kunder finder dig, lærer dig at kende og beslutter at arbejde med dig.',
+    stack_web_ex: 'Webflow, Framer, WordPress, custom build',
+    stack_auto_desc: 'Limene der forbinder alt. Flytter data mellem dine værktøjer så du ikke behøver kopiere manuelt.',
+    stack_auto_ex: 'Make, Zapier, n8n, custom workflows',
+    stack_ai_desc: 'Tilføjer intelligens oven på alt andet. Chatbots, indholdsgenerering, dataanalyse, lead-scoring, forudsigelser.',
+    stack_ai_ex: 'AI chatbots, LLM APIer, custom agents, analyse',
+    cost_label: '💰 Kapitel 5',
+    cost_title: 'Omkostningsguide',
+    cost_subtitle: 'Omtrentlige månedlige estimater for forskellige niveauer af AI- og automationsadoption.',
+    cost_t1_tier: 'Starter', cost_t1_per: '/md', cost_t1_desc: 'Perfekt til at teste vandet. Få din første automatisering i gang med gratis værktøjer.',
+    cost_t1_f1: 'Grundlæggende workflow-automation (1-2 flows)', cost_t1_f2: 'Simpel chatbot til FAQ', cost_t1_f3: 'Gratis CRM-niveau', cost_t1_f4: 'Gratis email marketing (op til 2K kontakter)', cost_t1_f5: 'Manuel datahåndtering',
+    cost_t2_tier: 'Vækst', cost_t2_per: '/md', cost_t2_desc: 'Seriøs om automation. Forbind dine værktøjer og tilføj AI-drevne funktioner.',
+    cost_t2_f1: 'Flere automatiseringer (5-15 flows)', cost_t2_f2: 'AI indholdsgenerering (social, email, blog)', cost_t2_f3: 'Lead-scoring og opfølgningssekvenser', cost_t2_f4: 'Betalt CRM med pipeline-sporing', cost_t2_f5: 'Kundesupport chatbot (AI-drevet)',
+    cost_t3_tier: 'Skalér', cost_t3_per: '/md', cost_t3_desc: 'Fuld automation på tværs af hele din virksomhed. Custom AI-agenter og dedikeret infrastruktur.',
+    cost_t3_f1: 'Custom AI-agenter til dine specifikke behov', cost_t3_f2: 'Fuld pipeline-automation (end-to-end)', cost_t3_f3: 'Dedikeret support og vedligeholdelse', cost_t3_f4: 'Custom dashboard + analyse', cost_t3_f5: 'Prioritetssupport og hurtig iteration',
+    cost_note_title: 'En Bemærkning om Priser',
+    cost_note_desc: 'Dette er grove estimater. Mange værktøjer har generøse gratis niveauer, der lader dig starte uden at bruge noget. Det vigtigste er at starte — selv en enkelt 0 kr automatisering der sparer dig 2 timer om ugen er en gevinst.',
+    nav_accounting: 'Regnskab',
+    acc_label: '📊 Kapitel 6',
+    acc_title: 'Regnskabsautomatisering',
+    acc_subtitle: 'En praktisk, trin-for-trin guide til at automatisere din bogføring — uden tekniske færdigheder eller dyre revisorer.',
+    acc_61_title: '6.1 Problemet',
+    acc_61_desc: 'Små virksomhedsejere bruger 5-10 timer hver måned på bogføring — sortering af kvitteringer, matchning af fakturaer til ordrer, sporing af udgifter og forberedelse til moms eller revision. Mange ansætter en bogholder til 2.100-5.600 kr om måneden for opgaver, der kan automatiseres for omkring 350 kr om måneden. Resultatet er de samme organiserede poster, men til en brøkdel af prisen og uden dataindtastningsfejl.',
+    acc_b61_1: '5-10 timer/måned spildt',
+    acc_b61_2: '2.100-5.600 kr/md besparelse',
+    acc_b61_3: 'Menneskelige fejl elimineret',
+    acc_step1_title: 'Trin 1: Digitalt Kvitteringssystem',
+    acc_step1_desc: 'Brug dit smartphone-kamera til at fotografere hver kvittering i det øjeblik du får den. Navngiv hver fil efter dato og forhandler — f.eks. "2025-05-12_lunch_meeting.jpg". Gem alle billeder i en dedikeret mappe i en skytjeneste som Google Drive, Dropbox eller OneDrive. Denne ene vane eliminerer skotøjsæsken med krøllede kvitteringer ved skattetid og giver dig søgbare, organiserede poster fra dag ét.',
+    acc_bs1_1: 'Smartphone-kamera',
+    acc_bs1_2: 'Dato+forhandlernavn',
+    acc_bs1_3: 'Skymappelagring',
+    acc_step2_title: 'Trin 2: Simpel Database (Regnearksbaseret)',
+    acc_step2_desc: 'Opret en Google Sheets eller Excel-projektmappe med fire faner. Fane 1 — "Ordrer": Dato, Kunde, Beløb, Betalt?, Faktura #. Fane 2 — "Kvitteringer": Dato, Forhandler, Beløb, Kategori (kontor, rejse, software osv.), Kvitteringsfillink. Fane 3 — "Forbrug": Månedlig oversigt over husleje, forsyningsselskaber, abonnementer og lønninger. Fane 4 — "Revision": Auto-beregnede totaler for indtægter, udgifter, moms og overskud. Dette ene regneark erstatter en hel bogholderitjeneste.',
+    acc_bs2_1: '4-fane projektmappe',
+    acc_bs2_2: 'Ordrer + Kvitteringer',
+    acc_bs2_3: 'Auto-beregnet revision',
+    acc_step3_title: 'Trin 3: Forbind med Automatisering',
+    acc_step3_desc: 'Brug et no-code automatiseringsværktøj (som Make, Zapier eller n8n) til at forbinde alt. Opsæt regler: når en faktura markeres som betalt i din betalingsprocessor → auto-tilføj en række til din Ordrer-fane. Når et nyt kvitteringsbillede vises i din skymappe → auto-tilføj det til din Kvitteringer-fane med filnavnet som beskrivelse. Månedligt: auto-importer et bank-CSV-eksport til at opdatere Forbrug-fanen. Kvartalsvis: auto-beregn momsrapporttal fra Revision-fanen. Systemet kører sig selv.',
+    acc_bs3_1: 'No-code værktøjer',
+    acc_bs3_2: 'Auto-tilføj rækker',
+    acc_bs3_3: 'Kvartalsvis momsforberedelse',
+    acc_step4_title: 'Trin 4: Excel-formlerne',
+    acc_step4_desc: 'Brug SUMIF til automatisk at kategorisere udgifter efter type — f.eks. =SUMIF(Kvitteringer!D:D,"kontor",Kvitteringer!C:C) summerer alle kontorartikeludgifter. Brug XLOOKUP til at matche en kvittering til dens relaterede ordre. Opret et simpelt Dashboard-ark med celler der viser: Indtægt denne måned (=SUM(Ordrer!C:C)), Udgifter denne måned (=SUM(Forbrug!B:B)), Overskud (=Indtægt-Udgifter) og moms skyldig (=Overskud*0,25 for 25% moms). Tilføj betinget formatering: rød baggrund hvis en udgift overstiger budget, grøn hvis overskud overstiger målet.',
+    acc_bs4_1: 'SUMIF-formler',
+    acc_bs4_2: 'XLOOKUP-matchning',
+    acc_bs4_3: 'Dashboard + betinget',
+    acc_63_title: '6.3 Omkostningsbesparelser',
+    acc_tbl_before: 'Før (Manuel / Bogholder)',
+    acc_tbl_after: 'Efter (Automatiseret Gør-Det-Selv)',
+    acc_tbl_r1b: '2.100-5.600 kr/md for bogholder',
+    acc_tbl_r1a: '0-350 kr/md for værktøjer',
+    acc_tbl_r2b: '5-10 timer/uge manuelt arbejde',
+    acc_tbl_r2a: '30 min/uge gennemgang',
+    acc_tbl_r3b: 'Kvitteringsbunker ved skattetid',
+    acc_tbl_r3a: 'Realtids organiserede poster',
+    acc_tbl_r4b: 'Menneskelige fejl i dataindtastning',
+    acc_tbl_r4a: 'Auto-beregnet, konsekvent',
+    acc_64_title: '6.4 Gratis Skabelon',
+    acc_64_desc: 'Få en klar-til-brug regnearksskabelon med alle fire faner, præ-byggede formler og betinget formatering allerede sat op. Udfyld blot dine data og beregningerne sker automatisk. Kontakt os for din gratis download — uden forpligtelser.',
+    acc_b64_1: 'Gratis download',
+    acc_b64_2: 'Præ-byggede formler',
+    acc_b64_3: 'Klar på få minutter',
+    sec_label: '🔒 Kapitel 7',
+    sec_title: 'Sikkerhedstjekliste',
+    sec_subtitle: 'Enkle, praktiske skridt til at holde dine forretningsdata sikre, når du tilføjer flere værktøjer og automatisering.',
+    sec_i1_title: 'Aktivér 2FA overalt',
+    sec_i1_desc: 'To-faktor-godkendelse tilføjer et ekstra lag af beskyttelse. Selv hvis nogen får din adgangskode, kan de ikke logge ind uden din telefon. Aktivér det på email, CRM, bankkonti, sociale medier og automationsværktøjer.',
+    sec_i2_title: 'Regelmæssig Backup',
+    sec_i2_desc: 'Opsæt automatisk backup af din hjemmeside, kundedata og kritiske filer. Test dine backups mindst en gang i kvartalet — en backup du ikke kan gendanne, er slet ikke en backup.',
+    sec_i3_title: 'Brug en Adgangskodeadministrator',
+    sec_i3_desc: 'Stop med at genbruge adgangskoder. En adgangskodeadministrator genererer og gemmer stærke, unikke adgangskoder til hver konto. Du behøver kun at huske én hovedadgangskode.',
+    sec_i4_title: 'Del Aldrig API-nøgler',
+    sec_i4_desc: 'API-nøgler er som digitale adgangskoder til dine værktøjer. Del dem aldrig via email, beskeder eller på offentlige hjemmesider. Behandl dem som dit kreditkortnummer.',
+    sec_i5_title: 'Hold Software Opdateret',
+    sec_i5_desc: 'Forældet software er den mest almindelige måde angribere kommer ind. Aktivér automatiske opdateringer på din hjemmesideplatform, plugins og al software du bruger.',
+    sec_i6_title: 'Gennemgå Forbundne Apps',
+    sec_i6_desc: 'Tjek hvert par måneder, hvilke apps der har adgang til dine konti. Fjern adgang for alt du ikke længere bruger. Færre forbundne apps betyder færre potentielle svage punkter.',
+    back_label: '⬅️ Udforsk Mere',
+    back_title: 'Klar til at se disse koncepter i aktion?',
+    back_subtitle: 'Tjek vores designkoncepter eller sikkerheds- og privatside for at se, hvordan det hele hænger sammen.',
+    back_concepts: 'Se Alle Koncepter',
+    back_security: 'Sikkerhed & Privatliv',
+    footer_text: 'Praktiske ressourcer for små virksomhedsejere der udforsker AI og automation.'
+  },
+  en: {
+    nav_foundations: 'Foundations', nav_osguide: 'AI OS Guide', nav_glossary: 'Glossary', nav_stack: 'Stack', nav_costs: 'Costs', nav_security: 'Security',
+    hero_badge: 'Practical guide · No jargon',
+    hero_title: 'AI & Automation',
+    hero_title2: 'Resources',
+    hero_subtitle: 'A plain-language guide for small business owners who want to understand, adopt, and profit from AI and automation — without the technical headache.',
+    hero_meta: 'Start here. No experience needed.',
+    found_label: '📖 Chapter 1',
+    found_title: 'AI Foundations for Beginners',
+    found_subtitle: 'What can AI and automation actually do for your small business? Here is the no-jargon breakdown.',
+    found_card1_title: 'Email Automation',
+    found_card1_desc: 'Imagine sending the right email to the right customer at exactly the right time — without you having to click "send" every time. Email automation handles welcome sequences for new subscribers, follow-ups after purchases, reminders for abandoned carts, and monthly newsletters. It works while you sleep. A single welcome email sequence can recover 10-15% of abandoned sales, and automated follow-ups can triple your response rate on inquiries — all without you lifting a finger after the initial setup.',
+    found_b1_1: 'Drip campaigns', found_b1_2: 'Welcome sequences', found_b1_3: 'Abandoned cart',
+    found_card2_title: 'Customer Support Bots',
+    found_card2_desc: 'A simple chatbot on your website can answer common questions instantly — opening hours, pricing, shipping info, return policies — 24 hours a day, 7 days a week. When a question is too complex for the bot, it hands off to a human. This means your customers get answers in seconds instead of waiting for a reply, and you deal with fewer repetitive questions. Most small businesses see 50-70% of common questions answered automatically, freeing hours every week.',
+    found_b2_1: '24/7 availability', found_b2_2: 'Instant answers', found_b2_3: 'Human handoff',
+    found_card3_title: 'Data Analysis',
+    found_card3_desc: 'AI can look at your sales data, customer behavior, and website traffic — and tell you what is working and what is not. It can spot patterns a human would miss: which products get bought together, which times of day your customers buy most, which marketing channels actually bring in paying customers, and even predict which customers might stop buying soon so you can reach out before they leave. No spreadsheets required — the AI does the math and gives you plain-language answers.',
+    found_b3_1: 'Sales patterns', found_b3_2: 'Customer insights', found_b3_3: 'Predictions',
+    found_card4_title: 'Content Generation',
+    found_card4_desc: 'AI can help you write social media posts, blog articles, product descriptions, email newsletters, and even video scripts. It is not about replacing your voice — it is about getting past the blank page faster. You give it your ideas and style, and it produces a first draft you can tweak. This turns a 3-hour writing session into a 30-minute editing session. Many small business owners use it to post consistently on social media without hiring a content manager.',
+    found_b4_1: 'Social media', found_b4_2: 'Blog posts', found_b4_3: 'Product descriptions',
+    os_label: '🛠️ Chapter 2',
+    os_title: 'Building Your Own "AI Operating System"',
+    os_subtitle: 'A step-by-step guide to setting up your own AI-powered business system — no technical skills required.',
+    os_step1_title: 'Step 1: Start with Simple Automation Tools',
+    os_step1_desc: 'You do not need to write code to automate your business. There are plenty of no-code platforms and workflow tools designed for non-technical users. These let you create "if this happens, then do that" rules — like "if someone fills out my contact form, add them to my email list and send a welcome message." Start with one simple automation: automate a task you currently do manually every day. Getting one thing working gives you the confidence to build more.',
+    os_b1_1: 'No-code platforms', os_b1_2: 'Workflow tools', os_b1_3: 'Visual builders',
+    os_step2_title: 'Step 2: Connect Your Tools Together',
+    os_step2_desc: 'Your business probably already uses several tools: a CRM to track customers, email (like Gmail or Outlook), a calendar (Google Calendar, Calendly), social media accounts, maybe an invoicing system. The magic happens when you connect them. When a lead fills out your website form, the information can automatically go into your CRM, trigger a welcome email, schedule a follow-up task, and add a row to your sales spreadsheet — all at once. Connection platforms make this as simple as drawing lines between boxes on a screen.',
+    os_b2_1: 'CRM integration', os_b2_2: 'Email + calendar', os_b2_3: 'Social media sync',
+    os_step3_title: 'Step 3: Add an AI Layer',
+    os_step3_desc: 'Once your tools are connected, AI makes them smarter. Your customer support bot can read your FAQ and answer questions in natural language. Your email system can generate personalized follow-ups based on what a customer bought. Your dashboard can summarize weekly sales trends and suggest what to focus on. AI can also help you draft social posts, analyze customer feedback, and even score leads so you know who to call first. Think of it as hiring a super-smart assistant who works for free.',
+    os_b3_1: 'Smart chatbots', os_b3_2: 'Content generation', os_b3_3: 'Lead scoring',
+    os_step4_title: 'Step 4: Scale Up Gradually',
+    os_step4_desc: 'Do not try to automate everything at once. Start with one flow — for example, automate your lead capture from website to CRM. Get it running smoothly. Then add another: automate your invoice reminders. Then another: automate your customer satisfaction surveys. Each automation saves you a few hours a month. As they add up, you free up entire days. Eventually, you can have a system where most of your routine operations run themselves, and you only step in for the important decisions and exceptions.',
+    os_b4_1: 'Start small', os_b4_2: 'One flow at a time', os_b4_3: 'Compound savings',
+    os_step5_title: 'Step 5: Keep It Secure',
+    os_step5_desc: 'As you connect more tools, you share sensitive information between them. A few simple habits keep everything safe: use strong, unique passwords for every account (a password manager makes this easy), turn on two-factor authentication (2FA) everywhere it is available, back up your data regularly (most tools have automatic backup options), and never share your API keys or login credentials. Treat access to your automation system the same way you treat access to your business bank account.',
+    os_b5_1: 'Password manager', os_b5_2: '2FA all accounts', os_b5_3: 'Regular backups',
+    gloss_label: '📚 Chapter 3',
+    gloss_title: 'Glossary',
+    gloss_subtitle: 'Common terms explained in plain language. No technical background required.',
+    gloss_llm: 'Stands for "Large Language Model." It is the brain behind modern AI chatbots and writing assistants. It has been trained on huge amounts of text so it can understand, summarize, and generate human-like responses. Think of it as a very well-read assistant who can write, explain, and answer questions.',
+    gloss_api: 'A digital handshake between two programs. When your CRM talks to your email tool, they use an API to exchange information. APIs are what allow you to connect all your different business tools so they work together as one system.',
+    gloss_auto: 'Making a computer do a repetitive task so you do not have to. Like setting up a rule that says "when a new customer signs up, automatically send them a welcome email and add them to my CRM." Automation saves time and reduces human error.',
+    gloss_vector: 'A special database that stores information by meaning rather than by keywords. It allows an AI to quickly find relevant information from your business documents, FAQs, or knowledge base — like having an instant memory of everything your company knows.',
+    gloss_rag: 'Stands for "Retrieval-Augmented Generation." A technique that lets an AI look up your specific business information (from your website, manuals, or FAQs) before answering a question. This means the AI gives accurate answers based on your actual business data, not just general knowledge.',
+    gloss_agent: 'An AI program that can perform tasks on its own — like answering customer questions, writing reports, or analyzing data. Unlike a simple chatbot that just responds, an agent can take action, make decisions, and follow multi-step instructions without someone guiding every step.',
+    gloss_workflow: 'A sequence of automated steps that happen in order. For example: "When a form is submitted → add contact to CRM → send welcome email → create task for follow-up call." Each step triggers the next automatically.',
+    gloss_pipeline: 'A series of connected steps that data flows through. A lead generation pipeline might move a person from "website visitor" → "email subscriber" → "sales call booked" → "customer" automatically, with the right actions happening at each stage.',
+    gloss_dash: 'A visual screen that shows your most important business numbers in one place — sales today, new leads, open tasks, website visitors. Instead of checking five different tools, you look at one dashboard that summarizes everything. Like the instrument panel in a car.',
+    gloss_prompt: 'The instruction or question you give to an AI. A good prompt is clear and specific. Instead of "write about our service," try "write a 3-paragraph description of our lawn care service aimed at homeowners, highlighting our eco-friendly approach and free estimate offer." Better prompts get better results.',
+    gloss_embed: 'A way of converting words into numbers so the AI can understand relationships between concepts. It is how a search can find "winter coat" when you type "warm jacket" — the AI knows they are related even though the words are different.',
+    gloss_fine: 'Taking a general AI model and training it further on your specific business data so it becomes an expert in your field. Like taking a talented new employee who knows a little about everything and teaching them everything about your specific business so they become your best team member.',
+    stack_label: '🏗️ Chapter 4',
+    stack_title: 'Recommended Stack',
+    stack_subtitle: 'What every small business needs to build a modern, AI-powered operation — layer by layer.',
+    stack_th_layer: 'Layer', stack_th_what: 'What It Does', stack_th_examples: 'Examples',
+    stack_comm_desc: 'Internal team chat, client messaging, and announcements. Keeps everyone on the same page without endless email threads.',
+    stack_comm_ex: 'Slack, Microsoft Teams, Discord, email',
+    stack_crm_desc: 'Track every customer interaction — emails, calls, meetings, purchases. Know who your customers are and what they need.',
+    stack_crm_ex: 'HubSpot, Salesforce, Pipedrive, Airtable',
+    stack_web_desc: 'Your digital storefront. Where customers find you, learn about you, and decide to work with you. Must be fast and mobile-friendly.',
+    stack_web_ex: 'Webflow, Framer, WordPress, custom build',
+    stack_auto_desc: 'The glue that connects everything. Moves data between your tools so you do not have to copy-paste manually.',
+    stack_auto_ex: 'Make, Zapier, n8n, custom workflows',
+    stack_ai_desc: 'Adds intelligence on top of everything else. Chatbots, content generation, data analysis, lead scoring, predictions.',
+    stack_ai_ex: 'AI chatbots, LLM APIs, custom agents, analytics',
+    cost_label: '💰 Chapter 5',
+    cost_title: 'Cost Guide',
+    cost_subtitle: 'Rough monthly estimates for different levels of AI and automation adoption. Start where you are comfortable.',
+    cost_t1_tier: 'Starter', cost_t1_per: '/mo', cost_t1_desc: 'Perfect for testing the waters. Get your first automation running with free tools.',
+    cost_t1_f1: 'Basic workflow automation (1-2 flows)', cost_t1_f2: 'Simple chatbot for FAQs', cost_t1_f3: 'Free CRM tier', cost_t1_f4: 'Free email marketing (up to 2K contacts)', cost_t1_f5: 'Manual data handling',
+    cost_t2_tier: 'Growth', cost_t2_per: '/mo', cost_t2_desc: 'Serious about automation. Connect your tools and add AI-powered features.',
+    cost_t2_f1: 'Multiple automations (5-15 flows)', cost_t2_f2: 'AI content generation (social, email, blog)', cost_t2_f3: 'Lead scoring and follow-up sequences', cost_t2_f4: 'Paid CRM with pipeline tracking', cost_t2_f5: 'Customer support chatbot (AI-powered)',
+    cost_t3_tier: 'Scale', cost_t3_per: '/mo', cost_t3_desc: 'Full automation across your entire business. Custom AI agents and dedicated infrastructure.',
+    cost_t3_f1: 'Custom AI agents for your specific needs', cost_t3_f2: 'Full pipeline automation (end-to-end)', cost_t3_f3: 'Dedicated support and maintenance', cost_t3_f4: 'Custom dashboard + analytics', cost_t3_f5: 'Priority support and rapid iteration',
+    cost_note_title: 'A Note on Pricing',
+    cost_note_desc: 'These are rough estimates. Many tools have generous free tiers that let you start without spending anything. As you grow, you can upgrade gradually. The most important thing is to start — even a single €0 automation that saves you 2 hours a week is a win. When hiring someone to build custom AI for your business, expect one-time setup costs of €1,000-10,000 depending on complexity, plus monthly hosting and API usage fees.',
+    nav_accounting: 'Accounting',
+    acc_label: '📊 Chapter 6',
+    acc_title: 'Accounting Automation',
+    acc_subtitle: 'A practical, step-by-step guide to automating your bookkeeping — no technical skills or expensive accountants needed.',
+    acc_61_title: '6.1 The Problem',
+    acc_61_desc: 'Small business owners spend 5-10 hours every month on bookkeeping — sorting receipts, matching invoices to orders, tracking expenses, and preparing for VAT or audit. Many hire a bookkeeper at €300-800 per month for tasks that can be automated for roughly €50 per month. The result is the same organized records, but at a fraction of the cost and with zero data entry errors.',
+    acc_b61_1: '5-10 hrs/month wasted',
+    acc_b61_2: '€300-800/mo savings',
+    acc_b61_3: 'Human error eliminated',
+    acc_step1_title: 'Step 1: Digital Receipt System',
+    acc_step1_desc: 'Use your smartphone camera to photograph every receipt the moment you get it. Name each file by date and merchant — for example "2025-05-12_lunch_meeting.jpg". Save all photos to a dedicated folder in a cloud service like Google Drive, Dropbox, or OneDrive. This single habit eliminates the shoebox of crumpled receipts at tax time and gives you searchable, organized records from day one.',
+    acc_bs1_1: 'Smartphone camera',
+    acc_bs1_2: 'Date+merchant naming',
+    acc_bs1_3: 'Cloud folder storage',
+    acc_step2_title: 'Step 2: Simple Database (Spreadsheet-Based)',
+    acc_step2_desc: 'Create a Google Sheets or Excel workbook with four tabs. Tab 1 — "Ordrer (Orders)": Date, Customer, Amount, Paid?, Invoice #. Tab 2 — "Kvitteringer (Receipts)": Date, Merchant, Amount, Category (office, travel, software, etc.), Receipt file link. Tab 3 — "Forbrug (Expenses)": Monthly summary of rent, utilities, subscriptions, and payroll. Tab 4 — "Revision (Audit Trail)": Auto-calculated totals for revenue, expenses, VAT owed, and profit. This one spreadsheet replaces an entire bookkeeping service.',
+    acc_bs2_1: '4-tab workbook',
+    acc_bs2_2: 'Orders + Receipts',
+    acc_bs2_3: 'Auto-calculated audit',
+    acc_step3_title: 'Step 3: Connect with Automation',
+    acc_step3_desc: 'Use a no-code automation tool (like Make, Zapier, or n8n) to connect everything. Set up rules: when an invoice is marked paid in your payment processor → auto-add a row to your Orders tab. When a new receipt image appears in your cloud folder → auto-add it to your Receipts tab with the filename as the description. Monthly: auto-import a bank CSV export to update the Expenses tab. Quarterly: auto-calculate VAT report numbers from the Audit Trail tab. The system runs itself.',
+    acc_bs3_1: 'No-code tools',
+    acc_bs3_2: 'Auto-add rows',
+    acc_bs3_3: 'Quarterly VAT prep',
+    acc_step4_title: 'Step 4: The Excel Formulas',
+    acc_step4_desc: 'Use SUMIF to automatically categorize expenses by type — for example, =SUMIF(Kvitteringer!D:D,"office",Kvitteringer!C:C) adds up all office supply spending. Use XLOOKUP to match a receipt to its related order. Create a simple Dashboard sheet with cells showing: Revenue this month (=SUM(Ordrer!C:C)), Expenses this month (=SUM(Forbrug!B:B)), Profit (=Revenue-Expenses), and VAT payable (=Profit*0.25 for 25% VAT). Add conditional formatting: red background if an expense exceeds budget, green if profit exceeds target.',
+    acc_bs4_1: 'SUMIF formulas',
+    acc_bs4_2: 'XLOOKUP matching',
+    acc_bs4_3: 'Dashboard + conditional',
+    acc_63_title: '6.3 Cost Savings',
+    acc_tbl_before: 'Before (Manual / Bookkeeper)',
+    acc_tbl_after: 'After (Automated DIY)',
+    acc_tbl_r1b: '€300-800/mo for bookkeeper',
+    acc_tbl_r1a: '€0-50/mo for tools',
+    acc_tbl_r2b: '5-10 hrs/week manual work',
+    acc_tbl_r2a: '30 min/week review',
+    acc_tbl_r3b: 'Receipt pileups at tax time',
+    acc_tbl_r3a: 'Real-time organized records',
+    acc_tbl_r4b: 'Human errors in data entry',
+    acc_tbl_r4a: 'Auto-calculated, consistent',
+    acc_64_title: '6.4 Free Template',
+    acc_64_desc: 'Get a ready-to-use spreadsheet template with all four tabs, pre-built formulas, and conditional formatting already set up. Just fill in your data and the calculations happen automatically. Contact us for your free download — no strings attached.',
+    acc_b64_1: 'Free download',
+    acc_b64_2: 'Pre-built formulas',
+    acc_b64_3: 'Ready in minutes',
+    sec_label: '🔒 Chapter 7',
+    sec_title: 'Security Checklist',
+    sec_subtitle: 'Simple, practical steps to keep your business data safe as you add more tools and automation.',
+    sec_i1_title: 'Enable 2FA on Everything',
+    sec_i1_desc: 'Two-factor authentication adds a second layer of protection. Even if someone gets your password, they cannot log in without your phone or authenticator app. Enable it on email, CRM, bank accounts, social media, and automation tools.',
+    sec_i2_title: 'Regular Backups',
+    sec_i2_desc: 'Set up automatic backups for your website, customer data, and critical files. Most tools offer this in settings. Test your backups at least once a quarter — a backup you cannot restore is not a backup at all.',
+    sec_i3_title: 'Use a Password Manager',
+    sec_i3_desc: 'Stop reusing passwords. A password manager generates and stores strong, unique passwords for every account. You only need to remember one master password. It also helps you spot fake login pages. Popular options include 1Password, Bitwarden, and KeePass.',
+    sec_i4_title: 'Never Share API Keys',
+    sec_i4_desc: 'API keys are like digital passwords for your tools. Never share them via email, messages, or post them on public websites. Treat them like your credit card number. If you suspect a key is compromised, revoke it immediately and generate a new one.',
+    sec_i5_title: 'Keep Software Updated',
+    sec_i5_desc: 'Outdated software is the most common way attackers get in. Enable automatic updates on your website platform, plugins, and any software you use. For tools like your CRM and automation platforms, they handle updates themselves — just make sure you are on a supported plan.',
+    sec_i6_title: 'Review Connected Apps',
+    sec_i6_desc: 'Every few months, check which apps have access to your accounts. Revoke access for anything you no longer use. If an employee leaves, remove their access immediately. Less connected apps means fewer potential weak points.',
+    back_label: '⬅️ Explore More',
+    back_title: 'Ready to see these concepts in action?',
+    back_subtitle: 'Check out our design concepts or security & privacy page to see how this all comes together.',
+    back_concepts: 'View All Concepts',
+    back_security: 'Security & Privacy',
+    footer_text: 'Practical resources for small business owners exploring AI and automation.'
+  }
+};
+
+// ===== LANGUAGE STATE =====
+let currentLang = localStorage.getItem('bn-lang') || 'en';
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('bn-lang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (TEXT[lang] && TEXT[lang][key]) {
+      el.innerHTML = TEXT[lang][key];
+    }
+  });
+  document.getElementById('langToggle').textContent = 'DA | EN';
+}
+
+// ===== THEME STATE =====
+let currentTheme = localStorage.getItem('bn-theme') || 'dark';
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('bn-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = theme === 'dark' ? '🌙' : '☀️';
+  document.getElementById('themeToggle').textContent = icon;
+}
+
+// ===== INIT =====
+(function init() {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const savedTheme = localStorage.getItem('bn-theme');
+  if (savedTheme) currentTheme = savedTheme;
+  else currentTheme = prefersDark ? 'dark' : 'light';
+  setTheme(currentTheme);
+
+  const savedLang = localStorage.getItem('bn-lang');
+  if (savedLang) currentLang = savedLang;
+  setLanguage(currentLang);
+
+  document.getElementById('themeToggle').addEventListener('click', () => setTheme(currentTheme === 'dark' ? 'light' : 'dark'));
+  document.getElementById('langToggle').addEventListener('click', () => setLanguage(currentLang === 'da' ? 'en' : 'da'));
+})();
+
+// ===== NAV SCROLL =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+
+// ===== INTERSECTION OBSERVER =====
+if (window.IntersectionObserver) {
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+} else { document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); }); }
+</script>
+</body>
+</html>

@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — BasedNode</title>
+<meta name="description" content="Get in touch with BasedNode. Free consultation, technical support, event help, or just say hi.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root, [data-theme="dark"] {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181b24;
+  --bg-tertiary: #1e2230;
+  --bg-card: rgba(24, 27, 36, 0.6);
+  --bg-glass: rgba(15, 17, 23, 0.72);
+  --bg-glass-hover: rgba(24, 27, 36, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --text-primary: #f1f3f5;
+  --text-secondary: #8b95a5;
+  --text-tertiary: #5c6675;
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-dim: rgba(167, 139, 250, 0.15);
+  --accent-glow: rgba(167, 139, 250, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --pill-bg: rgba(255,255,255,0.03);
+  --input-bg: rgba(255,255,255,0.04);
+  --telegram-bg: rgba(0, 136, 204, 0.12);
+  --telegram-border: rgba(0, 136, 204, 0.3);
+  --telegram-color: #2aa3ef;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8f5f0;
+  --bg-secondary: #eeebe6;
+  --bg-tertiary: #e5e0d8;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(248, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #7c3aed;
+  --accent-hover: #6d28d9;
+  --accent-dim: rgba(124, 58, 237, 0.1);
+  --accent-glow: rgba(124, 58, 237, 0.15);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0,0,0,0.02);
+  --input-bg: rgba(0,0,0,0.03);
+  --telegram-bg: rgba(0, 136, 204, 0.08);
+  --telegram-border: rgba(0, 136, 204, 0.2);
+  --telegram-color: #0088cc;
+}
+
+/* ===== STYLE VARIANTS ===== */
+html[data-style="1"] {
+  /* Style 1 (Agency) — matches the default dark theme */
+}
+html[data-style="2"] {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a28;
+  --bg-card: rgba(10, 10, 15, 0.6);
+  --bg-glass: rgba(10, 10, 15, 0.72);
+  --bg-glass-hover: rgba(18, 18, 26, 0.85);
+  --border-subtle: rgba(0, 240, 255, 0.08);
+  --border-hover: rgba(0, 240, 255, 0.2);
+  --text-primary: #e0f0ff;
+  --text-secondary: #8899aa;
+  --text-tertiary: #556677;
+  --accent: #00f0ff;
+  --accent2: #ff00aa;
+  --accent-hover: #66f5ff;
+  --accent-dim: rgba(0, 240, 255, 0.15);
+  --accent-glow: rgba(0, 240, 255, 0.25);
+  --success: #00ff88;
+  --warning: #ffaa00;
+  --error: #ff3355;
+  --pill-bg: rgba(0, 240, 255, 0.05);
+  --input-bg: rgba(0, 240, 255, 0.04);
+  --telegram-bg: rgba(0, 136, 204, 0.12);
+  --telegram-border: rgba(0, 136, 204, 0.3);
+  --telegram-color: #2aa3ef;
+}
+html[data-style="3"] {
+  --bg-primary: #f5f5f0;
+  --bg-secondary: #ecebe4;
+  --bg-tertiary: #e2e0d6;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-glass: rgba(245, 245, 240, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(0, 0, 0, 0.12);
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --accent: #8b7cf6;
+  --accent2: #6b5cf6;
+  --accent-hover: #a99cf9;
+  --accent-dim: rgba(139, 124, 246, 0.12);
+  --accent-glow: rgba(139, 124, 246, 0.18);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --pill-bg: rgba(0, 0, 0, 0.02);
+  --input-bg: rgba(0, 0, 0, 0.03);
+  --telegram-bg: rgba(0, 136, 204, 0.08);
+  --telegram-border: rgba(0, 136, 204, 0.2);
+  --telegram-color: #0088cc;
+}
+html[data-style="4"] {
+  --bg-primary: #0b0d17;
+  --bg-secondary: #13162b;
+  --bg-tertiary: #1a1e3a;
+  --bg-card: rgba(11, 13, 23, 0.6);
+  --bg-glass: rgba(11, 13, 23, 0.72);
+  --bg-glass-hover: rgba(19, 22, 43, 0.85);
+  --border-subtle: rgba(56, 189, 248, 0.08);
+  --border-hover: rgba(56, 189, 248, 0.18);
+  --text-primary: #eef0ff;
+  --text-secondary: #8890b0;
+  --text-tertiary: #5a6090;
+  --accent: #7c5cfc;
+  --accent2: #38bdf8;
+  --accent-hover: #9d7cff;
+  --accent-dim: rgba(124, 92, 252, 0.15);
+  --accent-glow: rgba(124, 92, 252, 0.25);
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --pill-bg: rgba(56, 189, 248, 0.04);
+  --input-bg: rgba(56, 189, 248, 0.04);
+  --telegram-bg: rgba(0, 136, 204, 0.12);
+  --telegram-border: rgba(0, 136, 204, 0.3);
+  --telegram-color: #2aa3ef;
+}
+html[data-style="5"] {
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1a1a1a;
+  --bg-card: rgba(12, 12, 12, 0.6);
+  --bg-glass: rgba(12, 12, 12, 0.72);
+  --bg-glass-hover: rgba(20, 20, 20, 0.85);
+  --border-subtle: rgba(0, 255, 65, 0.1);
+  --border-hover: rgba(0, 255, 65, 0.2);
+  --text-primary: #c0ffc0;
+  --text-secondary: #609960;
+  --text-tertiary: #306030;
+  --accent: #00ff41;
+  --accent-hover: #33ff66;
+  --accent-dim: rgba(0, 255, 65, 0.12);
+  --accent-glow: rgba(0, 255, 65, 0.2);
+  --success: #00ff41;
+  --warning: #ffaa00;
+  --error: #ff3355;
+  --pill-bg: rgba(0, 255, 65, 0.04);
+  --input-bg: rgba(0, 255, 65, 0.04);
+  --telegram-bg: rgba(0, 136, 204, 0.12);
+  --telegram-border: rgba(0, 136, 204, 0.3);
+  --telegram-color: #2aa3ef;
+}
+
+body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: box-shadow 300ms ease, border-color 300ms ease;
+}
+.nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.3); border-bottom-color: rgba(167, 139, 250, 0.15); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
+  text-decoration: none; color: var(--text-primary);
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-logo:hover { opacity: 0.8; }
+.logo-accent { color: var(--accent); }
+.nav-links {
+  display: flex; align-items: center; gap: 4px;
+  list-style: none; margin: 0; padding: 0;
+}
+.nav-link {
+  font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);
+  text-decoration: none; padding: 6px 14px; border-radius: 6px;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--accent-dim); }
+.nav-cta {
+  font-size: 0.8rem; font-weight: 600; color: #fff;
+  background: var(--accent); text-decoration: none;
+  padding: 8px 18px; border-radius: 6px;
+}
+.nav-cta:hover {
+  background: var(--accent-hover); transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+.nav-toggle-btn {
+  background: none; border: 1px solid var(--border-subtle);
+  color: var(--text-secondary); cursor: pointer;
+  padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; line-height: 1;
+}
+.nav-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+.nav-toggles { display: flex; align-items: center; gap: 6px; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 40vh; display: flex; align-items: center;
+  justify-content: center; position: relative;
+  padding: 120px 0 40px; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 40%, rgba(167, 139, 250, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(167, 139, 250, 0.04) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+.hero-content { position: relative; z-index: 1; text-align: center; max-width: 680px; margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.75rem; font-weight: 500; color: var(--accent);
+  background: var(--accent-dim); padding: 6px 16px;
+  border-radius: 100px; border: 1px solid rgba(167, 139, 250, 0.2);
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-size: 2.8rem; font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1.1; margin: 0 0 12px; color: var(--text-primary);
+}
+.hero-title .accent-text { color: var(--accent); }
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-secondary);
+  max-width: 540px; margin: 0 auto; line-height: 1.7;
+}
+.hero-emoji { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+
+/* ===== SECTION ===== */
+.section { padding: 50px 0; }
+.section-label {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); margin-bottom: 8px;
+}
+.section-title {
+  font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.2; margin: 0 0 12px; color: var(--text-primary);
+}
+.section-subtitle {
+  font-size: 0.92rem; color: var(--text-secondary);
+  line-height: 1.6; margin: 0 0 24px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: border-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
+}
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(167, 139, 250, 0.1);
+}
+
+/* ===== CONTACT FORM ===== */
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block; font-size: 0.82rem; font-weight: 600;
+  color: var(--text-secondary); margin-bottom: 6px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 12px 14px;
+  font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  color: var(--text-primary);
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b95a5' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.form-select option { background: var(--bg-secondary); color: var(--text-primary); }
+.form-textarea {
+  min-height: 140px; resize: vertical; line-height: 1.6;
+}
+.form-submit {
+  display: inline-block; width: 100%; padding: 14px 28px;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+  color: #fff; background: var(--accent); border: none;
+  border-radius: 10px; cursor: pointer;
+  transition: all 300ms ease;
+}
+.form-submit:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--accent-glow);
+}
+.form-hint {
+  font-size: 0.78rem; color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* ===== GUIDANCE CARDS ===== */
+.guidance-grid { display: grid; gap: 14px; }
+.guidance-item {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: border-color 300ms ease, transform 300ms ease;
+}
+.guidance-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.guidance-icon {
+  flex-shrink: 0; width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim); border-radius: 10px;
+  color: var(--accent); font-size: 1.1rem;
+}
+.guidance-text { flex: 1; }
+.guidance-text strong {
+  display: block; font-size: 0.9rem; font-weight: 600;
+  color: var(--text-primary); margin-bottom: 4px;
+}
+.guidance-text p {
+  font-size: 0.84rem; color: var(--text-secondary);
+  margin: 0; line-height: 1.6;
+}
+
+/* ===== TELEGRAM SECTION ===== */
+.telegram-section {
+  text-align: center;
+  padding: 40px;
+  background: var(--telegram-bg);
+  border: 1px solid var(--telegram-border);
+  border-radius: 16px;
+  margin: 20px 0;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+.telegram-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 136, 204, 0.12);
+}
+.telegram-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+.telegram-title {
+  font-size: 1.3rem; font-weight: 700; margin: 0 0 8px;
+  color: var(--text-primary);
+}
+.telegram-text {
+  font-size: 0.95rem; color: var(--text-secondary);
+  max-width: 480px; margin: 0 auto 20px; line-height: 1.7;
+}
+.telegram-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700;
+  color: #fff; background: var(--telegram-color);
+  padding: 14px 32px; border-radius: 12px;
+  text-decoration: none;
+  transition: all 300ms ease;
+}
+.telegram-btn:hover {
+  background: #1a9ad4;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 28px rgba(0, 136, 204, 0.3);
+}
+.telegram-btn svg { width: 22px; height: 22px; }
+
+/* ===== CONTACT INFO ===== */
+.contact-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.contact-info-item {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex; align-items: center; gap: 12px;
+  transition: border-color 300ms ease, transform 300ms ease;
+}
+.contact-info-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.contact-info-icon {
+  flex-shrink: 0; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-dim); border-radius: 8px;
+  color: var(--accent); font-size: 1rem;
+}
+.contact-info-label {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-tertiary); margin: 0;
+}
+.contact-info-value {
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--text-primary); margin: 0;
+}
+.contact-info-value a {
+  color: var(--accent); text-decoration: none;
+}
+.contact-info-value a:hover { text-decoration: underline; }
+
+/* ===== WARM PERSONAL TOUCH ===== */
+.warm-quote {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 20px 0;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-style: italic;
+}
+.warm-quote strong { color: var(--text-primary); font-style: normal; }
+
+/* ===== FOOTER ===== */
+.page-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 40px 0;
+  margin-top: 40px;
+}
+.footer-links {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.footer-link {
+  font-size: 0.82rem; font-weight: 500; color: var(--text-tertiary);
+  text-decoration: none; padding: 6px 14px; border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  transition: all 300ms ease;
+}
+.footer-link:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.footer-copy {
+  font-size: 0.75rem; color: var(--text-tertiary);
+  text-align: center; margin: 0;
+}
+
+/* ===== REVEAL ===== */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms cubic-bezier(0.34, 1.56, 0.64, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero-title { font-size: 2rem; }
+  .section-title { font-size: 1.3rem; }
+  .card { padding: 20px; }
+  .hero { padding: 100px 0 30px; }
+  .contact-info-grid { grid-template-columns: 1fr; }
+  .telegram-section { padding: 28px 20px; }
+}
+@media (max-width: 480px) {
+  .container { padding: 0 16px; }
+  .hero-title { font-size: 1.6rem; }
+  .hero-emoji { font-size: 2rem; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
+::selection { background: var(--accent-dim); color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Based<span class="logo-accent">Node</span></a>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link" data-i18n="nav_contact" style="color:var(--accent)">Contact</a></li>
+      <li class="nav-toggles">
+        <button class="nav-toggle-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+        <button class="nav-toggle-btn" id="langToggle" aria-label="Toggle language">DA | EN</button>
+      </li>
+      <li><a href="index.html" class="nav-cta">← Back</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content container" style="padding:0 24px">
+    <span class="hero-emoji">👋</span>
+    <div class="hero-badge" data-i18n="hero_badge">Say hello · Any language</div>
+    <h1 class="hero-title" data-i18n="hero_title">Let's <span class="accent-text">Talk</span></h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">
+      Whether you have a wild idea, a system that needs fixing, an event that needs tech — or you just want to say hi. I'm one message away.
+    </p>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- ===== CONTACT FORM ===== -->
+<section class="section" id="form">
+  <div class="section-label" data-i18n="form_label">📝 Send a message</div>
+  <h2 class="section-title" data-i18n="form_title">Write me</h2>
+  <p class="section-subtitle" data-i18n="form_subtitle">Fill out the form and I'll get back to you — usually within 24 hours.</p>
+
+  <div class="card">
+    <form id="contactForm" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label" for="name" data-i18n="form_name">Your name</label>
+        <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Anders" data-i18n-placeholder="form_name_ph">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email" data-i18n="form_email">Your email</label>
+        <input type="email" id="email" name="email" class="form-input" placeholder="anders@example.com" data-i18n-placeholder="form_email_ph">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="subject" data-i18n="form_subject">Subject</label>
+        <select id="subject" name="subject" class="form-select" data-i18n-en-opts="Select subject...|Free Consultation|Technical Support|Event Help|Other" data-i18n-da-opts="Vælg emne...|Free Consultation (Gratis rådgivning)|Technical Support (Teknisk support)|Hjælp til et event|Andet">
+          <option value="" data-i18n="subject_placeholder_en">Select subject...</option>
+          <option value="consultation" data-i18n="subject_consultation_en">Free Consultation</option>
+          <option value="support" data-i18n="subject_support_en">Technical Support</option>
+          <option value="event" data-i18n="subject_event_en">Event Help</option>
+          <option value="other" data-i18n="subject_other_en">Other</option>
+        </select>
+        <div class="form-hint" data-i18n="form_subject_hint">Not sure what to choose? See the guide below 👇</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="message" data-i18n="form_message">Message</label>
+        <textarea id="message" name="message" class="form-textarea" placeholder="Tell me what you need..." data-i18n-placeholder="form_msg_ph"></textarea>
+      </div>
+      <button type="submit" class="form-submit" data-i18n="form_send">✈️ Send message</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== WARM NOTE ===== -->
+<div class="warm-quote reveal">
+  <span data-i18n="warm_note">
+    <strong>Psst...</strong> Don't overthink the form. If you're not sure what to write, just say hi. I'm a real person, I read every message, and I'll help you figure out what you need. That's literally what I'm here for. 🤝
+  </span>
+</div>
+
+<!-- ===== SUBJECT GUIDANCE ===== -->
+<section class="section" id="guidance">
+  <div class="section-label" data-i18n="guide_label">💡 Not sure what to write?</div>
+  <h2 class="section-title" data-i18n="guide_title">Choose the right subject</h2>
+  <p class="section-subtitle" data-i18n="guide_subtitle">Here's what each option means — pick the one that fits best.</p>
+
+  <div class="guidance-grid">
+    <div class="guidance-item reveal">
+      <div class="guidance-icon">💡</div>
+      <div class="guidance-text">
+        <strong data-i18n="guide_consult_title">Free Consultation</strong>
+        <p data-i18n="guide_consult_desc">Har du en idé men mangler teknisk sparring? Skriv 'Free Consultation' i emnefeltet, og jeg ringer dig op inden for 48 timer.</p>
+      </div>
+    </div>
+
+    <div class="guidance-item reveal">
+      <div class="guidance-icon">🔧</div>
+      <div class="guidance-text">
+        <strong data-i18n="guide_support_title">Technical Support</strong>
+        <p data-i18n="guide_support_desc">Allerede kunde? Har du brug for hjælp til et system jeg har bygget? Skriv 'Support' — inkludér dit systemnavn og en kort beskrivelse af problemet.</p>
+      </div>
+    </div>
+
+    <div class="guidance-item reveal">
+      <div class="guidance-icon">🎪</div>
+      <div class="guidance-text">
+        <strong data-i18n="guide_event_title">Event Help</strong>
+        <p data-i18n="guide_event_desc">Arrangerer du et event og mangler tech/automation? Skriv 'Event' + dato og lokation, så finder vi ud af det sammen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TELEGRAM SECTION ===== -->
+<section class="section" id="telegram">
+  <div class="section-label" data-i18n="telegram_label">⚡ Fastest way</div>
+  <h2 class="section-title" style="text-align:center" data-i18n="telegram_title">Telegram</h2>
+
+  <div class="telegram-section reveal">
+    <span class="telegram-icon">✈️</span>
+    <h3 class="telegram-title">@IkkeOmar</h3>
+    <p class="telegram-text" data-i18n="telegram_text">
+      Just call. I can't promise to pick up, but I promise to try! :D
+    </p>
+    <a href="https://t.me/IkkeOmar" target="_blank" rel="noopener" class="telegram-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      <span data-i18n="telegram_btn">Open Telegram</span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== CONTACT INFO ===== -->
+<section class="section" id="info">
+  <div class="section-label" data-i18n="info_label">📬 All the ways</div>
+  <h2 class="section-title" data-i18n="info_title">Contact Info</h2>
+  <p class="section-subtitle" data-i18n="info_subtitle">Wherever you are, I'm probably there too.</p>
+
+  <div class="contact-info-grid">
+    <div class="contact-info-item reveal">
+      <div class="contact-info-icon">📧</div>
+      <div>
+        <p class="contact-info-label" data-i18n="info_email">Email</p>
+        <p class="contact-info-value"><a href="mailto:contact@basednode.xyz">contact@basednode.xyz</a></p>
+      </div>
+    </div>
+
+    <div class="contact-info-item reveal">
+      <div class="contact-info-icon">🏢</div>
+      <div>
+        <p class="contact-info-label">CVR</p>
+        <p class="contact-info-value">43750194</p>
+      </div>
+    </div>
+
+    <div class="contact-info-item reveal">
+      <div class="contact-info-icon">💼</div>
+      <div>
+        <p class="contact-info-label">LinkedIn</p>
+        <p class="contact-info-value"><a href="https://linkedin.com/in/omar-jennane" target="_blank" rel="noopener">Omar Jennane</a></p>
+      </div>
+    </div>
+
+    <div class="contact-info-item reveal">
+      <div class="contact-info-icon">✈️</div>
+      <div>
+        <p class="contact-info-label">Telegram</p>
+        <p class="contact-info-value"><a href="https://t.me/IkkeOmar" target="_blank" rel="noopener">@IkkeOmar</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="index.html" class="footer-link" data-i18n="footer_concepts">🎨 Concepts</a>
+      <a href="security-privacy.html" class="footer-link" data-i18n="footer_security">🔒 Security & Privacy</a>
+      <a href="resources.html" class="footer-link" data-i18n="footer_resources">📚 Resources</a>
+      <a href="contact.html" class="footer-link" style="color:var(--accent);border-color:var(--accent);background:var(--accent-dim)" data-i18n="footer_contact">✉️ Contact</a>
+    </div>
+    <p class="footer-copy" data-i18n="footer_copy">© 2026 BasedNode · Built with curiosity and good coffee</p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+// ===== STYLE VARIANT FROM URL =====
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var style = params.get('style');
+  console.log('[Style Debug] URL style param:', style);
+  if (style && ['2','3','4','5'].includes(style)) {
+    document.documentElement.setAttribute('data-style', style);
+    try { localStorage.setItem('bn-style', style); } catch(e) {}
+    console.log('[Style Debug] Set data-style to:', style);
+  } else {
+    // Fallback: read from localStorage (preserves style across page navigations)
+    var savedStyle = null;
+    try { savedStyle = localStorage.getItem('bn-style'); } catch(e) {}
+    if (savedStyle && ['2','3','4','5'].includes(savedStyle)) {
+      document.documentElement.setAttribute('data-style', savedStyle);
+      console.log('[Style Debug] Restored from localStorage:', savedStyle);
+    }
+  }
+})();
+
+/* ===== THEME TOGGLE ===== */
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+
+function getTheme() {
+  return localStorage.getItem('theme') || 'dark';
+}
+
+function setTheme(theme) {
+  html.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+  setTheme(getTheme() === 'dark' ? 'light' : 'dark');
+});
+
+setTheme(getTheme());
+
+/* ===== LANGUAGE TOGGLE ===== */
+const langToggle = document.getElementById('langToggle');
+let currentLang = localStorage.getItem('bn-lang') || 'en';
+
+const i18n = {
+  en: {
+    nav_contact: 'Contact',
+    hero_badge: 'Say hello · Any language',
+    hero_title: "Let's <span class=\"accent-text\">Talk</span>",
+    hero_subtitle: 'Whether you have a wild idea, a system that needs fixing, an event that needs tech — or you just want to say hi. I\'m one message away.',
+    form_label: '📝 Send a message',
+    form_title: 'Write me',
+    form_subtitle: 'Fill out the form and I\'ll get back to you — usually within 24 hours.',
+    form_name: 'Your name',
+    form_name_ph: 'e.g. Anders',
+    form_email: 'Your email',
+    form_email_ph: 'anders@example.com',
+    form_subject: 'Subject',
+    form_subject_hint: 'Not sure what to choose? See the guide below 👇',
+    form_message: 'Message',
+    form_msg_ph: 'Tell me what you need...',
+    form_send: '✈️ Send message',
+    warm_note: '<strong>Psst...</strong> Don\'t overthink the form. If you\'re not sure what to write, just say hi. I\'m a real person, I read every message, and I\'ll help you figure out what you need. That\'s literally what I\'m here for. 🤝',
+    guide_label: '💡 Not sure what to write?',
+    guide_title: 'Choose the right subject',
+    guide_subtitle: 'Here\'s what each option means — pick the one that fits best.',
+    guide_consult_title: 'Free Consultation',
+    guide_consult_desc: 'Got an idea but need technical sparring? Select \'Free Consultation\' in the subject field, and I\'ll call you within 48 hours.',
+    guide_support_title: 'Technical Support',
+    guide_support_desc: 'Already a customer? Need help with a system I built? Select \'Support\' — include your system name and a short description of the problem.',
+    guide_event_title: 'Event Help',
+    guide_event_desc: 'Organising an event and need tech/automation? Select \'Event\' + date and location, and we\'ll figure it out together.',
+    telegram_label: '⚡ Fastest way',
+    telegram_title: 'Telegram',
+    telegram_text: 'Just call. I can\'t promise to pick up, but I promise to try! :D',
+    telegram_btn: 'Open Telegram',
+    info_label: '📬 All the ways',
+    info_title: 'Contact Info',
+    info_subtitle: 'Wherever you are, I\'m probably there too.',
+    info_email: 'Email',
+    footer_concepts: '🎨 Concepts',
+    footer_security: '🔒 Security & Privacy',
+    footer_resources: '📚 Resources',
+    footer_contact: '✉️ Contact',
+    footer_copy: '© 2026 BasedNode · Built with curiosity and good coffee',
+    subject_placeholder_en: 'Select subject...',
+    subject_consultation_en: 'Free Consultation',
+    subject_support_en: 'Technical Support',
+    subject_event_en: 'Event Help',
+    subject_other_en: 'Other',
+    subject_placeholder_da: 'Vælg emne...',
+    subject_consultation_da: 'Free Consultation (Gratis rådgivning)',
+    subject_support_da: 'Technical Support (Teknisk support)',
+    subject_event_da: 'Hjælp til et event',
+    subject_other_da: 'Andet',
+  },
+  da: {
+    nav_contact: 'Kontakt',
+    hero_badge: 'Sig hej · Alle sprog',
+    hero_title: 'Lad os <span class="accent-text">Snakke</span>',
+    hero_subtitle: 'Uanset om du har en vild idé, et system der skal fikses, et event der mangler tech — eller bare vil sige hej. Jeg er kun en besked fra dig.',
+    form_label: '📝 Send en besked',
+    form_title: 'Skriv til mig',
+    form_subtitle: 'Udfyld formularen, så vender jeg tilbage — typisk inden for 24 timer.',
+    form_name: 'Dit navn',
+    form_name_ph: 'f.eks. Anders',
+    form_email: 'Din email',
+    form_email_ph: 'anders@example.com',
+    form_subject: 'Emne',
+    form_subject_hint: 'Ikke sikker på hvad du skal vælge? Se guiden nedenfor 👇',
+    form_message: 'Besked',
+    form_msg_ph: 'Fortæl mig hvad du har brug for...',
+    form_send: '✈️ Send besked',
+    warm_note: '<strong>Psst...</strong> Lad være med at overtænke formularen. Hvis du ikke er sikker på hvad du skal skrive, så sig bare hej. Jeg er et rigtigt menneske, jeg læser hver eneste besked, og jeg hjælper dig med at finde ud af hvad du har brug for. Det er dét, jeg er her for. 🤝',
+    guide_label: '💡 Ikke sikker på hvad du skal skrive?',
+    guide_title: 'Vælg det rigtige emne',
+    guide_subtitle: 'Her er hvad hver mulighed betyder — vælg den der passer bedst.',
+    guide_consult_title: 'Free Consultation (Gratis rådgivning)',
+    guide_consult_desc: 'Har du en idé men mangler teknisk sparring? Skriv \'Free Consultation\' i emnefeltet, og jeg ringer dig op inden for 48 timer.',
+    guide_support_title: 'Technical Support (Teknisk support)',
+    guide_support_desc: 'Allerede kunde? Har du brug for hjælp til et system jeg har bygget? Skriv \'Support\' — inkludér dit systemnavn og en kort beskrivelse af problemet.',
+    guide_event_title: 'Hjælp til et event',
+    guide_event_desc: 'Arrangerer du et event og mangler tech/automation? Skriv \'Event\' + dato og lokation, så finder vi ud af det sammen.',
+    telegram_label: '⚡ Hurtigste vej',
+    telegram_title: 'Telegram',
+    telegram_text: 'Bare ring. Jeg kan ikke love at tage telefonen, men jeg lover at prøve! :D',
+    telegram_btn: 'Åbn Telegram',
+    info_label: '📬 Alle måder',
+    info_title: 'Kontaktinfo',
+    info_subtitle: 'Uanset hvor du er, er jeg sandsynligvis også der.',
+    info_email: 'Email',
+    footer_concepts: '🎨 Koncepter',
+    footer_security: '🔒 Sikkerhed & Privatliv',
+    footer_resources: '📚 Ressourcer',
+    footer_contact: '✉️ Kontakt',
+    footer_copy: '© 2026 BasedNode · Bygget med nysgerrighed og god kaffe',
+    subject_placeholder_en: 'Select subject...',
+    subject_consultation_en: 'Free Consultation',
+    subject_support_en: 'Technical Support',
+    subject_event_en: 'Event Help',
+    subject_other_en: 'Other',
+    subject_placeholder_da: 'Vælg emne...',
+    subject_consultation_da: 'Free Consultation (Gratis rådgivning)',
+    subject_support_da: 'Technical Support (Teknisk support)',
+    subject_event_da: 'Hjælp til et event',
+    subject_other_da: 'Andet',
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('bn-lang', lang);
+  langToggle.textContent = lang === 'da' ? 'DA | EN' : 'EN | DA';
+
+  const strings = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (strings[key] !== undefined) {
+      if (el.tagName === 'OPTION') {
+        const daKey = key.replace('_en', '_da');
+        const enKey = key.replace('_da', '_en');
+        el.textContent = strings[key];
+      } else {
+        el.innerHTML = strings[key];
+      }
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (strings[key] !== undefined) {
+      el.placeholder = strings[key];
+    }
+  });
+
+  // Update select options
+  const select = document.getElementById('subject');
+  if (select) {
+    const options = select.querySelectorAll('option');
+    options.forEach(opt => {
+      const daOpt = opt.getAttribute('data-i18n-subject-da');
+      const enOpt = opt.getAttribute('data-i18n-subject-en');
+      if (lang === 'da' && daOpt) {
+        opt.textContent = daOpt;
+      } else if (lang === 'en' && enOpt) {
+        opt.textContent = enOpt;
+      }
+    });
+  }
+}
+
+function applyI18nDataAttributes() {
+  const select = document.getElementById('subject');
+  if (!select) return;
+  const options = select.querySelectorAll('option');
+  // Set data attributes for each option based on their text
+  const optTexts = {
+    'Select subject...': { da: 'Vælg emne...', en: 'Select subject...' },
+    'Free Consultation': { da: 'Free Consultation (Gratis rådgivning)', en: 'Free Consultation' },
+    'Technical Support': { da: 'Technical Support (Teknisk support)', en: 'Technical Support' },
+    'Event Help': { da: 'Hjælp til et event', en: 'Event Help' },
+    'Other': { da: 'Andet', en: 'Other' }
+  };
+  options.forEach(opt => {
+    const text = opt.textContent.trim();
+    if (optTexts[text]) {
+      opt.setAttribute('data-i18n-subject-en', optTexts[text].en);
+      opt.setAttribute('data-i18n-subject-da', optTexts[text].da);
+    }
+  });
+}
+
+applyI18nDataAttributes();
+
+langToggle.addEventListener('click', () => {
+  setLang(currentLang === 'da' ? 'en' : 'da');
+});
+
+setLang(currentLang);
+
+/* ===== SCROLL SHADOW ===== */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+/* ===== REVEAL ANIMATION ===== */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ===== FORM SUBMIT PLACEHOLDER ===== */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.form-submit');
+  const original = btn.textContent;
+  const lang = currentLang;
+  btn.textContent = lang === 'da' ? '✅ Sendt! Jeg vender tilbage 🙌' : '✅ Sent! I\'ll get back to you 🙌';
+  btn.style.background = 'var(--success)';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.style.background = '';
+    this.reset();
+  }, 3000);
+});
+</script>
+
+</body>
+</html>
